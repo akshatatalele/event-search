@@ -1,0 +1,280 @@
+html, body {
+    max-width: 100%;
+    /* overflow-x: hidden; */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+body{
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: white;
+}
+
+#header{
+    margin-top: 2%;
+}
+span{
+    margin-top: 10%;
+    margin-left: 12%;
+    font-size: 80%;
+    color: #515359;
+    letter-spacing: 0.5;
+}
+
+h1{
+    text-align: center;    
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2.5em;
+    font-weight: 500;
+    letter-spacing: 5;
+    color: #bd9c59;
+    margin-bottom: 4%;
+    margin-top: 0%;
+}
+
+.navigation{
+    border-top: 1px solid lightgray;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ }
+
+.navigation ul{
+    margin-left: 9%;
+    margin-right: 9%;
+    padding-left: 0%;
+    margin-bottom: 0.8%;
+    margin-top: 0.9%;
+    display: flex;
+}
+
+.navigation li{
+    font-family: Arial, sans-serif;
+    display: block;
+    justify-content: center;
+    margin-left: 6%;
+    margin-right: 6%;
+    font-size: 0.8em;
+    font-weight: 500;
+    text-align: center;
+    flex: 1 0 auto;
+    padding: 0.20em;
+}
+
+a.home_link{
+    color: #bd9c59;
+}
+
+.nav_link{
+    text-decoration: none;
+    color: #515359
+}
+
+.mainImage{
+    background-image: url(https://csci571.com/hw/hw3/images/image6.jpg);
+    height: 475px;
+    background-position: -150px 50px; 
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+} 
+
+.div_image{
+    float: left;
+    width: 50%;
+}
+
+.div_res{
+    float: left;
+    width: 50%;
+}
+
+.div_image1{
+    float: left;
+    width: 50%;
+}
+
+h2.res_title{
+    font-size: 62%;
+    font-family: Arial, sans-serif;
+    color: #515359;
+    font-weight: 100;
+    letter-spacing: 1;
+    margin-left: 6%;
+    margin-top: 7%;
+}
+
+h3.res_title{
+    font-size: 25px;
+    margin-top: 2%;
+    margin-left: 6%;
+    margin-bottom: 2%;
+    font-family: 'Libre Baskerville', serif;
+    color: #bd9c59;
+    font-style: italic;
+}
+
+.res_desc{
+    font-family: Arial, sans-serif;
+    margin-left: 6%;
+    font-size: 74%;
+    margin-top: 2%;
+    width: 68%;
+    color: #515359;
+    letter-spacing: 0.7;
+}
+
+.res_link{
+    text-decoration: none;
+    color: black;
+    margin-left: 6%;
+    font-size: 75%;
+    font-weight: 500;
+}
+
+.image3{
+    margin-top: 22%;
+    margin-left: 23%;
+    width: 74%;
+}
+
+.image2{
+    margin-top: 7%;
+    margin-left: 23%;
+    width: 74%;
+}
+
+.info{
+    margin-top: 12%;
+    margin-left: 23%;
+    margin-bottom: 2%;
+    font-size: 25px;
+    margin-top: 12%;
+    font-family: 'Libre Baskerville', serif;
+    color: #bd9c59;
+    font-style: italic;
+}
+
+.info1{
+    font-family: Arial, sans-serif;
+    font-size: 74%;
+    margin-top: 2%;
+    margin-left: 23%;
+    margin-bottom: 2%;
+    width: 57%;
+    color: #515359;
+    letter-spacing: 0.7;
+}
+
+.info_link{
+    font-family: Arial, sans-serif;
+    margin-top: 3%;
+    margin-left: 23%;
+    text-decoration: none;
+    color: black;
+    font-size: 75%;
+    font-weight: 500;
+}
+
+.image1{
+    margin-top: 18%;
+    margin-left: 4%;
+    margin-right: 15%;
+    width: 74%;
+}
+
+.image4{
+    margin-top: 6%;
+    margin-left: 4%;
+    margin-right: 15%;
+    width: 74%;
+}
+
+.row::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.image7{
+    margin-top: 5%;
+    margin-left: 12%;
+    width: 43.8em;
+    height: 28em;
+}
+
+.container{
+    position: relative;
+}
+.text_block{
+    position: absolute;
+    bottom: 35.5%;
+    left: 35%;
+    right: 33.3%;
+    height: 57px;
+    text-align: center;
+    background-color: white;
+    color: black;
+    padding-bottom: 5%;
+}
+
+h2.text{
+    font-size: 58%;
+    font-weight: 500;
+    margin-top: 12%;
+    margin-bottom: 2%;
+    letter-spacing: 1;
+    color: gray;
+}
+
+.order_link{
+    font-family: 'Libre Baskerville', serif;
+    text-decoration: none;
+    color: #515359;
+    font-size: 21px;
+    font-weight: 550;
+    margin-top: 0%;
+}
+
+h3.review{
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    color: #bd9c59;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom:5%;
+}
+.review{
+    text-align: center;
+}
+h2.review{
+    font-size: 0.6em;
+    font-weight: 550;
+    color: #515359;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-top: 5%;
+    margin-bottom: -1%;
+}
+
+.mainImage1{
+    background-image: url(https://csci571.com/hw/hw3/images/image5.jpg);
+    height: 360px;
+    background-position: 0px -50px;
+    background-size: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+} 
+
+#footer{
+    background-color:#bd9c58    ;
+    padding-bottom: 80px;
+    padding-top: 30px;
+    padding-left: 10px;
+    padding-right: 10px; 
+    margin-bottom: 25px;
+}
+
+.footer{
+    color:white;
+    margin-left: 580px;
+    font-weight: 550;
+    font-size: 0.8em;
+}
