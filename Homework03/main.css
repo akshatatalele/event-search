@@ -256,7 +256,6 @@ h2.review{
 .mainImage1{
     background-image: url(https://csci571.com/hw/hw3/images/image5.jpg);
     height: 360px;
-    background-position: 0px -50px;
     background-size: 100%;
     background-attachment: fixed;
     background-repeat: no-repeat;
