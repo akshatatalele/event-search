@@ -2,6 +2,8 @@
     <head>
         <title>Homework06</title>
         <link rel="stylesheet" href="static/main.css"/>
+        <script src="static/main.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
     <body>
@@ -12,9 +14,9 @@
                     <h1>Event Search</h1>
                 </div>
                 <div>
-                    <form id="searchForm">
+                    <form id="searchForm" onsubmit="searchEvents()" action="">
                         <label for="keyword">Keyword </label>
-                        <input type="text" id="keyword" name="keyword"><br>
+                        <input required type="text" id="keyword" name="keyword"><br>
 
                         <label for="category">Category </label>
                         <select name="category" id="category">
@@ -30,11 +32,11 @@
                         <input type="number" id="distance" name="distance" placeholder="10">
 
                         <label for="fromLoc">from </label>
-                        <input type="radio" id="currentLoc" name="currentLoc" value="here">
+                        <input type="radio" id="currentLoc" name="location" value="here" checked>
                         <label for="currentLoc">here</label><br>
 
                         <input type="radio" id="location" name="location" value="location">
-                        <input type="text" id="input_loc" name="input_loc" placeholder="Location"><br>
+                        <input required type="text" id="input_loc" name="input_loc" placeholder="Location" disabled="disabled"><br>
 
                         <input type="submit" id="searchButton" value="Search">
                         <input type="reset" id="clearButton" value="Clear">
@@ -52,5 +54,24 @@
                 <h2>Event details</h2>
             </div>
         </div>
+
+        <script>
+            window.addEventListener('load', getCurrentLocation);
+        
+            var here_checkbox = document.querySelector("input[id=currentLoc]");
+            here_checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById("input_loc").disabled = true;
+            }
+            });
+
+            var checkbox = document.querySelector("input[id=location]");
+            checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById("input_loc").disabled = false;
+            }
+            });
+
+        </script>
     </body>
 </html>
