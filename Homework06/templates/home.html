@@ -2,8 +2,10 @@
     <head>
         <title>Homework06</title>
         <link rel="stylesheet" href="static/main.css"/>
-        <script src="static/main.js"></script>
+        <!--<script src="static/main.js"></script>-->
+        <script src="{{url_for('static', filename='main.js')}}"></script>
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="shortcut icon" href="#">
     </head>
 
     <body>
@@ -38,7 +40,7 @@
                         <input type="radio" id="location" name="location" value="location">
                         <input required type="text" id="input_loc" name="input_loc" placeholder="Location" disabled="disabled"><br>
 
-                        <input type="submit" id="searchButton" value="Search">
+                        <input type="submit" id="searchButton" value="Search" disabled="disabled">
                         <input type="reset" id="clearButton" value="Clear">
                     </form>
                 </div>
@@ -71,6 +73,8 @@
                 document.getElementById("input_loc").disabled = false;
             }
             });
+
+            
 
         </script>
     </body>

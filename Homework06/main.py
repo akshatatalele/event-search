@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, flash
+from flask import Flask, redirect, url_for, render_template, request, flash, jsonify
 import json
 from geolib import geohash
 import requests
@@ -7,6 +7,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'webtechnologieshomework'
 APIKEY_GoogleAPI = "AIzaSyCogQES6TBka55wgg2UkynCjP6SzbUXi0A"
 APIKEY_TicketMasterAPI = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
+response_ = ""
+
 
 @app.route("/")
 def index():
@@ -15,13 +17,14 @@ def index():
 
 @app.route("/getEvents")
 def getEvents():
-    keywordVal = request.args.get('keyword')
-    categoryVal = request.args.get('category')
-    distanceVal = request.args.get('distance')
-    currentLocCheck = request.args.get('currLocCheck')
-    currentLocVal = request.args.get('currLocVal')
-    locationChecked = request.args.get('locCheck')
-    locationVal = request.args.get('locVal')
+    print("In Get events -----------------")
+    keywordVal = request.args.get('keyword', 0, type=str)
+    categoryVal = request.args.get('category', 0, type=str)
+    distanceVal = request.args.get('distance', 0, type=str)
+    currentLocCheck = request.args.get('currLocCheck', 0, type=str)
+    currentLocVal = request.args.get('currLocVal', 0, type=str)
+    locationChecked = request.args.get('locCheck', 0, type=str)
+    locationVal = request.args.get('locVal', 0, type=str)
 
     # Ticketmaster API parameters
     # 1. apikey-
@@ -66,36 +69,39 @@ def getEvents():
     # 4. genre - segment
     # 5. venue - name in venue object
 
-    events = eventResponse.json()['_embedded']['events']
     eventDate = ""
     eventIcon = ""
     eventName = ""
     eventGenre = ""
     eventVenue = ""
-    response = []
+    response = dict()
+    index = 0
 
-    for event in events:
-        temp = event['dates']['start']
-        eventDate = temp['localDate'] + temp['localTime']
-        images = event['images']
-        if images:
-            eventIcon = images[0]['url']
-        eventName = event['name']
-        eventGenre = event['classifications'][0]['segment']['name']
-        eventVenue = event['_embedded']['venues'][0]['name']
-        res = {
-            "date": eventDate,
-            "icon":eventIcon,
-            "name":eventName,
-            "genre":eventGenre,
-            "vanue":eventVenue
-        }
-        
-        response.append(res)
+    if eventResponse.json()['page']['totalElements'] != 0:
+        events = eventResponse.json()['_embedded']['events']
+        for event in events:
+            temp = event['dates']['start']
+            eventDate = temp['localDate'] + temp['localTime']
+            images = event['images']
+            if images:
+                eventIcon = images[0]['url']
+            eventName = event['name']
+            eventGenre = event['classifications'][0]['segment']['name']
+            eventVenue = event['_embedded']['venues'][0]['name']
+            res = dict()
+            res['date'] = eventDate
+            res['icon'] = eventIcon
+            res['name'] = eventName
+            res['genre'] = eventGenre
+            res['venue'] = eventVenue
+            response["Event"+str(index)] = res
+            index += 1
+    return response
 
-    results = {"result":response}
-    
-    return json.dumps(results)
+@app.route("/test")
+def test():
+    print(response_)
+    return response_
 
 def getCoordinates(locationVal):
     latitude = "0"
