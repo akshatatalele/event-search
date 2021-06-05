@@ -92,9 +92,8 @@ function createAnchortag(name, id){
 
 // Get event details
 function getEventDetails(id){
-    // console.log(id);
     call = $.getJSON('/getEventDetails', 
-        data = {id:id},
+        data = { id: id },
         function(data) {
             console.log("Hello");
             console.log(JSON.stringify(data));

@@ -1,5 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, jsonify
 import json
+
+from flask.globals import g
 from geolib import geohash
 import requests
 
@@ -42,7 +44,6 @@ def getEvents():
         latitude, longitude = getCoordinates(locationVal)
         geopoint = geohash.encode(latitude, longitude, 7)
     
-    print(geopoint)
     if categoryVal == 'Music':
         segmentId = 'KZFzniwnSyZfZ7v7nJ'
     elif categoryVal == 'Sports':
@@ -144,12 +145,121 @@ def getEvents():
             res['Venue'] = eventVenue
             response["Event"+str(index)] = res
             index += 1
-    print(response)
     return response
 
-def getEventDetails(id):
-    print(id)
-    return ""
+@app.route("/getEventDetails")
+def getEventDetails():
+    id = request.args.get('id', 0, type=str)
+    url = "https://app.ticketmaster.com/discovery/v2/events/" + id + "?apikey=" + APIKEY_TicketMasterAPI
+    eventDetails = requests.get(url)
+
+    # Event details
+    # 1. Date
+    # 2. Artist/Team
+    # 3. Venue
+    # 4. Genre
+    # 5. Price ranges
+    # 6. Ticket status
+    # 7. Buy ticket At
+    # 8. Seat map
+
+    details = eventDetails.json()
+    detailResponse = dict()
+    
+    # Date
+    detailDate = "NA"
+    if "dates" in details:
+        if "start" in details['dates']:
+            datetime = details['dates']['start']
+            if "localDate" in datetime and "localTime" in datetime:
+                detailDate = datetime['localDate'] + " " + datetime['localTime']
+            elif "localDate" in datetime:
+                detailDate = datetime['localDate']
+            elif "localTime" in datetime:
+                detailDate = datetime['localTime']
+    detailResponse["Date"] = detailDate
+
+    # Artist/Team
+    detailArtist = []
+    if "_embedded" in details:
+        if "attractions" in details['_embedded']:
+            artists = details['_embedded']['attractions']
+            numOfArtists = len(artists)
+            if numOfArtists != 0:
+                for person in artists:
+                    artist = {"artistName": "NA", "artistURL": "NA"}
+                    artist['artistName'] = person['name']
+                    artist['artistURL'] = person['url']
+                    detailArtist.append(artist)
+    detailResponse["Artists/Team"] = detailArtist
+    
+    # Venue
+    detailVenue = "NA"
+    if "_embedded" in details:
+        if "venues" in details['_embedded']:
+            ven = details['_embedded']['venues']
+            if len(ven) != 0:
+                venue = ven[0]
+                if "name" in venue:
+                    detailVenue = venue['name']
+    detailResponse["Venue"] = detailVenue
+    
+    # Genre
+    detailGenre = ""
+    if "classifications" in details:
+        classify = details['classifications']
+        if (len(classify) != 0):
+            for gen in classify:
+                temp = []
+                if "segment" in gen and gen['segment']['name'] != "Undefined":
+                    temp.append(gen['segment']['name'])
+                if "genre" in gen and gen['genre']['name'] != "Undefined":
+                    temp.append(gen['genre']['name'])
+                if "subGenre" in gen and gen['subGenre']['name'] != "Undefined":
+                    temp.append(gen['subGenre']['name'])
+                if "type" in gen and gen['type']['name'] != "Undefined":
+                    temp.append(gen['type']['name'])
+                if "subType" in gen and gen['subType']['name'] != "Undefined":
+                    temp.append(gen['subType']['name'])
+    
+    detailGenre = '|'.join(temp)
+    detailResponse["Genres"] = detailGenre
+
+    # Price Range
+    detailPrice = "NA"
+    if "priceRanges" in details:
+        if details['priceRanges']:
+            price = details['priceRanges'][0]
+            if "min" in price and "max" in price and "currency" in price:
+                detailPrice = str(price['min']) + " - " + str(price['max']) + " " + price['currency']
+            elif "min" in price and "currency" in price:
+                detailPrice = str(price['min']) + " " + price['currency']
+            elif "max" in price and "currency" in price:
+                detailPrice = str(price['max']) + " " + price['currency']
+    detailResponse["Price Ranges"] = detailPrice
+
+    # Ticket status
+    detailStatus = "NA"
+    if "dates" in details and "status" in details['dates'] and "code" in details['dates']['status']:
+        detailStatus = details['dates']['status']['code']
+    detailResponse["Ticket Status"] = detailStatus
+
+    # Buy ticket at
+    detailBuyTicket = dict()
+    if "url" in details:
+        detailBuyTicket['linkname'] = "Ticketmaster"
+        detailBuyTicket['URL'] = details['url']
+    detailResponse["Buy Ticket At"] = detailBuyTicket
+
+    # Seat map
+    detailsSeatMap = "NA"
+    if "seatmap" in details and "staticUrl" in details['seatmap']:
+        detailsSeatMap = details['seatmap']['staticUrl']
+    detailResponse["Seatmap"] = detailsSeatMap
+            
+
+    print(detailResponse)
+    return detailResponse
 
 def getCoordinates(locationVal):
     latitude = "0"
