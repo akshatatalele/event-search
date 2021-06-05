@@ -16,7 +16,7 @@
                     <h1>Event Search</h1>
                 </div>
                 <div>
-                    <form id="searchForm" onsubmit="searchEvents()" action="">
+                    <form id="searchForm" onsubmit="searchEvents(); return false;" action="">
                         <label for="keyword">Keyword </label>
                         <input required type="text" id="keyword" name="keyword"><br>
 
@@ -41,18 +41,19 @@
                         <input required type="text" id="input_loc" name="input_loc" placeholder="Location" disabled="disabled"><br>
 
                         <input type="submit" id="searchButton" value="Search" disabled="disabled">
-                        <input type="reset" id="clearButton" value="Clear">
+                        <input type="button" id="clearButton" value="Clear" onClick="clearForm();">
                     </form>
                 </div>
             </div>
             
             <!--Events result table-->
-            <div class="tableContent">
+            <div class="tableContent" id = "tableContent">
                 <h2>Events table coming soon</h2>
+                
             </div>
 
             <!--Events details-->
-            <div class="eventDetails">
+            <div class="eventDetails" id="eventDetails">
                 <h2>Event details</h2>
             </div>
         </div>

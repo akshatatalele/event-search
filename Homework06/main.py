@@ -7,8 +7,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'webtechnologieshomework'
 APIKEY_GoogleAPI = "AIzaSyCogQES6TBka55wgg2UkynCjP6SzbUXi0A"
 APIKEY_TicketMasterAPI = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
-response_ = ""
-
 
 @app.route("/")
 def index():
@@ -44,6 +42,7 @@ def getEvents():
         latitude, longitude = getCoordinates(locationVal)
         geopoint = geohash.encode(latitude, longitude, 7)
     
+    print(geopoint)
     if categoryVal == 'Music':
         segmentId = 'KZFzniwnSyZfZ7v7nJ'
     elif categoryVal == 'Sports':
@@ -69,39 +68,88 @@ def getEvents():
     # 4. genre - segment
     # 5. venue - name in venue object
 
-    eventDate = ""
-    eventIcon = ""
-    eventName = ""
-    eventGenre = ""
-    eventVenue = ""
     response = dict()
     index = 0
 
     if eventResponse.json()['page']['totalElements'] != 0:
         events = eventResponse.json()['_embedded']['events']
         for event in events:
-            temp = event['dates']['start']
-            eventDate = temp['localDate'] + temp['localTime']
-            images = event['images']
-            if images:
-                eventIcon = images[0]['url']
-            eventName = event['name']
-            eventGenre = event['classifications'][0]['segment']['name']
-            eventVenue = event['_embedded']['venues'][0]['name']
+            eventDate = "N/A"
+            eventIcon = "N/A"
+            eventName = "N/A"
+            eventGenre = "N/A"
+            eventVenue = "N/A"
+            eventID = ""
+
+            #ID
+            if "id" in event:
+                eventID = event['id']
+
+            # Date
+            # temp = event['dates']['start']
+            # if temp:
+            #     eventDate = temp['localDate'] + " " + temp['localTime']
+            if "dates" in event:
+                date = event['dates']
+                if "start" in date:
+                    start = date['start']
+                    if "localDate" in start and "localTime" in start:
+                        eventDate = start['localDate'] + " " + start['localTime']
+                    elif "localDate" in start:
+                        eventDate = start['localDate']
+                    elif "localTime" in start:
+                        eventDate = start['localTime']
+
+            # Icon
+            # images = event['images']
+            # if images:
+            #     eventIcon = images[0]['url']
+            if "images" in event:
+                images = event['images']
+                if len(images) != 0:
+                    if "url" in images[0]:
+                        eventIcon = images[0]['url']
+                
+            # Name
+            # eventName = event['name']
+            if "name" in event:
+                eventName = event['name']
+            
+            # Genre
+            # eventGenre = event['classifications'][0]['segment']['name']
+            if("classifications" in event):
+                classify = event['classifications']
+                if (len(classify) != 0):
+                    if("segment" in classify[0]):
+                        seg = classify[0]['segment']
+                        if "name" in seg:
+                            eventGenre = seg['name']
+            
+            # Venue
+            # eventVenue = event['_embedded']['venues'][0]['name']
+            if "_embedded" in event:
+                if "venues" in event['_embedded']:
+                    ven = event['_embedded']['venues']
+                    if len(ven) != 0:
+                        venue = ven[0]
+                        if "name" in venue:
+                            eventVenue = venue['name']
+
             res = dict()
-            res['date'] = eventDate
-            res['icon'] = eventIcon
-            res['name'] = eventName
-            res['genre'] = eventGenre
-            res['venue'] = eventVenue
+            res['ID'] = eventID
+            res['Date'] = eventDate
+            res['Icon'] = eventIcon
+            res['Event'] = eventName
+            res['Genre'] = eventGenre
+            res['Venue'] = eventVenue
             response["Event"+str(index)] = res
             index += 1
+    print(response)
     return response
 
-@app.route("/test")
-def test():
-    print(response_)
-    return response_
+def getEventDetails(id):
+    print(id)
+    return ""
 
 def getCoordinates(locationVal):
     latitude = "0"
