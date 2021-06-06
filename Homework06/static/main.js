@@ -42,6 +42,7 @@ function displayEventTable(data){
     if (totalNumOfRows == 0){
         var message = document.createElement("p");
         message.textContent = "No Records has been found";
+        message.className = "NoResults"
         var displayTable = document.getElementById('tableContent');
         displayTable.innerHTML = "";
         displayTable.append(message);
@@ -64,17 +65,20 @@ function displayEventTable(data){
                 if (headers[i] == "Icon"){
                     var icon = document.createElement("img");
                     icon.src = data[eventNameList[row]][headers[i]];
+                    icon.style.height = "100%"
                     cell.appendChild(icon);
                 }
                 else if (headers[i] == "Event"){
                     var event = createAnchortag(data[eventNameList[row]][headers[i]], data[eventNameList[row]]['ID']);
-                   cell.appendChild(event);
-                   cell.style.textAlign = "left";
+                    event.style.paddingLeft = "10px";
+                    cell.appendChild(event);
+                    cell.style.textAlign = "left";
                 }
                 else{                    
                     cell.innerHTML = data[eventNameList[row]][headers[i]];
                     if (headers[i] != "Date"){
                         cell.style.textAlign = "left";
+                        cell.style.paddingLeft = "10px"
                     }
                 }
                 
@@ -126,11 +130,14 @@ function displayEventDetails(data){
     displayMap.innerHTML = ""
     var displayDetails = document.getElementById('Content');
     displayDetails.innerHTML = "";
+    var noIconP = document.createElement("p")
+    noIconP.innerHTML = ""
 
     var heading = document.createElement("h2")
     heading.textContent = data["Name"]
-    displayDetails.appendChild(heading);
-
+    detailDiv.innerHTML = ""
+    detailDiv.appendChild(heading);
+    var isMap = false;
     for(var i=0; i < fields.length ; i++){
         var parent = document.createElement("p");
 
@@ -140,6 +147,7 @@ function displayEventDetails(data){
             parent.appendChild(headingTag);
             var artists = data[fields[i]];
             var artistTag = document.createElement("p");
+            artistTag.className = "description";
             for(var k=0;k<artists.length;k++){
                 artistTag.appendChild(createArtistTag(artists[k]));
                 if (k != artists.length-1){
@@ -155,17 +163,21 @@ function displayEventDetails(data){
             var headingTag = document.createElement("h3");
             headingTag.textContent = fields[i] + ":";
             parent.appendChild(headingTag);
+            var pTag = document.createElement("p");
+            pTag.className = "description"
             var a = document.createElement("a")
             a.appendChild(document.createTextNode(data[fields[i]]['linkname']));
             a.href = data[fields[i]]['URL'];
             a.target = "_Blank"
-            parent.appendChild(a);
+            pTag.appendChild(a);
+            parent.appendChild(pTag);
         }
         else if (fields[i] == "Seatmap" && fields[i] in data && data[fields[i]] != "NA"){
-            var icon = document.createElement("img");
-            icon.src = data[fields[i]];
-            displayMap.appendChild(icon);
-            detailDiv.appendChild(displayMap);
+            var icon1 = document.createElement("img");
+            icon1.src = data[fields[i]];
+            displayMap.appendChild(icon1);
+            // isMap = true;
+            // detailDiv.appendChild(displayMap);
         }
         else if (fields[i] != "Artist / Team" && fields[i] != "Buy Ticket At" && fields[i] in data && data[fields[i]] != "NA"){
             // console.log(fields[i])
@@ -173,13 +185,18 @@ function displayEventDetails(data){
             headingTag.textContent = fields[i];
             parent.appendChild(headingTag);
             var desc = document.createElement("p");
+            desc.className = "description"
             desc.textContent = data[fields[i]];
             parent.appendChild(desc);
         }
-        displayDetails.appendChild(parent);
+        noIconP.appendChild(parent);
     }
+    displayDetails.appendChild(noIconP);
     detailDiv.appendChild(displayDetails);
+    if (displayMap.innerHTML == ""){
 
+    }
+    detailDiv.appendChild(displayMap);
 }
 
 function createArtistTag(artist){

@@ -212,16 +212,17 @@ def getEventDetails():
         classify = details['classifications']
         if (len(classify) != 0):
             for gen in classify:
-                if "segment" in gen and gen['segment']['name'] != "Undefined":
+                if "segment" in gen and (gen['segment']['name'] != "Undefined" and gen['segment']['name'] != "undefined"):
                     temp.append(gen['segment']['name'])
-                if "genre" in gen and gen['genre']['name'] != "Undefined":
+                if "genre" in gen and (gen['genre']['name'] != "Undefined" and gen['genre']['name'] != "undefined"):
                     temp.append(gen['genre']['name'])
-                if "subGenre" in gen and gen['subGenre']['name'] != "Undefined":
+                if "subGenre" in gen and (gen['subGenre']['name'] != "Undefined" and gen['subGenre']['name'] != "undefined"):
                     temp.append(gen['subGenre']['name'])
-                if "type" in gen and gen['type']['name'] != "Undefined":
+                if "type" in gen and (gen['type']['name'] != "Undefined" and gen['type']['name'] != "undefined"):
                     temp.append(gen['type']['name'])
-                if "subType" in gen and gen['subType']['name'] != "Undefined":
+                if "subType" in gen and (gen['subType']['name'] != "Undefined" and gen['subType']['name'] != "undefined"):
                     temp.append(gen['subType']['name'])
+        
     if temp:
         detailGenre = ""
         detailGenre = ' | '.join(temp)
