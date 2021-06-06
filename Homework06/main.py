@@ -150,6 +150,7 @@ def getEvents():
 @app.route("/getEventDetails")
 def getEventDetails():
     id = request.args.get('id', 0, type=str)
+    name = request.args.get('name', 0, type=str)
     url = "https://app.ticketmaster.com/discovery/v2/events/" + id + "?apikey=" + APIKEY_TicketMasterAPI
     eventDetails = requests.get(url)
 
@@ -165,7 +166,7 @@ def getEventDetails():
 
     details = eventDetails.json()
     detailResponse = dict()
-    
+    detailResponse["Name"] = name
     # Date
     detailDate = "NA"
     if "dates" in details:
@@ -191,7 +192,7 @@ def getEventDetails():
                     artist['artistName'] = person['name']
                     artist['artistURL'] = person['url']
                     detailArtist.append(artist)
-    detailResponse["Artists/Team"] = detailArtist
+    detailResponse["Artist / Team"] = detailArtist
     
     # Venue
     detailVenue = "NA"
@@ -205,12 +206,12 @@ def getEventDetails():
     detailResponse["Venue"] = detailVenue
     
     # Genre
-    detailGenre = ""
+    detailGenre = "NA"
+    temp = []
     if "classifications" in details:
         classify = details['classifications']
         if (len(classify) != 0):
             for gen in classify:
-                temp = []
                 if "segment" in gen and gen['segment']['name'] != "Undefined":
                     temp.append(gen['segment']['name'])
                 if "genre" in gen and gen['genre']['name'] != "Undefined":
@@ -221,8 +222,9 @@ def getEventDetails():
                     temp.append(gen['type']['name'])
                 if "subType" in gen and gen['subType']['name'] != "Undefined":
                     temp.append(gen['subType']['name'])
-    
-    detailGenre = '|'.join(temp)
+    if temp:
+        detailGenre = ""
+        detailGenre = ' | '.join(temp)
     detailResponse["Genres"] = detailGenre
 
     # Price Range

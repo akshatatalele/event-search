@@ -1,8 +1,10 @@
 var keywordVal = "", categoryVal = "", distanceVal = "", currentLocVal = "", locationVal = "", currentLocChecked = "", locationChecked="";
 var APIKey_IpInfo = "879f3cd55bf6c3"
 var tableContent = ""
+var perEventDetails = ""
 
 function searchEvents(){
+    document.getElementById('eventDetails').style.display = "none";
     getFormValues();
 
     //Call to python function for TicketMasterAPI
@@ -58,17 +60,22 @@ function displayEventTable(data){
         for (var row = 0; row < totalNumOfRows; row++) {
             tr = eventTable.insertRow(-1);
             for (var i = 0; i < headers.length; i++) {
+                var cell = tr.insertCell(-1);
                 if (headers[i] == "Icon"){
                     var icon = document.createElement("img");
                     icon.src = data[eventNameList[row]][headers[i]];
-                    tr.insertCell(-1).appendChild(icon);
+                    cell.appendChild(icon);
                 }
                 else if (headers[i] == "Event"){
                     var event = createAnchortag(data[eventNameList[row]][headers[i]], data[eventNameList[row]]['ID']);
-                    tr.insertCell(-1).appendChild(event);
+                   cell.appendChild(event);
+                   cell.style.textAlign = "left";
                 }
-                else{
-                    tr.insertCell(-1).innerHTML = data[eventNameList[row]][headers[i]];
+                else{                    
+                    cell.innerHTML = data[eventNameList[row]][headers[i]];
+                    if (headers[i] != "Date"){
+                        cell.style.textAlign = "left";
+                    }
                 }
                 
             }
@@ -86,18 +93,101 @@ function createAnchortag(name, id){
     var event = document.createElement("a");
     event.appendChild(document.createTextNode(name));
     event.id = "eventName";
-    event.setAttribute('onclick', 'getEventDetails("'+id+'")')
+    event.setAttribute('onclick', 'getEventDetails("'+id+', ' + name +'")')
     return event;
 }
 
 // Get event details
 function getEventDetails(id){
-    call = $.getJSON('/getEventDetails', 
-        data = { id: id },
-        function(data) {
-            console.log("Hello");
-            console.log(JSON.stringify(data));
-        });
+    var params = id.split(", ");
+    $.ajax({
+        dataType: "json",
+        url: 'getEventDetails',
+        type: 'GET',
+        contentType: "application/json; charset=utf-8",
+        async: false,
+        data: { id: params[0], name: params[1] },
+        success: function (data){
+            perEventDetails = data;
+        }
+    });
+    displayEventDetails(perEventDetails);
+}
+
+function displayEventDetails(data){
+    console.log(data);
+    fieldNames = Object.keys(data)
+    totalNumOfFields = fieldNames.length
+    fields = ["Date", "Artist / Team", "Venue", "Genres", "Price Ranges", "Ticket Status", "Buy Ticket At", "Seatmap"]
+
+    var detailDiv = document.getElementById('eventDetails');
+    detailDiv.style.display="block"
+    var displayMap = document.getElementById("map")
+    displayMap.innerHTML = ""
+    var displayDetails = document.getElementById('Content');
+    displayDetails.innerHTML = "";
+
+    var heading = document.createElement("h2")
+    heading.textContent = data["Name"]
+    displayDetails.appendChild(heading);
+
+    for(var i=0; i < fields.length ; i++){
+        var parent = document.createElement("p");
+
+        if (fields[i] == "Artist / Team" && fields[i] in data && data[fields[i]].length != 0){
+            var headingTag = document.createElement("h3");
+            headingTag.textContent = fields[i];
+            parent.appendChild(headingTag);
+            var artists = data[fields[i]];
+            var artistTag = document.createElement("p");
+            for(var k=0;k<artists.length;k++){
+                artistTag.appendChild(createArtistTag(artists[k]));
+                if (k != artists.length-1){
+                    var span = document.createElement("span")
+                    span.textContent = " | "
+                    artistTag.appendChild(span);
+                }
+            }
+            parent.appendChild(artistTag)
+        }
+        else if (fields[i] == "Buy Ticket At" && fields[i] in data && data[fields[i]] != {}){
+            // console.log("Buy Ticket At")
+            var headingTag = document.createElement("h3");
+            headingTag.textContent = fields[i] + ":";
+            parent.appendChild(headingTag);
+            var a = document.createElement("a")
+            a.appendChild(document.createTextNode(data[fields[i]]['linkname']));
+            a.href = data[fields[i]]['URL'];
+            a.target = "_Blank"
+            parent.appendChild(a);
+        }
+        else if (fields[i] == "Seatmap" && fields[i] in data && data[fields[i]] != "NA"){
+            var icon = document.createElement("img");
+            icon.src = data[fields[i]];
+            displayMap.appendChild(icon);
+            detailDiv.appendChild(displayMap);
+        }
+        else if (fields[i] != "Artist / Team" && fields[i] != "Buy Ticket At" && fields[i] in data && data[fields[i]] != "NA"){
+            // console.log(fields[i])
+            var headingTag = document.createElement("h3");
+            headingTag.textContent = fields[i];
+            parent.appendChild(headingTag);
+            var desc = document.createElement("p");
+            desc.textContent = data[fields[i]];
+            parent.appendChild(desc);
+        }
+        displayDetails.appendChild(parent);
+    }
+    detailDiv.appendChild(displayDetails);
+
+}
+
+function createArtistTag(artist){
+    var a = document.createElement("a")
+    a.appendChild(document.createTextNode(artist['artistName']));
+    a.href = artist['artistURL'];
+    a.target = "_Blank"
+    return a
 }
 
 // Get values from the search form
