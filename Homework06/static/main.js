@@ -132,6 +132,7 @@ function displayEventDetails(data){
     displayDetails.innerHTML = "";
     var noIconP = document.createElement("p")
     noIconP.innerHTML = ""
+    noIconP.className = "eventFields"
 
     var heading = document.createElement("h2")
     heading.textContent = data["Name"]
@@ -194,7 +195,13 @@ function displayEventDetails(data){
     displayDetails.appendChild(noIconP);
     detailDiv.appendChild(displayDetails);
     if (displayMap.innerHTML == ""){
-
+        displayDetails.style.width = "100%";
+        noIconP.style.width = "50%";
+        noIconP.style.margin = "auto"
+    }else if (displayMap.innerHTML != ""){
+        displayDetails.style.width = "50%";
+        noIconP.style.width = "";
+        noIconP.style.margin = ""
     }
     detailDiv.appendChild(displayMap);
 }
