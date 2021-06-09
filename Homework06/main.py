@@ -163,7 +163,12 @@ def getEventDetails():
     # 6. Ticket status
     # 7. Buy ticket At
     # 8. Seat map
+    detailResponse = parseJSON(eventDetails, name, id)
 
+    
+    return detailResponse
+
+def parseJSON(eventDetails, name, id):
     details = eventDetails.json()
     detailResponse = dict()
     detailResponse["Name"] = name
@@ -268,8 +273,9 @@ def getEventDetails():
     detailResponse["Seatmap"] = detailsSeatMap
             
 
-    print(detailResponse)
+    # print(detailResponse)
     return detailResponse
+
 
 def getCoordinates(locationVal):
     latitude = "0"
