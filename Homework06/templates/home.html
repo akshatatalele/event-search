@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homework06</title>
+        <link rel="stylesheet" href="static/main.css"/>
+        <!--<script src="static/main.js"></script>-->
+        <script src="{{url_for('static', filename='main.js')}}"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="shortcut icon" href="#">
+    </head>
+
+    <body>
+        <div class="mainContent">
+            <!--Event search form-->
+            <div class="searchForm">
+                <div>
+                    <h1>Event Search</h1>
+                </div>
+                <div>
+                    <form id="searchForm" onsubmit="searchEvents(); return false;" action="" autocomplete="off">
+                        <label for="keyword">Keyword </label>
+                        <input required type="text" id="keyword" name="keyword"><br>
+
+                        <label for="category">Category </label>
+                        <select name="category" id="category">
+                            <option value="default" selected>Default</option>
+                            <option value="music">Music</option>
+                            <option value="sports">Sports</option>
+                            <option value="arts_and_theatre">Arts &amp; Theatre</option>
+                            <option value="film">Film</option>
+                            <option value="misc">Miscellaneous</option>
+                        </select><br>
+
+                        <label for="distance">Distance (miles) </label>
+                        <input type="number" id="distance" name="distance" placeholder="10">
+
+                        <label for="fromLoc">from </label>
+                        <input type="radio" id="currentLoc" name="location" value="here" checked>
+                        <label for="currentLoc">here</label><br>
+
+                        <input type="radio" id="location" name="location" value="location">
+                        <input required type="text" id="input_loc" name="input_loc" placeholder="Location" disabled="disabled"><br>
+
+                        <input type="submit" id="searchButton" value="Search" disabled="disabled">
+                        <input type="button" id="clearButton" value="Clear" onClick="clearForm();">
+                    </form>
+                </div>
+            </div>
+            
+            <!--Events result table-->
+            <div class="tableContent" id = "tableContent">                
+            </div>
+
+            <!--Events details-->
+            <div class="eventDetails" id="eventDetails">
+                <div id = "Content"></div>
+                <div id = "map"></div>
+            </div>
+        </div>
+
+        <script>
+            window.addEventListener('load', getCurrentLocation);
+        
+            var here_checkbox = document.querySelector("input[id=currentLoc]");
+            here_checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById("input_loc").disabled = true;
+                document.getElementById("input_loc").value = "";
+            }
+            });
+
+            var checkbox = document.querySelector("input[id=location]");
+            checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById("input_loc").disabled = false;
+            }
+            });
+
+            
+
+        </script>
+    </body>
+</html>
