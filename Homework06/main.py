@@ -233,11 +233,18 @@ def getEventDetails():
     if "priceRanges" in details:
         if details['priceRanges']:
             price = details['priceRanges'][0]
-            if "min" in price and "max" in price and "currency" in price:
+            if "min" in price and "max" in price and "currency" in price \
+                and (price['min'] != "Undefined" and price['min'] != "undefined") \
+                    and (price['max'] != "Undefined" and price['max'] != "undefined") \
+                        and (price['currency'] != "Undefined" and price['currency'] != "undefined"):
                 detailPrice = str(price['min']) + " - " + str(price['max']) + " " + price['currency']
-            elif "min" in price and "currency" in price:
+            elif "min" in price and "currency" in price\
+                and (price['min'] != "Undefined" and price['min'] != "undefined") \
+                        and (price['currency'] != "Undefined" and price['currency'] != "undefined"):
                 detailPrice = str(price['min']) + " " + price['currency']
-            elif "max" in price and "currency" in price:
+            elif "max" in price and "currency" in price\
+                    and (price['max'] != "Undefined" and price['max'] != "undefined") \
+                        and (price['currency'] != "Undefined" and price['currency'] != "undefined"):
                 detailPrice = str(price['max']) + " " + price['currency']
     detailResponse["Price Ranges"] = detailPrice
 

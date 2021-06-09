@@ -46,6 +46,8 @@ function displayEventTable(data){
         var displayTable = document.getElementById('tableContent');
         displayTable.innerHTML = "";
         displayTable.append(message);
+        var line = document.createElement("hr");
+        displayTable.append(line);
 
     }else{
         var eventTable = document.createElement("table");

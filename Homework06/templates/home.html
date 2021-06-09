@@ -17,7 +17,7 @@
                     <h1>Event Search</h1>
                 </div>
                 <div>
-                    <form id="searchForm" onsubmit="searchEvents(); return false;" action="">
+                    <form id="searchForm" onsubmit="searchEvents(); return false;" action="" autocomplete="off">
                         <label for="keyword">Keyword </label>
                         <input required type="text" id="keyword" name="keyword"><br>
 
@@ -65,6 +65,7 @@
             here_checkbox.addEventListener('change', function() {
             if (this.checked) {
                 document.getElementById("input_loc").disabled = true;
+                document.getElementById("input_loc").value = "";
             }
             });
 
