@@ -68,6 +68,7 @@ function displayEventTable(data){
                     var icon = document.createElement("img");
                     icon.src = data[eventNameList[row]][headers[i]];
                     icon.style.height = "100%"
+                    icon.alt = "Icon";
                     cell.appendChild(icon);
                 }
                 else if (headers[i] == "Event"){
@@ -96,116 +97,127 @@ function displayEventTable(data){
 }
 
 function createAnchortag(name, id){
+    console.log("Creating anchor tag for event name")
     var event = document.createElement("a");
     event.appendChild(document.createTextNode(name));
     event.id = "eventName";
-    event.setAttribute('onclick', 'getEventDetails("'+id+', ' + name +'")')
+    // event.setAttribute('onclick', 'getEventDetails("'+id+', ' + name +'")')
+    event.setAttribute('onclick', `getEventDetails("${id}")`)
     return event;
 }
 
 // Get event details
 function getEventDetails(id){
-    var params = id.split(", ");
+    // var params = id.split(", ");
+    console.log("Before ajax call")
     $.ajax({
         dataType: "json",
         url: 'getEventDetails',
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         async: false,
-        data: { id: params[0], name: params[1] },
+        data: { id: id },
         success: function (data){
             perEventDetails = data;
         }
     });
+    console.log("After ajax call")
     displayEventDetails(perEventDetails);
 }
 
 function displayEventDetails(data){
-    console.log(data);
-    fieldNames = Object.keys(data)
-    totalNumOfFields = fieldNames.length
-    fields = ["Date", "Artist / Team", "Venue", "Genres", "Price Ranges", "Ticket Status", "Buy Ticket At", "Seatmap"]
-
+    console.log("Displaying event details")
     var detailDiv = document.getElementById('eventDetails');
-    detailDiv.style.display="block"
-    var displayMap = document.getElementById("map")
-    displayMap.innerHTML = ""
-    var displayDetails = document.getElementById('Content');
-    displayDetails.innerHTML = "";
-    var noIconP = document.createElement("p")
-    noIconP.innerHTML = ""
-    noIconP.className = "eventFields"
-
-    var heading = document.createElement("h2")
-    heading.textContent = data["Name"]
-    detailDiv.innerHTML = ""
-    detailDiv.appendChild(heading);
-    var isMap = false;
-    for(var i=0; i < fields.length ; i++){
-        var parent = document.createElement("p");
-
-        if (fields[i] == "Artist / Team" && fields[i] in data && data[fields[i]].length != 0){
-            var headingTag = document.createElement("h3");
-            headingTag.textContent = fields[i];
-            parent.appendChild(headingTag);
-            var artists = data[fields[i]];
-            var artistTag = document.createElement("p");
-            artistTag.className = "description";
-            for(var k=0;k<artists.length;k++){
-                artistTag.appendChild(createArtistTag(artists[k]));
-                if (k != artists.length-1){
-                    var span = document.createElement("span")
-                    span.textContent = " | "
-                    artistTag.appendChild(span);
+    if (data != {}){
+        fieldNames = Object.keys(data)
+        totalNumOfFields = fieldNames.length
+        fields = ["Date", "Artist / Team", "Venue", "Genres", "Price Ranges", "Ticket Status", "Buy Ticket At", "Seatmap"]
+    
+        detailDiv.style.display="block"
+        var displayMap = document.getElementById("map")
+        displayMap.innerHTML = ""
+        var displayDetails = document.getElementById('Content');
+        displayDetails.innerHTML = "";
+        var noIconP = document.createElement("p")
+        noIconP.innerHTML = ""
+        noIconP.className = "eventFields"
+    
+        var heading = document.createElement("h2")
+        heading.textContent = data["Name"]
+        detailDiv.innerHTML = ""
+        detailDiv.appendChild(heading);
+        var isMap = false;
+        for(var i=0; i < fields.length ; i++){
+            var parent = document.createElement("p");
+    
+            if (fields[i] == "Artist / Team" && fields[i] in data && data[fields[i]].length != 0){
+                var headingTag = document.createElement("h3");
+                headingTag.textContent = fields[i];
+                parent.appendChild(headingTag);
+                var artists = data[fields[i]];
+                var artistTag = document.createElement("p");
+                artistTag.className = "description";
+                for(var k=0;k<artists.length;k++){
+                    artistTag.appendChild(createArtistTag(artists[k]));
+                    if (k != artists.length-1){
+                        var span = document.createElement("span")
+                        span.textContent = " | "
+                        artistTag.appendChild(span);
+                    }
                 }
+                parent.appendChild(artistTag)
             }
-            parent.appendChild(artistTag)
+            else if (fields[i] == "Buy Ticket At" && fields[i] in data && data[fields[i]] != {}){
+                // console.log("Buy Ticket At")
+                var headingTag = document.createElement("h3");
+                headingTag.textContent = fields[i] + ":";
+                parent.appendChild(headingTag);
+                var pTag = document.createElement("p");
+                pTag.className = "description"
+                var a = document.createElement("a")
+                a.appendChild(document.createTextNode(data[fields[i]]['linkname']));
+                a.href = data[fields[i]]['URL'];
+                a.target = "_Blank"
+                pTag.appendChild(a);
+                parent.appendChild(pTag);
+            }
+            else if (fields[i] == "Seatmap" && fields[i] in data && data[fields[i]] != "NA"){
+                var icon1 = document.createElement("img");
+                icon1.src = data[fields[i]];
+                icon1.alt = "Seat map"
+                displayMap.appendChild(icon1);
+                // isMap = true;
+                // detailDiv.appendChild(displayMap);
+            }
+            else if (fields[i] != "Artist / Team" && fields[i] != "Buy Ticket At" && fields[i] in data && data[fields[i]] != "NA"){
+                // console.log(fields[i])
+                var headingTag = document.createElement("h3");
+                headingTag.textContent = fields[i];
+                parent.appendChild(headingTag);
+                var desc = document.createElement("p");
+                desc.className = "description"
+                desc.textContent = data[fields[i]];
+                parent.appendChild(desc);
+            }
+            noIconP.appendChild(parent);
         }
-        else if (fields[i] == "Buy Ticket At" && fields[i] in data && data[fields[i]] != {}){
-            // console.log("Buy Ticket At")
-            var headingTag = document.createElement("h3");
-            headingTag.textContent = fields[i] + ":";
-            parent.appendChild(headingTag);
-            var pTag = document.createElement("p");
-            pTag.className = "description"
-            var a = document.createElement("a")
-            a.appendChild(document.createTextNode(data[fields[i]]['linkname']));
-            a.href = data[fields[i]]['URL'];
-            a.target = "_Blank"
-            pTag.appendChild(a);
-            parent.appendChild(pTag);
+        displayDetails.appendChild(noIconP);
+        detailDiv.appendChild(displayDetails);
+        if (displayMap.innerHTML == ""){
+            displayDetails.style.width = "100%";
+            noIconP.style.width = "50%";
+            noIconP.style.margin = "auto"
+        }else if (displayMap.innerHTML != ""){
+            displayDetails.style.width = "50%";
+            noIconP.style.width = "";
+            noIconP.style.margin = ""
         }
-        else if (fields[i] == "Seatmap" && fields[i] in data && data[fields[i]] != "NA"){
-            var icon1 = document.createElement("img");
-            icon1.src = data[fields[i]];
-            displayMap.appendChild(icon1);
-            // isMap = true;
-            // detailDiv.appendChild(displayMap);
-        }
-        else if (fields[i] != "Artist / Team" && fields[i] != "Buy Ticket At" && fields[i] in data && data[fields[i]] != "NA"){
-            // console.log(fields[i])
-            var headingTag = document.createElement("h3");
-            headingTag.textContent = fields[i];
-            parent.appendChild(headingTag);
-            var desc = document.createElement("p");
-            desc.className = "description"
-            desc.textContent = data[fields[i]];
-            parent.appendChild(desc);
-        }
-        noIconP.appendChild(parent);
+        detailDiv.appendChild(displayMap);
     }
-    displayDetails.appendChild(noIconP);
-    detailDiv.appendChild(displayDetails);
-    if (displayMap.innerHTML == ""){
-        displayDetails.style.width = "100%";
-        noIconP.style.width = "50%";
-        noIconP.style.margin = "auto"
-    }else if (displayMap.innerHTML != ""){
-        displayDetails.style.width = "50%";
-        noIconP.style.width = "";
-        noIconP.style.margin = ""
+    else{
+        detailDiv.style.display="none"
     }
-    detailDiv.appendChild(displayMap);
+    
 }
 
 function createArtistTag(artist){
@@ -267,6 +279,11 @@ function clearForm(){
     document.getElementById("searchForm").reset();
     document.getElementById("tableContent").style.display="none";
     document.getElementById("eventDetails").style.display="none";
+    var checkedHere = document.getElementById("currentLoc").checked
+    if(checkedHere){
+        document.getElementById("input_loc").disabled = true;
+        document.getElementById("input_loc").value = "";
+    }
 }
 
 function sleep(ms) {

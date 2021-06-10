@@ -9,6 +9,13 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'webtechnologieshomework'
 APIKEY_GoogleAPI = "AIzaSyCogQES6TBka55wgg2UkynCjP6SzbUXi0A"
 APIKEY_TicketMasterAPI = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
+category = {
+    'Music':'KZFzniwnSyZfZ7v7nJ',
+    'Sports':'KZFzniwnSyZfZ7v7nE',
+    'Arts & Theatre':'KZFzniwnSyZfZ7v7na',
+    'Film':'KZFzniwnSyZfZ7v7nn',
+    'Miscellaneous':'KZFzniwnSyZfZ7v7n1'
+}
 
 @app.route("/")
 def index():
@@ -25,7 +32,7 @@ def getEvents():
     currentLocVal = request.args.get('currLocVal', 0, type=str)
     locationChecked = request.args.get('locCheck', 0, type=str)
     locationVal = request.args.get('locVal', 0, type=str)
-
+    response = {}
     # Ticketmaster API parameters
     # 1. apikey-
     # 2. geoPoint-
@@ -38,37 +45,38 @@ def getEvents():
     if currentLocCheck == 'true':
         # Use user's current location
         geopoint = geohash.encode(currentLocVal.split(',')[0], currentLocVal.split(',')[1], 7)
+        response = callTicketMaster(keywordVal, distanceVal, geopoint, categoryVal)
     
     if locationChecked == 'true':
         # Use Google map's GeoCoding API to find coordinates from address
-        latitude, longitude = getCoordinates(locationVal)
-        geopoint = geohash.encode(latitude, longitude, 7)
-    
-    if categoryVal == 'Music':
-        segmentId = 'KZFzniwnSyZfZ7v7nJ'
-    elif categoryVal == 'Sports':
-        segmentId = 'KZFzniwnSyZfZ7v7nE'
-    elif categoryVal == 'Arts & Theatre':
-        segmentId = 'KZFzniwnSyZfZ7v7na'
-    elif categoryVal == 'Film':
-        segmentId = 'KZFzniwnSyZfZ7v7nn'
-    elif categoryVal == 'Miscellaneous':
-        segmentId = 'KZFzniwnSyZfZ7v7n1'
+        coords = getCoordinates(locationVal)
+        if coords != "API Fail":
+            geopoint = geohash.encode(coords[0], coords[1], 7)
+            response = callTicketMaster(keywordVal, distanceVal, geopoint, categoryVal)
+        else:
+            return {}
+    return response
 
+def callTicketMaster(keywordVal, distanceVal, geopoint, categoryVal):
     if categoryVal == 'Default':
         url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKEY_TicketMasterAPI + "&keyword=" + keywordVal + "&radius=" + distanceVal + "&unit=miles&geoPoint=" + geopoint
     else:
-        url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKEY_TicketMasterAPI + "&keyword=" + keywordVal + "&radius=" + distanceVal + "&unit=miles&geoPoint=" + geopoint + "&segmentId=" + segmentId
 
-    eventResponse = requests.get(url)
+        url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKEY_TicketMasterAPI + "&keyword=" + keywordVal + "&radius=" + distanceVal + "&unit=miles&geoPoint=" + geopoint + "&segmentId=" + category[categoryVal]
 
+    try:
+        eventResponse = requests.get(url)
+        return parseEventTableJSON(eventResponse)
+    except:
+        return {}
+
+def parseEventTableJSON(eventResponse):
     # Result table
     # 1. date - localDate, localTime
     # 2. icon - images
     # 3. event - name
     # 4. genre - segment
     # 5. venue - name in venue object
-
     response = dict()
     index = 0
 
@@ -149,11 +157,21 @@ def getEvents():
 
 @app.route("/getEventDetails")
 def getEventDetails():
+    print("In gevent details")
     id = request.args.get('id', 0, type=str)
-    name = request.args.get('name', 0, type=str)
-    url = "https://app.ticketmaster.com/discovery/v2/events/" + id + "?apikey=" + APIKEY_TicketMasterAPI
-    eventDetails = requests.get(url)
+    detailResponse = {}
 
+    try:
+        url = "https://app.ticketmaster.com/discovery/v2/events/" + id + "?apikey=" + APIKEY_TicketMasterAPI
+        eventDetails = requests.get(url)
+        print("After api call")
+        detailResponse = parseJSON(eventDetails)
+    except:
+        return {}
+
+    return detailResponse
+
+def parseJSON(eventDetails):
     # Event details
     # 1. Date
     # 2. Artist/Team
@@ -163,15 +181,9 @@ def getEventDetails():
     # 6. Ticket status
     # 7. Buy ticket At
     # 8. Seat map
-    detailResponse = parseJSON(eventDetails, name, id)
-
-    
-    return detailResponse
-
-def parseJSON(eventDetails, name, id):
     details = eventDetails.json()
     detailResponse = dict()
-    detailResponse["Name"] = name
+    detailResponse["Name"] = details['name']
     # Date
     detailDate = "NA"
     if "dates" in details:
@@ -227,10 +239,11 @@ def parseJSON(eventDetails, name, id):
                     temp.append(gen['type']['name'])
                 if "subType" in gen and (gen['subType']['name'] != "Undefined" and gen['subType']['name'] != "undefined"):
                     temp.append(gen['subType']['name'])
-        
+    
     if temp:
+        setGen = set(temp)
         detailGenre = ""
-        detailGenre = ' | '.join(temp)
+        detailGenre = ' | '.join(list(setGen))
     detailResponse["Genres"] = detailGenre
 
     # Price Range
@@ -281,12 +294,16 @@ def getCoordinates(locationVal):
     latitude = "0"
     longitude = "0"
     str = locationVal.replace(" ", "+")
-    fetchStr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + str + "&key=" + APIKEY_GoogleAPI
-    x = requests.get(fetchStr)
-    coords = x.json()['results'][0]['geometry']['location']
-    latitude = coords['lat']
-    longitude = coords['lng']
-    return latitude, longitude
+    try:
+        fetchStr = "https://maps.googleapis.com/maps/api/geocode/json?address=" + str + "&key=" + APIKEY_GoogleAPI
+        x = requests.get(fetchStr)
+        coords = x.json()['results'][0]['geometry']['location']
+        latitude = coords['lat']
+        longitude = coords['lng']
+        return latitude, longitude
+    except:
+        return "API Fail"
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
