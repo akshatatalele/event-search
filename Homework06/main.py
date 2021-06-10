@@ -149,11 +149,12 @@ def getEvents():
 
 @app.route("/getEventDetails")
 def getEventDetails():
+    print("In gevent details")
     id = request.args.get('id', 0, type=str)
-    name = request.args.get('name', 0, type=str)
+    # name = request.args.get('name', 0, type=str)
     url = "https://app.ticketmaster.com/discovery/v2/events/" + id + "?apikey=" + APIKEY_TicketMasterAPI
     eventDetails = requests.get(url)
-
+    print("After api call")
     # Event details
     # 1. Date
     # 2. Artist/Team
@@ -163,15 +164,15 @@ def getEventDetails():
     # 6. Ticket status
     # 7. Buy ticket At
     # 8. Seat map
-    detailResponse = parseJSON(eventDetails, name, id)
+    detailResponse = parseJSON(eventDetails)
 
     
     return detailResponse
 
-def parseJSON(eventDetails, name, id):
+def parseJSON(eventDetails):
     details = eventDetails.json()
     detailResponse = dict()
-    detailResponse["Name"] = name
+    detailResponse["Name"] = details['name']
     # Date
     detailDate = "NA"
     if "dates" in details:

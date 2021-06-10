@@ -68,6 +68,7 @@ function displayEventTable(data){
                     var icon = document.createElement("img");
                     icon.src = data[eventNameList[row]][headers[i]];
                     icon.style.height = "100%"
+                    icon.alt = "Icon";
                     cell.appendChild(icon);
                 }
                 else if (headers[i] == "Event"){
@@ -96,31 +97,36 @@ function displayEventTable(data){
 }
 
 function createAnchortag(name, id){
+    console.log("Creating anchor tag for event name")
     var event = document.createElement("a");
     event.appendChild(document.createTextNode(name));
     event.id = "eventName";
-    event.setAttribute('onclick', 'getEventDetails("'+id+', ' + name +'")')
+    // event.setAttribute('onclick', 'getEventDetails("'+id+', ' + name +'")')
+    event.setAttribute('onclick', `getEventDetails("${id}")`)
     return event;
 }
 
 // Get event details
 function getEventDetails(id){
-    var params = id.split(", ");
+    // var params = id.split(", ");
+    console.log("Before ajax call")
     $.ajax({
         dataType: "json",
         url: 'getEventDetails',
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         async: false,
-        data: { id: params[0], name: params[1] },
+        data: { id: id },
         success: function (data){
             perEventDetails = data;
         }
     });
+    console.log("After ajax call")
     displayEventDetails(perEventDetails);
 }
 
 function displayEventDetails(data){
+    console.log("Displaying event details")
     console.log(data);
     fieldNames = Object.keys(data)
     totalNumOfFields = fieldNames.length
@@ -178,6 +184,7 @@ function displayEventDetails(data){
         else if (fields[i] == "Seatmap" && fields[i] in data && data[fields[i]] != "NA"){
             var icon1 = document.createElement("img");
             icon1.src = data[fields[i]];
+            icon1.alt = "Seat map"
             displayMap.appendChild(icon1);
             // isMap = true;
             // detailDiv.appendChild(displayMap);
@@ -267,6 +274,11 @@ function clearForm(){
     document.getElementById("searchForm").reset();
     document.getElementById("tableContent").style.display="none";
     document.getElementById("eventDetails").style.display="none";
+    var checkedHere = document.getElementById("currentLoc").checked
+    if(checkedHere){
+        document.getElementById("input_loc").disabled = true;
+        document.getElementById("input_loc").value = "";
+    }
 }
 
 function sleep(ms) {
