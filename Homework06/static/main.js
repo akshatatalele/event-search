@@ -41,7 +41,7 @@ function displayEventTable(data){
 
     if (totalNumOfRows == 0){
         var message = document.createElement("p");
-        message.textContent = "No Records has been found";
+        message.textContent = "No Records have been found";
         message.className = "NoResults"
         var displayTable = document.getElementById('tableContent');
         displayTable.innerHTML = "";
