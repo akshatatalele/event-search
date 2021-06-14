@@ -10,9 +10,9 @@ eventRoute.route('/').get((req, res) => {
  res.json(data)
 })
 
-eventRoute.route('/get-event/:id').get((req, res) => {
-  data['Key'] = req.params.id;
-  console.log(req.params.id)
+eventRoute.route('/get-event').get((req, res) => {
+  // data['Key'] = req.params.id;
+  console.log(req.params)
   res.json(data)
 })
 
