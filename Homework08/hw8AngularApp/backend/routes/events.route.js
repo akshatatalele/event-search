@@ -185,7 +185,11 @@ function parseEventListResponse(data){
       index += 1
     }
   }
-  return response
+  if(response == {})
+    return "No Records"
+  else{
+    return response
+  }
 }
 
 eventRoute.route('/get-event-details/:input').get(async(req, res) => {
@@ -330,8 +334,13 @@ function parseEventLDetailResponse(data){
   }
   detailResponse["Seatmap"] = detailsSeatMap
 
-  console.log(detailResponse)
-  return detailResponse
+  // console.log(detailResponse)
+  if(detailResponse == {}){
+    return "No Details"
+  }
+  else{
+    return detailResponse
+  }
 }
 
 module.exports = eventRoute;
