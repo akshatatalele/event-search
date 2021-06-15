@@ -1,24 +1,24 @@
-<div class="main-content">
+<div class="main-content jumbotron row justify-content-center">
 
   <!-- Event search form -->
-  <div class="search-form">
-    <h1>Entertainment Event Ticket Search</h1>
+  <div class="search-form jumbotron col-9 row justify-content-center">
+    <h1 class="col-7">Entertainment Event Ticket Search</h1>
 
-    <form #eventSearch="ngForm" (ngSubmit)="onSubmit(eventSearch, $event)">
-      {{event1 | json}}
+    <div class = "col-9">
+    <form #eventSearch="ngForm" (ngSubmit)="onSubmit($event)">
       <!-- Keyword -->
       <div class="row mb-3">
-        <label for="keyword" class="col-sm-2 col-form-label">Keyword</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control" id="keyword" name='keyword' [(ngModel)]="event1.keyword">
+        <label for="keyword" class="col-3 col-form-label">Keyword</label>
+        <div class="col">
+          <input type="text" class="form-control" id="keyword" name='keyword' [(ngModel)]="eventInstance.keyword">
         </div>
       </div>
       <!-- Category -->
       <div class="row mb-3">
-        <label for="category" class="col-sm-2 col-form-label">Category</label>
-        <div class="col-sm-2">
+        <label for="category" class="col-3 col-form-label">Category</label>
+        <div class="col-3">
           <div class="form-group">
-            <select class="form-control" id="category" name='category' [(ngModel)]="event1.category">
+            <select class="form-control" id="category" name='category' [(ngModel)]="eventInstance.category">
               <option selected> All </option>
               <option *ngFor='let category of category'> {{ category }}</option>
             </select>
@@ -27,37 +27,38 @@
       </div>
       <!-- Distance -->
       <div class="row mb-3">
-        <label for="distance" class="col-sm-2 col-form-label">Distance</label>
-        <div class="col-sm-2">
-          <input type="number" class="form-control" id="distance" name='distance' placeholder="10" [(ngModel)]="event1.distance">
+        <label for="distance" class="col-3 col-form-label">Distance</label>
+        <div class="col-3">
+          <input type="number" class="form-control" id="distance" name='distance' placeholder="10" [(ngModel)]="eventInstance.distance">
         </div>
-        <div class="col-sm-2">
+        <div class="col-3">
           <div class="form-group">
-            <select class="form-control" id="units" name='units' [(ngModel)]="event1.units">
-              <option selected >Miles </option>
-              <option>Kilometers</option>
+            <select class="form-control" id="units" name='units' [(ngModel)]="eventInstance.units">
+              <option selected value="miles">Miles </option>
+              <option value="km">Kilometers</option>
             </select>
           </div>
         </div>
       </div>
       <!-- From -->
       <div class="row mb-3">
-        <label for="from" class="col-sm-2 col-form-label">From</label>
-        <div class="col-sm-2">
+        <label for="from" class="col-3 col-form-label">From</label>
+        <div class="col">
           <div class="form-check">
-            <input type="radio" class="form-check-input" checked="checked" name="locationRadio" id="currentLocationRadio" value="currentLoc" [(ngModel)]="event1.radioValue">
+            <input type="radio" class="form-check-input" checked="checked" name="locationRadio" id="currentLocationRadio" value="currentLoc" [(ngModel)]="eventInstance.radioValue">
             <label class="form-check-label">Current location</label>
           </div>
           <div class="form-check">
-            <input type="radio" class="form-check-input" name="locationRadio" id="locationRadio" value="location" [(ngModel)]="event1.radioValue">
+            <input type="radio" class="form-check-input" name="locationRadio" id="locationRadio" value="location" [(ngModel)]="eventInstance.radioValue">
             <label class="form-check-label">Other, Please specify:</label>
           </div>
-          <input type="text" class="form-control" id="location" name='locationInput' [(ngModel)]="event1.locVal">
+          <input type="text" class="form-control" id="location" name='locationInput' [(ngModel)]="eventInstance.locVal">
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Search</button>
       <button type="reset" class="btn btn-primary">Clear</button>
     </form>
+    </div>
   </div>
 
   <!-- Results / Favorite -->

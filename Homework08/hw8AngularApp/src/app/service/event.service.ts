@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpClientModule, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +14,15 @@ export class EventService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getEvents() {
-    return this.httpClient.get(`${this.REST_API}`);
-  }
+  // getEvents() {
+  //   return this.httpClient.get(`${this.REST_API}`);
+  // }
 
-  getEvent(id:any): Observable<any> {
-    // console.log(id)
-    let params = new HttpParams().set("json",id); //Create new HttpParams
-    let API_URL = `${this.REST_API}/get-event`;
-    // console.log("API: ", API_URL)
-    return this.httpClient.get(API_URL, { headers: this.httpHeaders, params:params})
+  getEventsList(userInput:any): Observable<any> {
+
+    let API_URL = `${this.REST_API}/get-event-list/${JSON.stringify(userInput)}`;
+    console.log(API_URL)
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders})
       // .pipe(map((res: any) => {
       //     return res || {}
       //   }),
