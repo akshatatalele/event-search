@@ -66,7 +66,7 @@ async function callGeoCodingAPI(address){
 
 async function callTicketMaster(keyword, category, distance, units, geopoint){
   var url = ""
-  if (category == "ALL"){
+  if (category == "All"){
     url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKey_Ticketmaster + "&keyword=" + keyword + "&radius=" + distance + "&unit=" + units + "&geoPoint=" + geopoint
   }
   else{
@@ -343,4 +343,126 @@ function parseEventLDetailResponse(data){
   }
 }
 
+eventRoute.route('/get-event-suggestions/:input').get(async(req, res) => {
+  var obj = JSON.parse(req.params['input'])
+
+  //Call Ticketmaster API Get suggestions
+  let data = await callTicketMaster_GetSuggestions(obj)
+
+  // Parse response
+  var response = parseSuggestionResponse(data)
+  res.json(response)
+})
+
+async function callTicketMaster_GetSuggestions(obj){
+  //https://app.ticketmaster.com/discovery/v2/suggest?apikey=YOUR_API_KEY&keyword=laker
+  var url = "https://app.ticketmaster.com/discovery/v2/suggest?apikey=" + APIKey_Ticketmaster + "&keyword=" + obj
+  params = {}
+  params['apikey'] = APIKey_Ticketmaster;
+  let data = await axios({
+      method: 'GET',
+      url,
+      params: params
+  }).then(response => response.data).catch(err => err);
+  return data
+}
+
+function parseSuggestionResponse(data){
+  suggestion = []
+  if ("_embedded" in data){
+    if ("attractions" in data['_embedded']){
+      suggest = data['_embedded']['attractions']
+      numOfArtists = suggest.length
+      if (numOfArtists != 0){
+        for (var i=0;i<numOfArtists;i++){
+          suggestion.push(suggest[i]['name'])
+          }
+      }
+    }
+  }
+  return suggestion
+}
+
+eventRoute.route('/get-venue-details/:input').get(async(req, res) => {
+  var obj = JSON.parse(req.params['input'])
+
+  //Call Ticketmaster API Get suggestions
+  let data = await callTicketMaster_VenueDetails(obj)
+
+  // Parse response
+  var response = parseVenueDetailsResponse(data)
+  res.json(response)
+})
+
+async function callTicketMaster_VenueDetails(obj){
+  //https://app.ticketmaster.com/discovery/v2/venues.json?keyword=UCV&apikey=xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9
+  var url = "https://app.ticketmaster.com/discovery/v2/venues.json?apikey=" + APIKey_Ticketmaster + "&keyword=" + obj
+  params = {}
+  params['apikey'] = APIKey_Ticketmaster;
+  let data = await axios({
+      method: 'GET',
+      url,
+      params: params
+  }).then(response => response.data).catch(err => err);
+  return data
+}
+
+function parseVenueDetailsResponse(data){
+  venueDetails = {}
+  var venueAddr = "N/A"
+  var venueCity = "N/A"
+  var venuePhone = "N/A"
+  var venueOpenHours = "N/A"
+  var venueGenRule = "N/A"
+  var venueChildRule = "N/A"
+
+  if ("_embedded" in data){
+    if ("venues" in data['_embedded']){
+      venue = data['_embedded']['venues']
+      if (venue.length != 0){
+        // Address
+        if ("address" in venue[0] && "line1" in venue[0]['address'] && venue[0]['address']['line1'] != ""){
+          venueAddr = venue[0]['address']['line1']
+        }
+        // City
+        if ("city" in venue[0] && "name" in venue[0]['city'] && venue[0]['city']['name'] != ""
+            && "state" in venue[0] && "name" in venue[0]['state'] && venue[0]['state']['name'] != ""){
+          venueCity = venue[0]['city']['name'] + ", " + venue[0]['state']['name']
+        }
+        else if ("city" in venue[0] && "name" in venue[0]['city'] && venue[0]['city']['name'] != ""){
+          venueCity = venue[0]['city']['name']
+        }
+        else if ("state" in venue[0] && "name" in venue[0]['state'] && venue[0]['state']['name'] != ""){
+          venueCity = venue[0]['state']['name']
+        }
+
+        // Phone nmber
+        if ("boxOfficeInfo" in venue[0] && "phoneNumberDetail" in venue[0]['boxOfficeInfo'] && venue[0]['boxOfficeInfo']['phoneNumberDetail'] != ""){
+          venuePhone = venue[0]['boxOfficeInfo']['phoneNumberDetail']
+        }
+
+        // Open hours
+        if ("boxOfficeInfo" in venue[0] && "openHoursDetail" in venue[0]['boxOfficeInfo'] && venue[0]['boxOfficeInfo']['openHoursDetail'] != ""){
+          venueOpenHours = venue[0]['boxOfficeInfo']['openHoursDetail']
+        }
+
+        // General rule
+        if ("generalInfo" in venue[0] && "generalRule" in venue[0]['generalInfo'] && venue[0]['generalInfo']['generalRule'] != ""){
+          venueGenRule = venue[0]['generalInfo']['generalRule']
+        }
+        // Child rule
+        if ("generalInfo" in venue[0] && "childRule" in venue[0]['generalInfo'] && venue[0]['generalInfo']['childRule'] != ""){
+          venueChildRule = venue[0]['generalInfo']['childRule']
+        }
+      }
+    }
+  }
+  venueDetails['Address'] = venueAddr
+  venueDetails['City'] = venueCity
+  venueDetails['Phone Number'] = venuePhone
+  venueDetails['Open Hours'] = venueOpenHours
+  venueDetails['General Rule'] = venueGenRule
+  venueDetails['Child Rule'] = venueChildRule
+  return venueDetails
+}
 module.exports = eventRoute;

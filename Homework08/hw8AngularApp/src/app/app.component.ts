@@ -26,7 +26,7 @@ export class AppComponent {
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
-  eventInstance = new EventSearch("", "All", 10, "Miles", "currentLoc", "")
+  eventInstance = new EventSearch("", "All", 10, "miles", "currentLoc", "")
 
   ngOnInit(): void {
     //Get current location of the user
@@ -43,11 +43,6 @@ export class AppComponent {
     // this.event.getEvent(data1).subscribe(res => {
     //   console.log(res)
     //   this.message =res;
-    // });
-
-    // $.getJSON("https://ipinfo.io/json?token=" + this.APIKey_IpInfo,
-    // function(data) {
-    //     getLatLong(data.loc);
     // });
   }
 
@@ -84,35 +79,15 @@ export class AppComponent {
       });;
   }
 
+  callAutocomplete(word:any){
+    this.eventService.getSuggestions(word).subscribe(res => {
+      // console.log(res)
+    });;
+  }
+
   // getlatlongFromAddr(data:any){
   //   var coords = data['results'][0]['geometry']['location']
   //   this.userInput['LatLong'] = coords['lat'] + ',' + coords['lng']
-  // }
-
-  // getLatLong(){
-  //   var latlong = ""
-  //   if (this.eventInstance.radioValue == "currentLoc"){
-  //     // Use ipinfo.io latlong
-  //     latlong = this.currentLoc
-  //   }
-  //   else if(this.eventInstance.radioValue == "location"){
-  //     // Use geocoding to get latlong
-  //     var address = this.eventInstance.locVal
-  //     this.latLongLoc = await this.httpClient
-  //       .get<any>("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + this.APIKEY_GoogleAPI)
-  //       .pipe(delay(1000))
-  //       .toPromise();
-  //       latlong = this.getlatlongFromAddr(this.latLongLoc)
-  //   }
-  //   return latlong
-  // }
-
-  // callGeoCodingAPI(address: any){
-  //   var latlong = ""
-  //   this.httpClient.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + this.APIKEY_GoogleAPI).subscribe(data =>{
-  //     latlong = this.getlatlongFromAddr(data)
-  //   })
-  //   return latlong
   // }
 
 }

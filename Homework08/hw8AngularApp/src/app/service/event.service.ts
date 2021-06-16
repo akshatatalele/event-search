@@ -30,6 +30,24 @@ export class EventService {
       // )
   }
 
+  getEventsDetails(eventID:any): Observable<any> {
+    // {"id":"ID of event"}
+    let API_URL = `${this.REST_API}/get-event-details/${JSON.stringify(eventID)}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders})
+  }
+
+  getEventVenueDetails(venue:any): Observable<any> {
+    // venue
+    let API_URL = `${this.REST_API}/get-venue-details/${JSON.stringify(venue)}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders})
+  }
+
+  getSuggestions(word:any): Observable<any> {
+    // word
+    let API_URL = `${this.REST_API}/get-event-suggestions/${JSON.stringify(word)}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders})
+  }
+
   // Error
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
