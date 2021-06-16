@@ -2,11 +2,18 @@ const { json, response } = require('express');
 const express = require('express');
 var geohash = require('ngeohash');
 const axios = require('axios')
+var SpotifyWebApi = require('spotify-web-api-node');
 
 const app = express();
 const eventRoute = express.Router();
 const APIKey_Ticketmaster = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
 const APIKEY_GoogleAPI = "AIzaSyCogQES6TBka55wgg2UkynCjP6SzbUXi0A"
+const SPOTIFY_CLIENT_ID = "154eb0af6b3e423ca00362a9de3dc6a9"
+const SPOTIFY_SECRET_ID = "e71c518e098e4e65a52142c1c2ae6747"
+var spotifyApi = new SpotifyWebApi({
+  clientId: SPOTIFY_CLIENT_ID,
+  clientSecret: SPOTIFY_SECRET_ID
+});
 segmentID = {
   'Music':'KZFzniwnSyZfZ7v7nJ',
   'Sports':'KZFzniwnSyZfZ7v7nE',
@@ -48,8 +55,14 @@ eventRoute.route('/get-event-list/:input').get(async(req, res) => {
   let data = await callTicketMaster(obj.Keyword, obj.Category, obj.Distance, obj.Units, geopoint)
 
   // Parse response
-  var response = parseEventListResponse(data)
-  res.json(response)
+  var response = {}
+  response = parseEventListResponse(data)
+
+  if(response == {}){
+    res.json({"error": "No Details"})
+  }else{
+    res.json(response)
+  }
 })
 
 async function callGeoCodingAPI(address){
@@ -200,9 +213,14 @@ eventRoute.route('/get-event-details/:input').get(async(req, res) => {
   let data = await callTicketMaster_EventDetails(detailParam.id)
 
   // Parse response
-  var response = parseEventLDetailResponse(data)
+  var response = {}
+  response = parseEventLDetailResponse(data)
 
-  res.json(response)
+  if(response == {}){
+    res.json({"error": "No Details"})
+  }else{
+    res.json(response)
+  }
 })
 
 async function callTicketMaster_EventDetails(id){
@@ -350,8 +368,14 @@ eventRoute.route('/get-event-suggestions/:input').get(async(req, res) => {
   let data = await callTicketMaster_GetSuggestions(obj)
 
   // Parse response
-  var response = parseSuggestionResponse(data)
-  res.json(response)
+  var response = []
+  response = parseSuggestionResponse(data)
+
+  if(response == []){
+    res.json("No Details")
+  }else{
+    res.json(response)
+  }
 })
 
 async function callTicketMaster_GetSuggestions(obj){
@@ -390,8 +414,14 @@ eventRoute.route('/get-venue-details/:input').get(async(req, res) => {
   let data = await callTicketMaster_VenueDetails(obj)
 
   // Parse response
-  var response = parseVenueDetailsResponse(data)
-  res.json(response)
+  var response = {}
+  response = parseVenueDetailsResponse(data)
+
+  if (response == {}){
+    res.json({"error": "No Details"})
+  }else{
+    res.json(response)
+  }
 })
 
 async function callTicketMaster_VenueDetails(obj){
@@ -465,4 +495,98 @@ function parseVenueDetailsResponse(data){
   venueDetails['Child Rule'] = venueChildRule
   return venueDetails
 }
+
+eventRoute.route('/get-artists-details/:input').get(async(req, res) => {
+  var obj = JSON.parse(req.params['input'])
+
+  //Call Ticketmaster API Get suggestions
+  let data = await callAPI_ArtistsDetails(obj)
+  if (data == "401"){
+    await spotifyApi.clientCredentialsGrant().then(
+      function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(data.body['access_token']);
+      },
+      function(err) {
+        console.log('Something went wrong when retrieving an access token', err);
+      }
+    );
+    data = await callAPI_ArtistsDetails(obj)
+
+  }
+
+  // Parse response
+  var response = {}
+  response = parseArtistsDetailsResponse(data, obj)
+
+  if (response == {}){
+    res.json({"error": "No Details"})
+  }else{
+    res.json(response)
+  }
+})
+
+async function callAPI_ArtistsDetails(obj){
+  var res = ""
+  await spotifyApi.searchArtists(obj)
+  .then(function(data) {
+    res = data.body
+  }, function(err) {
+    if (err.statusCode == "401"){
+      res = "401"
+    }
+  });
+  return res
+}
+
+function parseArtistsDetailsResponse(data, obj){
+  artistsDetail = {}
+  var artistName = "N/A"
+  var artistFollowers = "N/A"
+  var artistPopularity = "N/A"
+  var artistCheckAt = "N/A"
+
+  if ("artists" in data && "items" in data['artists']){
+    var artists = data['artists']['items']
+    if(artists.length > 0){
+      for (var j=0;j<artists.length;j++){
+        if ("name" in artists[j] && artists[j]['name'].toUpperCase() == obj.toUpperCase()){
+          break;
+        }
+      }
+      if (j < artists.length){
+        // Name
+        if(artists[j]['name'] != ""){
+          artistName = artists[j]['name']
+        }
+
+        // Followers
+        if ("followers" in artists[j] && "total" in artists[j]['followers'] && artists[j]['followers']['total'] != ""){
+          artistFollowers = artists[j]['followers']['total']
+        }
+
+        //Popularity
+        if ("popularity" in artists[j] && artists[j]['popularity'] != ""){
+          artistPopularity = artists[j]['popularity']
+        }
+
+        // Check At
+        if ("external_urls" in artists[j] && "spotify" in artists[j]['external_urls'] && artists[j]['external_urls']['spotify'] != ""){
+          artistCheckAt = artists[j]['external_urls']['spotify']
+        }
+      }
+    }
+  }
+  artistsDetail['Name'] = artistName
+  artistsDetail['Followers'] = artistFollowers
+  artistsDetail['Popularity'] = artistPopularity
+  artistsDetail['CheckAt'] = artistCheckAt
+
+  console.log(artistsDetail)
+  return artistsDetail
+}
+
 module.exports = eventRoute;

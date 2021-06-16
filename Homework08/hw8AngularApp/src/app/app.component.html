@@ -52,17 +52,21 @@
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Search</button>
-      <button type="reset" class="btn btn-primary">Clear</button>
+      <button type="reset" class="btn btn-primary" (click)="clearAll()">Clear</button>
     </form>
     </div>
   </div>
 
   <!-- Results / Favorite -->
-  <div class="result-options">
-
+  <div class="result-options col-9 row justify-content-center">
+      <button class="btn btn-primary">Results</button>
+      <button class="btn btn-primary">Favorite</button>
   </div>
+
+  <!-- Results / Details components
+  <div class="result-component col-9 row justify-content-center">
+      <app-results *ngIf="isSearchClicked === true"></app-results>
+  </div>-->
+
 </div>
 
-<style>
-
-</style>

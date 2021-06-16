@@ -42,6 +42,12 @@ export class EventService {
     return this.httpClient.get(API_URL, { headers: this.httpHeaders})
   }
 
+  getEventArtistDetails(artist:any): Observable<any> {
+    // artist
+    let API_URL = `${this.REST_API}/get-artists-details/${JSON.stringify(artist)}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders})
+  }
+
   getSuggestions(word:any): Observable<any> {
     // word
     let API_URL = `${this.REST_API}/get-event-suggestions/${JSON.stringify(word)}`;

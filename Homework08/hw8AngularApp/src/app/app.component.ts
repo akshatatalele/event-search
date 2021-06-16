@@ -21,6 +21,7 @@ export class AppComponent {
   APIKey_IpInfo = "879f3cd55bf6c3"
 
   isCurrentLoc = true
+  isSearchClicked = false
   currentLoc = ""
   public latLongLoc: unknown
 
@@ -33,6 +34,10 @@ export class AppComponent {
     this.httpClient.get("https://ipinfo.io/json?token=" + this.APIKey_IpInfo).subscribe(data =>{
       this.getlat(data)
     })
+
+    // this.eventService.getEventArtistDetails("Maroon5").subscribe(res => {
+    //   console.log(res)
+    // });;
 
     // this.event.getEvents().subscribe(res => {
     //   console.log(res)
@@ -77,12 +82,18 @@ export class AppComponent {
     this.eventService.getEventsList(this.userInput).subscribe(res => {
         console.log(res)
       });;
+
+    this.isSearchClicked = true
   }
 
   callAutocomplete(word:any){
     this.eventService.getSuggestions(word).subscribe(res => {
-      // console.log(res)
+      console.log(res)
     });;
+  }
+
+  clearAll(){
+    this.isSearchClicked = false
   }
 
   // getlatlongFromAddr(data:any){
