@@ -24,7 +24,7 @@ export class DetailsComponent implements OnInit {
     this.eventService.eventDetails$.subscribe(
       message => {
         //==================Changed=============
-        this.parseResponseForEventDetails(message)
+        // this.parseResponseForEventDetails(message)
       }
     )
 

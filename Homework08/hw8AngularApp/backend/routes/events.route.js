@@ -3,6 +3,7 @@ const express = require('express');
 var geohash = require('ngeohash');
 const axios = require('axios')
 var SpotifyWebApi = require('spotify-web-api-node');
+const { Console } = require('console');
 
 const app = express();
 const eventRoute = express.Router();
@@ -53,16 +54,16 @@ eventRoute.route('/get-event-list/:input').get(async(req, res) => {
   console.log(geopoint)
   //Call Ticketmaster API
   let data = await callTicketMaster(obj.Keyword, obj.Category, obj.Distance, obj.Units, geopoint)
-
-  // Parse response
   var response = {}
-  response = parseEventListResponse(data)
 
-  if(response == {}){
-    res.json({})
+  if(data.status == 200){
+    // Parse response
+    response = parseEventListResponse(data.data)
   }else{
-    res.json(response)
+    response['error'] = "No records"
   }
+  console.log("Res:",response)
+  res.json(response)
 })
 
 async function callGeoCodingAPI(address){
@@ -93,7 +94,7 @@ async function callTicketMaster(keyword, category, distance, units, geopoint){
       method: 'GET',
       url,
       params: params
-  }).then(response => response.data).catch(err => err);
+  }).then(response => response).catch(err => err);
   return data
 }
 
@@ -173,7 +174,12 @@ function parseEventListResponse(data){
           }
         }
       }
-      eventCategory = temp.join(" | ")
+      if(temp == []){
+        eventCategory = ""
+      }else{
+        setGen = new Set(temp)
+        eventCategory = Array.from(setGen).join(" | ")
+      }
 
       // Venue
       if ("_embedded" in events[i]){
@@ -196,34 +202,53 @@ function parseEventListResponse(data){
       response["Event"+index] = res
       index += 1
     }
+  }else{
+    response['error'] = "No records"
   }
-  if(response == {})
-    return "No Records"
-  else{
-    return response
-  }
+  return response
 }
 
+//All details fetch
 eventRoute.route('/get-event-details/:input').get(async(req, res) => {
   var detailParam = JSON.parse(req.params['input'])
+  var eventRes = {}
   var finalResponse = {}
 
   //Get event details
   let data = await callTicketMaster_EventDetails(detailParam.id)
+  if(data.status == 200){
+    // Parse event details response
+    eventRes = parseEventLDetailResponse(data.data)
+    finalResponse['Event Info'] = eventRes
 
-  // Parse event details response
-  var response = {}
-  response = parseEventLDetailResponse(data)
-  finalResponse['Event Info'] = response
+    //Get artist details
+    var artistRes = []
+    if (finalResponse['Event Info']['Artist / Team'] != "NoData"){
+      artistRes = await getArtistDetails(finalResponse['Event Info']['Artist / Team'])
+    }else{
+      artistRes = []
+    }
+    finalResponse['Artists Info'] = artistRes
 
-  getArtistDetails
-
-
-  res.json(finalResponse)
+    //Get venue details
+    var venueRes = {}
+    if (finalResponse['Event Info']['Venue'] != "NoData"){
+      venueRes = await getVenueDetails(finalResponse['Event Info']['Venue'])
+    }else{
+      venueRes = {}
+    }
+    finalResponse['Venue Info'] = venueRes
+    res.json(finalResponse)
+  }else{
+    eventRes['error'] = "Failed to get event details results"
+    finalResponse['Event Info'] = eventRes
+    res.json(finalResponse)
+  }
 })
 
 async function callTicketMaster_EventDetails(id){
   var url = "https://app.ticketmaster.com/discovery/v2/events/" + id + "?apikey=" + APIKey_Ticketmaster
+  // var url = "https://app.ticketmaster.com/discovery/v2/events/" +" iddfghjkl" + "?apikey=" + APIKey_Ticketmaster
   // var url = "https://app.ticketmaster.com/discovery/v2/events/vvG1IZ4zCXpxU9?apikey=xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
   params = {}
   params['apikey'] = APIKey_Ticketmaster;
@@ -231,7 +256,7 @@ async function callTicketMaster_EventDetails(id){
       method: 'GET',
       url,
       params: params
-  }).then(response => response.data).catch(err => err);
+  }).then(response => response).catch(err => err);
   return data
 }
 
@@ -250,6 +275,7 @@ function parseEventLDetailResponse(data){
   detailResponse["Name"] = data['name']
 
   // # Artist/Team
+  var detailArtist = ""
     var temp = []
     if ("_embedded" in data){
         if ("attractions" in data['_embedded']){
@@ -263,9 +289,10 @@ function parseEventLDetailResponse(data){
         }
     }
     if (temp == []){
-      detailResponse["Artist / Team"] = "NoData"
+      detailResponse["Artist / Team"] = ""
     }else{
-      detailResponse["Artist / Team"] = temp.join(" | ")
+      detailArtist = temp.join(" | ")
+      detailResponse["Artist / Team"] = detailArtist
     }
 
 
@@ -324,7 +351,8 @@ function parseEventLDetailResponse(data){
   if(tempGenre == []){
     detailResponse["Genres"] = ""
   }else{
-    detailGenre = tempGenre.join(" | ")
+    setGen = new Set(tempGenre)
+    detailGenre = Array.from(setGen).join(" | ")
     detailResponse["Genres"] = detailGenre
   }
 
@@ -422,6 +450,20 @@ function parseSuggestionResponse(data){
   return suggestion
 }
 
+async function getVenueDetails(venue){
+  //Call Ticketmaster API search venue
+  let data = await callTicketMaster_VenueDetails(venue)
+  var response = {}
+
+  if(data.status == 200){
+    // Parse response
+    response = parseVenueDetailsResponse(data.data)
+  }else{
+    response['error'] = "Failed to get venue details results"
+  }
+  return response
+}
+
 eventRoute.route('/get-venue-details/:input').get(async(req, res) => {
   var obj = JSON.parse(req.params['input'])
 
@@ -448,18 +490,18 @@ async function callTicketMaster_VenueDetails(obj){
       method: 'GET',
       url,
       params: params
-  }).then(response => response.data).catch(err => err);
+  }).then(response => response).catch(err => err);
   return data
 }
 
 function parseVenueDetailsResponse(data){
   venueDetails = {}
-  var venueAddr = "N/A"
-  var venueCity = "N/A"
-  var venuePhone = "N/A"
-  var venueOpenHours = "N/A"
-  var venueGenRule = "N/A"
-  var venueChildRule = "N/A"
+  var venueAddr = "NoData"
+  var venueCity = "NoData"
+  var venuePhone = "NoData"
+  var venueOpenHours = "NoData"
+  var venueGenRule = "NoData"
+  var venueChildRule = "NoData"
 
   if ("_embedded" in data){
     if ("venues" in data['_embedded']){
@@ -502,17 +544,64 @@ function parseVenueDetailsResponse(data){
       }
     }
   }
-  venueDetails['Address'] = venueAddr
-  venueDetails['City'] = venueCity
-  venueDetails['Phone Number'] = venuePhone
-  venueDetails['Open Hours'] = venueOpenHours
-  venueDetails['General Rule'] = venueGenRule
-  venueDetails['Child Rule'] = venueChildRule
+  if(venueAddr == "NoData" && venueCity == "NoData" && venuePhone == "NoData" && venueOpenHours == "NoData" &&
+      venueGenRule == "NoData" && venueChildRule == "NoData"){
+        venueDetails['error'] = "No data available"
+  }else{
+    venueDetails['Address'] = venueAddr
+    venueDetails['City'] = venueCity
+    venueDetails['PhoneNumber'] = venuePhone
+    venueDetails['OpenHours'] = venueOpenHours
+    venueDetails['GeneralRule'] = venueGenRule
+    venueDetails['ChildRule'] = venueChildRule
+  }
+
   return venueDetails
 }
 
-function getArtistDetails(){
+async function getArtistDetails(allArtists){
+  artistsDetailList = {}
+  if(allArtists != ""){
+    artistsList = allArtists.split(" | ")
+    if(artistsList.length > 0){
+      for (var i=0;i<artistsList.length;i++){
+        //Call Ticketmaster API Get suggestions
+        let data = await callAPI_ArtistsDetails(artistsList[i])
+        if (data ==401){
+          await spotifyApi.clientCredentialsGrant().then(
+            function(data) {
+              console.log('The access token expires in ' + data.body['expires_in']);
+              console.log('The access token is ' + data.body['access_token']);
 
+              // Save the access token so that it's used in future calls
+              spotifyApi.setAccessToken(data.body['access_token']);
+            },
+            function(err) {
+              console.log('Something went wrong when retrieving an access token', err);
+            }
+          );
+          data = await callAPI_ArtistsDetails(artistsList[i])
+        }
+
+        // Parse response
+        var response = {}
+        if(data == "" || data == 401){
+          response['error'] = "Failed to get artist details results"
+        }else if ("statusCode" in data && data.statusCode == 200){
+          response = parseArtistsDetailsResponse(data.body, artistsList[i])
+        }else {
+          response['error'] = "Failed to get artist details results"
+        }
+
+        artistsDetailList[artistsList[i]] = response
+      }
+    }else{
+      artistsDetailList['NoArtist'] = {}
+    }
+  }else{
+    artistsDetailList['NoArtist'] = {}
+  }
+  return artistsDetailList
 }
 
 eventRoute.route('/get-artists-details/:input').get(async(req, res) => {
@@ -552,8 +641,9 @@ async function callAPI_ArtistsDetails(obj){
   var res = ""
   await spotifyApi.searchArtists(obj)
   .then(function(data) {
-    res = data.body
+    res = data
   }, function(err) {
+    // res = err.statusCode
     if (err.statusCode == "401"){
       res = "401"
     }
@@ -563,10 +653,10 @@ async function callAPI_ArtistsDetails(obj){
 
 function parseArtistsDetailsResponse(data, obj){
   artistsDetail = {}
-  var artistName = "N/A"
-  var artistFollowers = "N/A"
-  var artistPopularity = "N/A"
-  var artistCheckAt = "N/A"
+  var artistName = "NoData"
+  var artistFollowers = "NoData"
+  var artistPopularity = "NoData"
+  var artistCheckAt = "NoData"
 
   if ("artists" in data && "items" in data['artists']){
     var artists = data['artists']['items']
@@ -599,12 +689,15 @@ function parseArtistsDetailsResponse(data, obj){
       }
     }
   }
-  artistsDetail['Name'] = artistName
-  artistsDetail['Followers'] = artistFollowers
-  artistsDetail['Popularity'] = artistPopularity
-  artistsDetail['CheckAt'] = artistCheckAt
+  if(artistName == "NoData" && artistFollowers == "NoData" && artistPopularity == "NoData" && artistCheckAt == "NoData"){
+    artistsDetail['error'] = "No details available"
+  }else{
+    artistsDetail['Name'] = artistName
+    artistsDetail['Followers'] = artistFollowers
+    artistsDetail['Popularity'] = artistPopularity
+    artistsDetail['CheckAt'] = artistCheckAt
+  }
 
-  console.log(artistsDetail)
   return artistsDetail
 }
 
