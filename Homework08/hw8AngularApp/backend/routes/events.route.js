@@ -60,7 +60,7 @@ eventRoute.route('/get-event-list/:input').get(async(req, res) => {
     // Parse response
     response = parseEventListResponse(data.data)
   }else{
-    response['error'] = "No records"
+    response['error'] = "Failed to get event details"
   }
   console.log("Res:",response)
   res.json(response)
@@ -222,11 +222,11 @@ eventRoute.route('/get-event-details/:input').get(async(req, res) => {
     finalResponse['Event Info'] = eventRes
 
     //Get artist details
-    var artistRes = []
+    var artistRes = {}
     if (finalResponse['Event Info']['Artist / Team'] != "NoData"){
       artistRes = await getArtistDetails(finalResponse['Event Info']['Artist / Team'])
     }else{
-      artistRes = []
+      artistRes = {"NoArtists":{}}
     }
     finalResponse['Artists Info'] = artistRes
 
@@ -546,7 +546,7 @@ function parseVenueDetailsResponse(data){
   }
   if(venueAddr == "NoData" && venueCity == "NoData" && venuePhone == "NoData" && venueOpenHours == "NoData" &&
       venueGenRule == "NoData" && venueChildRule == "NoData"){
-        venueDetails['error'] = "No data available"
+        venueDetails['error'] = "No details available"
   }else{
     venueDetails['Address'] = venueAddr
     venueDetails['City'] = venueCity
