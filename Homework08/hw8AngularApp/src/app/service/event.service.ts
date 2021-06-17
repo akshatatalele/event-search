@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +9,47 @@ import { Observable, throwError } from 'rxjs';
 export class EventService {
 
   REST_API: string = 'http://localhost:8000/api'
-
   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
+  private messageSource = new Subject();
+  messageSource$ = this.messageSource.asObservable();
+
+  private eventDetails = new Subject();
+  eventDetails$ = this.eventDetails.asObservable();
+
+  private isSearchClicked = new Subject();
+  isSearchClicked$ = this.isSearchClicked.asObservable();
+
+  private isFavClicked = new Subject();
+  isFavClicked$ = this.isFavClicked.asObservable();
+
+  private displayEventDetails = new Subject();
+  displayEventDetails$ = this.displayEventDetails.asObservable();
 
   constructor(private httpClient: HttpClient) { }
 
   // getEvents() {
   //   return this.httpClient.get(`${this.REST_API}`);
   // }
+
+  changeIsSearchClicked(value:boolean){
+    this.isSearchClicked.next(value)
+  }
+
+  changeDisplayEventDetails(value:boolean){
+    this.displayEventDetails.next(value)
+  }
+
+  changeIsFavClicked(value:boolean){
+    this.isFavClicked.next(value)
+  }
+
+  sendMessage(message:JSON){
+    this.messageSource.next(message);
+  }
+
+  updateEventDetails(message:JSON){
+    this.eventDetails.next(message);
+  }
 
   getEventsList(userInput:any): Observable<any> {
 

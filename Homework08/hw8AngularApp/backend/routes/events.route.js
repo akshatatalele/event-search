@@ -59,7 +59,7 @@ eventRoute.route('/get-event-list/:input').get(async(req, res) => {
   response = parseEventListResponse(data)
 
   if(response == {}){
-    res.json({"error": "No Details"})
+    res.json({})
   }else{
     res.json(response)
   }
@@ -106,7 +106,6 @@ function parseEventListResponse(data){
   //   # 5. venue - name in venue object
   var response = {}
   index = 0
-
   if (data['page']['totalElements'] != 0){
     events = data['_embedded']['events']
     for(var i=0; i < events.length; i++){
@@ -207,20 +206,20 @@ function parseEventListResponse(data){
 
 eventRoute.route('/get-event-details/:input').get(async(req, res) => {
   var detailParam = JSON.parse(req.params['input'])
+  var finalResponse = {}
 
-  //Call Ticketmaster API
-  // URL: https://app.ticketmaster.com/discovery/v2/events/vvG1IZ4zCXpxU9?apikey=xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9
+  //Get event details
   let data = await callTicketMaster_EventDetails(detailParam.id)
 
-  // Parse response
+  // Parse event details response
   var response = {}
   response = parseEventLDetailResponse(data)
+  finalResponse['Event Info'] = response
 
-  if(response == {}){
-    res.json({"error": "No Details"})
-  }else{
-    res.json(response)
-  }
+  getArtistDetails
+
+
+  res.json(finalResponse)
 })
 
 async function callTicketMaster_EventDetails(id){
@@ -246,7 +245,7 @@ function parseEventLDetailResponse(data){
   // # 6. Ticket status
   // # 7. Buy ticket At
   // # 8. Seat map
-  console.log(data)
+  // console.log(data)
   detailResponse = {}
   detailResponse["Name"] = data['name']
 
@@ -263,10 +262,15 @@ function parseEventLDetailResponse(data){
             }
         }
     }
-    detailResponse["Artist / Team"] = temp.join(" | ")
+    if (temp == []){
+      detailResponse["Artist / Team"] = "NoData"
+    }else{
+      detailResponse["Artist / Team"] = temp.join(" | ")
+    }
+
 
   // Date
-  detailDate = "N/A"
+  detailDate = "NoData"
   if ("dates" in data){
     if ("start" in data['dates']){
       datetime = data['dates']['start']
@@ -277,8 +281,23 @@ function parseEventLDetailResponse(data){
   }
   detailResponse["Date"] = detailDate
 
+  //Venue
+  detailVenue = "NoData"
+  if ("_embedded" in data){
+    if ("venues" in data['_embedded']){
+      ven = data['_embedded']['venues']
+      if (ven.length != 0){
+          venue = ven[0]
+          if ("name" in venue){
+              detailVenue = venue['name']
+          }
+      }
+    }
+  }
+  detailResponse["Venue"] = detailVenue
+
   // Genre
-  detailGenre = "NA"
+  detailGenre = ""
   tempGenre = []
   if ("classifications" in data){
     classify = data['classifications']
@@ -302,14 +321,16 @@ function parseEventLDetailResponse(data){
       }
     }
   }
-  if (tempGenre){
-    detailGenre = ""
+  if(tempGenre == []){
+    detailResponse["Genres"] = ""
+  }else{
     detailGenre = tempGenre.join(" | ")
+    detailResponse["Genres"] = detailGenre
   }
-  detailResponse["Genres"] = detailGenre
+
 
   // # Price Range
-  detailPrice = "NA"
+  detailPrice = "NoData"
   if ("priceRanges" in data){
     if (data['priceRanges']){
       price = data['priceRanges'][0]
@@ -331,34 +352,28 @@ function parseEventLDetailResponse(data){
   detailResponse["Price Ranges"] = detailPrice
 
   // # Ticket status
-  detailStatus = "NA"
+  detailStatus = "NoData"
   if ("dates" in data && "status" in data['dates'] && "code" in data['dates']['status']){
     detailStatus = data['dates']['status']['code']
   }
   detailResponse["Ticket Status"] = detailStatus
 
   // # Buy ticket at
-  detailBuyTicket = {}
+  detailBuyTicket = "NoData"
   if ("url" in data){
-    detailBuyTicket['linkname'] = "Ticketmaster"
-    detailBuyTicket['URL'] = data['url']
+    detailBuyTicket = data['url']
   }
   detailResponse["Buy Ticket At"] = detailBuyTicket
 
   // # Seat map
-  detailsSeatMap = "NA"
+  detailsSeatMap = "NoData"
   if ("seatmap" in data && "staticUrl" in data['seatmap']){
     detailsSeatMap = data['seatmap']['staticUrl']
   }
   detailResponse["Seatmap"] = detailsSeatMap
 
   // console.log(detailResponse)
-  if(detailResponse == {}){
-    return "No Details"
-  }
-  else{
-    return detailResponse
-  }
+  return detailResponse
 }
 
 eventRoute.route('/get-event-suggestions/:input').get(async(req, res) => {
@@ -418,7 +433,7 @@ eventRoute.route('/get-venue-details/:input').get(async(req, res) => {
   response = parseVenueDetailsResponse(data)
 
   if (response == {}){
-    res.json({"error": "No Details"})
+    res.json({})
   }else{
     res.json(response)
   }
@@ -496,6 +511,10 @@ function parseVenueDetailsResponse(data){
   return venueDetails
 }
 
+function getArtistDetails(){
+
+}
+
 eventRoute.route('/get-artists-details/:input').get(async(req, res) => {
   var obj = JSON.parse(req.params['input'])
 
@@ -523,7 +542,7 @@ eventRoute.route('/get-artists-details/:input').get(async(req, res) => {
   response = parseArtistsDetailsResponse(data, obj)
 
   if (response == {}){
-    res.json({"error": "No Details"})
+    res.json({})
   }else{
     res.json(response)
   }

@@ -1,0 +1,123 @@
+<div class='container' *ngIf="displayEventDetails_ === true">
+  <h2>{{eventDetails.Name}}</h2>
+
+  <ul class="nav nav-tabs justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link active" [class.active]="detailType == 'eventInfo'" rel="eventInfo" (click)="detailType ='eventInfo'">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="detailType == 'artistInfo'" rel="artistInfo" (click)="detailType ='artistInfo'">Menu 1</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="detailType == 'venueInfo'" rel="venueInfo" (click)="detailType ='venueInfo'">Menu 2</a>
+    </li>
+  </ul>
+
+  <div [ngSwitch]="detailType">
+    <div id="eventInfo" *ngSwitchCase="'eventInfo'">
+      <table class="table table-hover">
+        <thead>
+        </thead>
+        <tbody>
+        <tr *ngIf="eventDetails.Artists != 'NoData'">
+            <th scope="row">Artist/Team(s)</th>
+            <td>{{eventDetails.Artists}}<td>
+        </tr>
+        <tr *ngIf="eventDetails.Venue != 'NoData'">
+            <th scope="row">Venue</th>
+            <td>{{eventDetails.Venue}}<td>
+        </tr>
+        <tr *ngIf="eventDetails.Date != 'NoData'">
+            <th scope="row">Time</th>
+            <td>{{eventDetails.Date}}<td>
+        </tr>
+        <tr *ngIf="eventDetails.Category != ''">
+            <th scope="row">Category</th>
+            <td>{{eventDetails.Category}}<td>
+        </tr>
+        <tr *ngIf="eventDetails.PriceRange != 'NoData'">
+            <th scope="row">Price Range</th>
+            <td>{{eventDetails.PriceRange}}<td>
+        </tr>
+        <tr *ngIf="eventDetails.TicketStatus != 'NoData'">
+            <th scope="row">Ticket Status</th>
+            <td>{{eventDetails.TicketStatus}}<td>
+        </tr>
+        <tr *ngIf="eventDetails.BuyTicketAt != 'NoData'">
+            <th scope="row">Buy Ticket At</th>
+            <td><a href={{eventDetails.BuyTicketAt}} target="_blank">Ticketmaster</a><td>
+        </tr>
+        <tr *ngIf="eventDetails.SeatMap != 'NoData'">
+            <th scope="row">Seat Map</th>
+            <td> <a href={{eventDetails.SeatMap}}>View Seat Map Here</a><td>
+        </tr>
+
+        </tbody>
+      </table>
+  </div>
+  <div id="artistInfo" *ngSwitchCase="'artistInfo'">
+    <div>
+      <h3>Artist name</h3>
+      <table class="table table-hover">
+          <tbody>
+          <tr *ngIf="eventDetails.Artists != 'NoData'">
+              <th scope="row">Name</th>
+              <td>Artist name<td>
+          </tr>
+          <tr *ngIf="eventDetails.Venue != 'NoData'">
+              <th scope="row">Followers</th>
+              <td>Followers<td>
+          </tr>
+          <tr *ngIf="eventDetails.Date != 'NoData'">
+              <th scope="row">Popularity</th>
+              <td>Popularity<td>
+          </tr>
+          <tr *ngIf="eventDetails.Category != ''">
+              <th scope="row">Check At</th>
+              <td><a href="#" target="_blank">Spotify</a><td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+
+  <div id="venueInfo" *ngSwitchCase="'venueInfo'">
+    <table class="table table-hover">
+        <thead>
+        </thead>
+        <tbody>
+        <tr *ngIf="eventDetails.Artists != 'NoData'">
+            <th scope="row">Address</th>
+            <td>Address<td>
+        </tr>
+        <tr *ngIf="eventDetails.Venue != 'NoData'">
+            <th scope="row">City</th>
+            <td>City<td>
+        </tr>
+        <tr *ngIf="eventDetails.Date != 'NoData'">
+            <th scope="row">Phone number</th>
+            <td>Phone number<td>
+        </tr>
+        <tr *ngIf="eventDetails.Category != ''">
+            <th scope="row">Open Hours</th>
+            <td>Open Hours<td>
+        </tr>
+        <tr *ngIf="eventDetails.PriceRange != 'NoData'">
+            <th scope="row">General Rule</th>
+            <td>General Rule <td>
+        </tr>
+        <tr *ngIf="eventDetails.TicketStatus != 'NoData'">
+            <th scope="row">Child Rule</th>
+            <td>Child rule<td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div>
+        Map
+      </div>
+  </div>
+
+
+</div>

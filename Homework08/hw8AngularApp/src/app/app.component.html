@@ -10,14 +10,14 @@
       <div class="row mb-3">
         <label for="keyword" class="col-3 col-form-label">Keyword</label>
         <div class="col">
-          <input type="text" class="form-control" id="keyword" name='keyword' [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)">
+          <input type="text" class="form-control" id="keyword" name='keyword' value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)">
         </div>
       </div>
       <!-- Category -->
       <div class="row mb-3">
         <label for="category" class="col-3 col-form-label">Category</label>
         <div class="col-3">
-            <select class="form-control" id="category" name='category' [(ngModel)]="eventInstance.category">
+            <select class="form-control" id="category" name='category' value="All" [(ngModel)]="eventInstance.category">
               <option selected> All </option>
               <option *ngFor='let category of category'> {{ category }}</option>
             </select>
@@ -27,10 +27,10 @@
       <div class="row mb-3">
         <label for="distance" class="col-3 col-form-label">Distance</label>
         <div class="col-3">
-          <input type="number" class="form-control" id="distance" name='distance' placeholder="10" [(ngModel)]="eventInstance.distance">
+          <input type="number" class="form-control" id="distance" name='distance' value="10" placeholder="10" [(ngModel)]="eventInstance.distance">
         </div>
         <div class="col-3">
-            <select class="form-control" id="units" name='units' [(ngModel)]="eventInstance.units">
+            <select class="form-control" id="units" name='units' value="miles" [(ngModel)]="eventInstance.units">
               <option selected value="miles">Miles </option>
               <option value="km">Kilometers</option>
             </select>
@@ -48,7 +48,7 @@
             <input type="radio" class="form-check-input" name="locationRadio" id="locationRadio" value="location" [(ngModel)]="eventInstance.radioValue">
             <label class="form-check-label">Other, Please specify:</label>
           </div>
-          <input type="text" class="form-control" id="location" name='locationInput' [(ngModel)]="eventInstance.locVal">
+          <input type="text" class="form-control" id="location" name='locationInput' value="" [(ngModel)]="eventInstance.locVal">
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Search</button>

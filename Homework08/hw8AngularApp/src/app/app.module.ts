@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { ResultsComponent } from './components/results/results.component';
+import { DetailsComponent } from './components/details/details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ResultsComponent
+    ResultsComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -17,6 +19,6 @@ import { ResultsComponent } from './components/results/results.component';
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent, ResultsComponent]
+  bootstrap: [AppComponent, ResultsComponent, DetailsComponent]
 })
 export class AppModule { }
