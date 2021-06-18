@@ -1,17 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from 'src/app/service/event.service';
 import { EventTable } from 'src/app/model/eventTable';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css']
+  styleUrls: ['./results.component.css'],
+  animations: [
+    trigger('Leave', [
+      transition('void => false', [
+        style({ transform: 'translateX(100%)' }),
+        animate('0.3s')
+      ])
+    ])
+  ]
 })
 export class ResultsComponent implements OnInit {
 
   eventTableList: EventTable[] = []
   isSearchClicked: boolean = false
   isFavClicked: boolean = false
+  animate = true
+
   constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
@@ -32,6 +43,16 @@ export class ResultsComponent implements OnInit {
         this.favClicked(message)
       }
     )
+
+    this.eventService.displayEventDetails$.subscribe(
+      message => {
+        this.displayDetails(message)
+      }
+    )
+  }
+
+  displayDetails(value:any){
+      this.animate = value
   }
 
   searchClicked(value:any){
@@ -57,6 +78,12 @@ export class ResultsComponent implements OnInit {
       // ===================Changed=================
       this.eventService.updateEventDetails(res)
     })
+  }
+
+  AddToFavorites(instance:any){
+    console.log("Added to Favourite", instance);
+    instance.isFavorite = !instance.isFavorite
+
   }
 
 }

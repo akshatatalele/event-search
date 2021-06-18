@@ -3,13 +3,29 @@ import { EventDetails } from 'src/app/model/eventDetails';
 import { ArtistDetails } from 'src/app/model/artistDetails';
 import { VenueDetails } from 'src/app/model/venueDetails';
 import { EventService } from 'src/app/service/event.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
+  animations: [
+    trigger('EnterLeave', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('0.3s')
+      ])
+    ])
+  ]
 })
+
+/*
+
+,
+      transition(':leave', [
+        animate('0.3s', style({ transform: 'translateX(100%)' }))
+      ])*/
 export class DetailsComponent implements OnInit {
 
   eventDetails = new EventDetails()
@@ -17,6 +33,7 @@ export class DetailsComponent implements OnInit {
   venueDetails = new VenueDetails()
   displayEventDetails_ = false
   detailType = 'eventInfo'
+  twitter_href = ""
 
   constructor(private eventService: EventService) { }
 
@@ -56,6 +73,7 @@ export class DetailsComponent implements OnInit {
         this.eventDetails.TicketStatus = response['Event Info']['Ticket Status']
         this.eventDetails.BuyTicketAt = response['Event Info']['Buy Ticket At']
         this.eventDetails.SeatMap = response['Event Info']['Seatmap']
+        this.twitter_href = "https://twitter.com/intent/tweet?text=" + this.eventDetails.Name + " located at " + this.eventDetails.Venue + ". #CSCI571EventSearch"
         this.eventService.changeDisplayEventDetails(true)
         this.eventService.changeIsSearchClicked(false)
       }
@@ -78,12 +96,18 @@ export class DetailsComponent implements OnInit {
       }else{
         this.artistsDetailsList = []
         for(var key in response['Artists Info']){
-          var artistDetails = new ArtistDetails()
-          artistDetails.Name = response['Artists Info'][key]['Name']
-          artistDetails.Followers = response['Artists Info'][key]['Followers']
-          artistDetails.Popularity = response['Artists Info'][key]['Popularity']
-          artistDetails.CheckAt = response['Artists Info'][key]['CheckAt']
-          this.artistsDetailsList.push(artistDetails)
+          if("error" in response['Artists Info'][key]){
+            console.log(key, "No details available")
+          }
+          else{
+
+            var artistDetails = new ArtistDetails()
+            artistDetails.Name = response['Artists Info'][key]['Name']
+            artistDetails.Followers = response['Artists Info'][key]['Followers']
+            artistDetails.Popularity = response['Artists Info'][key]['Popularity']
+            artistDetails.CheckAt = response['Artists Info'][key]['CheckAt']
+            this.artistsDetailsList.push(artistDetails)
+          }
         }
       }
     }
@@ -111,9 +135,16 @@ export class DetailsComponent implements OnInit {
         this.venueDetails.Longitude = response['Venue Info']['Longitude']
       }
     }
+
   }
 
   changeDisplayEventDetails_(value:any){
     this.displayEventDetails_ = value
   }
+
+  showEventList(){
+    this.eventService.changeDisplayEventDetails(false)
+    this.eventService.changeIsSearchClicked(true)
+  }
+
 }

@@ -8,6 +8,7 @@ import { ResultsComponent } from './components/results/results.component';
 import { DetailsComponent } from './components/details/details.component';
 import { AgmCoreModule } from '@agm/core';
 import { RoundprogressModule } from 'angular-svg-round-progressbar';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RoundprogressModule } from 'angular-svg-round-progressbar';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAf8dVq0WH0Mz0h0ef7PAbaAlncbrsRWyc'
     }),
-    RoundprogressModule
+    RoundprogressModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent, ResultsComponent, DetailsComponent]

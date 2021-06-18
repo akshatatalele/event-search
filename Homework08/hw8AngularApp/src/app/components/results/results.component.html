@@ -1,5 +1,5 @@
-<div class="main-content row justify-content-center no-gutters">
-  <div class='col-9 row justify-content-center' *ngIf="isSearchClicked === true">
+<div class="main-content row justify-content-center no-gutters" *ngIf="isSearchClicked === true">
+  <div class='col-9 row justify-content-center'>
     <table class="table table-hover">
           <thead>
           <tr>
@@ -18,7 +18,7 @@
               <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
               <td>{{ e.Category}}</td>
               <td>{{ e.Venue }}</td>
-              <td>{{ e.isFavorite }}</td>
+              <td><span class="material-icons" style="vertical-align:middle;" (click) = "AddToFavorites(e)">star_border</span></td>
           </tr>
           </tbody>
       </table>

@@ -96,7 +96,7 @@ export class AppComponent {
 
     // this.isSearchClicked = true
     this.eventService.changeIsSearchClicked(true);
-    this.eventService.changeDisplayEventDetails(false)
+    this.eventService.changeDisplayEventDetails(false)//===============changed
   }
 
   callAutocomplete(word:any){

@@ -1,4 +1,10 @@
-<div class='container' *ngIf="displayEventDetails_ === true">
+<div class='container' *ngIf="displayEventDetails_ === true" [@EnterLeave]>
+
+  <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
+  <div class="justify-content-end float-md-right">
+    <a class="twitter-share-button" href={{twitter_href}} style="outline : none;" target="_blank"><img class="twitter-btn"></a>
+    <button class="btn star"><span class="material-icons" style="vertical-align:middle;">star_border</span></button>
+  </div>
   <h2>{{eventDetails.Name}}</h2>
 
   <ul class="nav nav-tabs justify-content-end">
@@ -104,11 +110,9 @@
           </tbody>
         </table>
     </div>
-  </div>
 
-
-  <div id="venueInfo" *ngSwitchCase="'venueInfo'">
-    <table class="table table-hover table-striped">
+    <div id="venueInfo" *ngSwitchCase="'venueInfo'">
+      <table class="table table-hover table-striped">
         <tbody>
           <tr *ngIf="venueDetails.Address != 'NoData'">
               <th scope="row">Address</th>
@@ -143,7 +147,11 @@
           <agm-marker [latitude]="venueDetails.Latitude" [longitude]="venueDetails.Longitude"></agm-marker>
         </agm-map>-->
       </div>
+    </div>
   </div>
+
+
+
 
 
 </div>
