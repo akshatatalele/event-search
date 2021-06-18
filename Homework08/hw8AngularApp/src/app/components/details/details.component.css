@@ -1,0 +1,17 @@
+.progress-wrapper{
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.progress-popularity{
+  top: 20%;
+  left: 30%;
+  position: absolute;
+  z-index: 9;
+  font-size: 15px;
+}
+round-progress{
+  position: absolute;
+  top: 0;
+  left: 0;
+}

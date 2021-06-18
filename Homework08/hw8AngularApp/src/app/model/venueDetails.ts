@@ -5,6 +5,8 @@ export class VenueDetails{
   OpenHours!:string
   GeneralRule!:string
   ChildRule!:string
+  Latitude!:number
+  Longitude!:number
 
   constructor(){
 

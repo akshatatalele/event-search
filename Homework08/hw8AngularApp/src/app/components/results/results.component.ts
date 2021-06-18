@@ -55,7 +55,7 @@ export class ResultsComponent implements OnInit {
       console.log(res)
 
       // ===================Changed=================
-      // this.eventService.updateEventDetails(res)
+      this.eventService.updateEventDetails(res)
     })
   }
 

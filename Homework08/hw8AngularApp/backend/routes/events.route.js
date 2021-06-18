@@ -8,7 +8,7 @@ const { Console } = require('console');
 const app = express();
 const eventRoute = express.Router();
 const APIKey_Ticketmaster = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
-const APIKEY_GoogleAPI = "AIzaSyCogQES6TBka55wgg2UkynCjP6SzbUXi0A"
+const APIKEY_GoogleAPI = "AIzaSyAf8dVq0WH0Mz0h0ef7PAbaAlncbrsRWyc"
 const SPOTIFY_CLIENT_ID = "154eb0af6b3e423ca00362a9de3dc6a9"
 const SPOTIFY_SECRET_ID = "e71c518e098e4e65a52142c1c2ae6747"
 var spotifyApi = new SpotifyWebApi({
@@ -24,7 +24,6 @@ segmentID = {
 }
 
 eventRoute.route('/').get((req, res) => {
- console.log("In route /");
  res.json(data)
 })
 
@@ -44,6 +43,7 @@ eventRoute.route('/get-event-list/:input').get(async(req, res) => {
     latlng = obj.LatLong.split(",")
   }else{
     // Call geocoding api
+    console.log("----GEOCODING----")
     var address = obj.LatLong
     let data = await callGeoCodingAPI(address)
     var coords = data['results'][0]['geometry']['location']
@@ -51,18 +51,16 @@ eventRoute.route('/get-event-list/:input').get(async(req, res) => {
   }
   geopoint = geohash.encode(latlng[0], latlng[1]);
 
-  console.log(geopoint)
   //Call Ticketmaster API
   let data = await callTicketMaster(obj.Keyword, obj.Category, obj.Distance, obj.Units, geopoint)
   var response = {}
-
   if(data.status == 200){
     // Parse response
     response = parseEventListResponse(data.data)
   }else{
     response['error'] = "Failed to get event details"
   }
-  console.log("Res:",response)
+
   res.json(response)
 })
 
@@ -81,10 +79,10 @@ async function callGeoCodingAPI(address){
 async function callTicketMaster(keyword, category, distance, units, geopoint){
   var url = ""
   if (category == "All"){
-    url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKey_Ticketmaster + "&keyword=" + keyword + "&radius=" + distance + "&unit=" + units + "&geoPoint=" + geopoint
+    url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKey_Ticketmaster + "&keyword=" + keyword + "&radius=" + distance + "&unit=" + units + "&geoPoint=" + geopoint + "&sort=date,name,asc"
   }
   else{
-    url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKey_Ticketmaster + "&keyword=" + keyword + "&radius=" + distance + "&unit=" + units + "&geoPoint=" + geopoint + "&segmentId=" + segmentID[category]
+    url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" + APIKey_Ticketmaster + "&keyword=" + keyword + "&radius=" + distance + "&unit=" + units + "&geoPoint=" + geopoint + "&segmentId=" + segmentID[category] + "&sort=date,name,asc"
   }
   console.log(url)
 
@@ -502,6 +500,8 @@ function parseVenueDetailsResponse(data){
   var venueOpenHours = "NoData"
   var venueGenRule = "NoData"
   var venueChildRule = "NoData"
+  var venueLat = 0
+  var venueLng = 0
 
   if ("_embedded" in data){
     if ("venues" in data['_embedded']){
@@ -511,6 +511,7 @@ function parseVenueDetailsResponse(data){
         if ("address" in venue[0] && "line1" in venue[0]['address'] && venue[0]['address']['line1'] != ""){
           venueAddr = venue[0]['address']['line1']
         }
+
         // City
         if ("city" in venue[0] && "name" in venue[0]['city'] && venue[0]['city']['name'] != ""
             && "state" in venue[0] && "name" in venue[0]['state'] && venue[0]['state']['name'] != ""){
@@ -541,11 +542,19 @@ function parseVenueDetailsResponse(data){
         if ("generalInfo" in venue[0] && "childRule" in venue[0]['generalInfo'] && venue[0]['generalInfo']['childRule'] != ""){
           venueChildRule = venue[0]['generalInfo']['childRule']
         }
+
+        // Lat long
+        if ("location" in venue[0] && "longitude" in venue[0]['location'] && venue[0]['location']['longitude'] != ""
+          && "latitude" in venue[0]['location'] && venue[0]['location']['latitude'] != ""){
+          venueLat = parseFloat(venue[0]['location']['latitude'])
+          venueLng = parseFloat(venue[0]['location']['longitude'])
+
+        }
       }
     }
   }
   if(venueAddr == "NoData" && venueCity == "NoData" && venuePhone == "NoData" && venueOpenHours == "NoData" &&
-      venueGenRule == "NoData" && venueChildRule == "NoData"){
+      venueGenRule == "NoData" && venueChildRule == "NoData" && venueLat == 0 && venueLng == 0){
         venueDetails['error'] = "No details available"
   }else{
     venueDetails['Address'] = venueAddr
@@ -554,6 +563,8 @@ function parseVenueDetailsResponse(data){
     venueDetails['OpenHours'] = venueOpenHours
     venueDetails['GeneralRule'] = venueGenRule
     venueDetails['ChildRule'] = venueChildRule
+    venueDetails['Latitude'] = venueLat
+    venueDetails['Longitude'] = venueLng
   }
 
   return venueDetails
@@ -654,8 +665,8 @@ async function callAPI_ArtistsDetails(obj){
 function parseArtistsDetailsResponse(data, obj){
   artistsDetail = {}
   var artistName = "NoData"
-  var artistFollowers = "NoData"
-  var artistPopularity = "NoData"
+  var artistFollowers = 0
+  var artistPopularity = 0
   var artistCheckAt = "NoData"
 
   if ("artists" in data && "items" in data['artists']){
@@ -674,12 +685,12 @@ function parseArtistsDetailsResponse(data, obj){
 
         // Followers
         if ("followers" in artists[j] && "total" in artists[j]['followers'] && artists[j]['followers']['total'] != ""){
-          artistFollowers = artists[j]['followers']['total']
+          artistFollowers = parseInt(artists[j]['followers']['total'])
         }
 
         //Popularity
         if ("popularity" in artists[j] && artists[j]['popularity'] != ""){
-          artistPopularity = artists[j]['popularity']
+          artistPopularity = parseInt(artists[j]['popularity'])
         }
 
         // Check At
@@ -689,7 +700,7 @@ function parseArtistsDetailsResponse(data, obj){
       }
     }
   }
-  if(artistName == "NoData" && artistFollowers == "NoData" && artistPopularity == "NoData" && artistCheckAt == "NoData"){
+  if(artistName == "NoData" && artistFollowers == 0 && artistPopularity == 0 && artistCheckAt == "NoData"){
     artistsDetail['error'] = "No details available"
   }else{
     artistsDetail['Name'] = artistName

@@ -86,11 +86,6 @@ export class AppComponent {
       // Use geocoding to get latlong
       this.userInput['LatLong'] = this.eventInstance.locVal
       this.userInput['radio'] = "location"
-      // this.latLongLoc = await this.httpClient
-      //   .get<any>("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + this.APIKEY_GoogleAPI)
-      //   .pipe(delay(1000))
-      //   .toPromise();
-      //   this.getlatlongFromAddr(this.latLongLoc)
     }
 
     // send userInput to server side for processing
@@ -101,6 +96,7 @@ export class AppComponent {
 
     // this.isSearchClicked = true
     this.eventService.changeIsSearchClicked(true);
+    this.eventService.changeDisplayEventDetails(false)
   }
 
   callAutocomplete(word:any){

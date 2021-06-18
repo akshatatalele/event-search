@@ -1,48 +1,26 @@
-<div class='container' *ngIf="isSearchClicked === true">
-  <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">Event</th>
-            <th scope="col">Category</th>
-             <th scope="col">Venue Info</th>
-            <th scope="col">Favorite</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let e of eventTableList; let i = index">
-            <th scope="row">{{ i+1 }}</th>
-            <td>{{ e.Date }}</td>
-            <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
-            <td>{{ e.Category}}</td>
-            <td>{{ e.Venue }}</td>
-            <td>{{ e.isFavorite }}</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <!--<table class="table table-hover" *ngIf="isFavClicked === true">
-        <thead>
-        <tr>
-            <th scope="col">Fav tab</th>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">Event</th>
-            <th scope="col">Category</th>
-             <th scope="col">Venue Info</th>
-            <th scope="col">Favorite</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let e of eventTableList; let i = index">
-            <th scope="row">{{ i+1 }}</th>
-            <td>{{ e.Date }}</td>
-            <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
-            <td>{{ e.Category}}</td>
-            <td>{{ e.Venue }}</td>
-            <td>{{ e.isFavorite }}</td>
-        </tr>
-        </tbody>
-    </table>-->
+<div class="main-content row justify-content-center no-gutters">
+  <div class='col-9 row justify-content-center' *ngIf="isSearchClicked === true">
+    <table class="table table-hover">
+          <thead>
+          <tr>
+              <th scope="col">#</th>
+              <th scope="col">Date</th>
+              <th scope="col">Event</th>
+              <th scope="col">Category</th>
+              <th scope="col">Venue Info</th>
+              <th scope="col">Favorite</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let e of eventTableList; let i = index">
+              <th scope="row">{{ i+1 }}</th>
+              <td>{{ e.Date }}</td>
+              <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
+              <td>{{ e.Category}}</td>
+              <td>{{ e.Venue }}</td>
+              <td>{{ e.isFavorite }}</td>
+          </tr>
+          </tbody>
+      </table>
+  </div>
 </div>
