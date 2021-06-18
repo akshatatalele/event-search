@@ -23,6 +23,8 @@ export class AppComponent {
   isCurrentLoc = true
   isSearchClicked = false
   currentLoc = ""
+  isProgressVisible = false
+  dataAvailable = 10
   public latLongLoc: unknown
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
@@ -58,12 +60,18 @@ export class AppComponent {
   // Search button On Click
   async onSubmit(event_:Event){
     // event_.preventDefault();
+    this.eventService.changeIsSearchClicked(false);
+    this.eventService.changeDisplayEventDetails(false)
+    this.isProgressVisible = true
+    this.dataAvailable = 30
     if (this.eventInstance.distance == null){
       this.eventInstance.distance=10
     }
+
     if(this.eventInstance.category == null){
       this.eventInstance.category="All"
     }
+
     if(this.eventInstance.units == null){
       this.eventInstance.units="miles"
     }
@@ -91,12 +99,11 @@ export class AppComponent {
     // send userInput to server side for processing
     this.eventService.getEventsList(this.userInput).subscribe(res => {
         console.log(res)
+        this.dataAvailable=50
+        this.isProgressVisible = false
         this.eventService.sendMessage(res);
-    });;
 
-    // this.isSearchClicked = true
-    this.eventService.changeIsSearchClicked(true);
-    this.eventService.changeDisplayEventDetails(false)//===============changed
+    });;3
   }
 
   callAutocomplete(word:any){

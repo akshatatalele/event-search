@@ -22,6 +22,11 @@ export class ResultsComponent implements OnInit {
   isSearchClicked: boolean = false
   isFavClicked: boolean = false
   animate = true
+  disableDetailsButton = true
+  isDetailsButtonClicked = false
+  alertClass = "alert alert-danger"
+  alertText = "A simple danger alert—check it out!"
+
 
   constructor(private eventService: EventService) { }
 
@@ -49,7 +54,9 @@ export class ResultsComponent implements OnInit {
         this.displayDetails(message)
       }
     )
+
   }
+
 
   displayDetails(value:any){
       this.animate = value
@@ -68,15 +75,19 @@ export class ResultsComponent implements OnInit {
     for (var key in response) {
       this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
     }
+    this.eventService.changeIsSearchClicked(true);
+    if(this.isDetailsButtonClicked != true){
+      this.disableDetailsButton = true
+    }
   }
 
   clickedEventDetails(id:any){
     console.log("clickedEventDetails: ", id)
     this.eventService.getEventsDetails({"id":id}).subscribe(res => {
       console.log(res)
-
       // ===================Changed=================
       this.eventService.updateEventDetails(res)
+      this.disableDetailsButton = false
     })
   }
 
@@ -84,6 +95,12 @@ export class ResultsComponent implements OnInit {
     console.log("Added to Favourite", instance);
     instance.isFavorite = !instance.isFavorite
 
+  }
+
+  clickOnDetails(){
+    this.isDetailsButtonClicked = true
+    this.eventService.changeIsSearchClicked(false);
+    this.eventService.changeDisplayEventDetails(true)
   }
 
 }

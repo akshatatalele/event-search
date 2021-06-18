@@ -172,11 +172,11 @@ function parseEventListResponse(data){
           }
         }
       }
-      if(temp == []){
-        eventCategory = ""
-      }else{
+      if(temp){
         setGen = new Set(temp)
         eventCategory = Array.from(setGen).join(" | ")
+      }else{
+        eventCategory = "N/A"
       }
 
       // Venue

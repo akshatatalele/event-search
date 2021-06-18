@@ -68,5 +68,11 @@
       <app-results *ngIf="isSearchClicked === true"></app-results>
   </div>-->
 
+  <div class="col-9 mt-5" *ngIf="isProgressVisible === true">
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width]="dataAvailable+'%'"></div>
+    </div>
+  </div>
+
 </div>
 

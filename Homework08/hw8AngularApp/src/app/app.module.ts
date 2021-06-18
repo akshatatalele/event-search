@@ -9,6 +9,7 @@ import { DetailsComponent } from './components/details/details.component';
 import { AgmCoreModule } from '@agm/core';
 import { RoundprogressModule } from 'angular-svg-round-progressbar';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import {MatAutocompleteModule} from '@angular/material/autocomplete'
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
       apiKey: 'AIzaSyAf8dVq0WH0Mz0h0ef7PAbaAlncbrsRWyc'
     }),
     RoundprogressModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent, ResultsComponent, DetailsComponent]

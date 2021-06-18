@@ -1,6 +1,11 @@
 <div class="main-content row justify-content-center no-gutters" *ngIf="isSearchClicked === true">
+
+  <div class="col-9 row justify-content-end float-md-right">
+    <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails()">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
+  </div>
+
   <div class='col-9 row justify-content-center'>
-    <table class="table table-hover">
+    <table class="table table-hover" >
           <thead>
           <tr>
               <th scope="col">#</th>
@@ -22,5 +27,9 @@
           </tr>
           </tbody>
       </table>
+  </div>
+
+  <div class='col-9 justify-content-center'>
+    <div [class]=alertClass role="alert">{{alertText}}</div>
   </div>
 </div>

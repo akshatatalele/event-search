@@ -25,11 +25,18 @@ export class EventService {
   private displayEventDetails = new Subject();
   displayEventDetails$ = this.displayEventDetails.asObservable();
 
+  private progress = new Subject();
+  progress$ = this.progress.asObservable();
+
   constructor(private httpClient: HttpClient) { }
 
   // getEvents() {
   //   return this.httpClient.get(`${this.REST_API}`);
   // }
+
+  changeProgress(value:number){
+    this.progress.next(value)
+  }
 
   changeIsSearchClicked(value:boolean){
     this.isSearchClicked.next(value)
