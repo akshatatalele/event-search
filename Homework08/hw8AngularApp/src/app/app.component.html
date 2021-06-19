@@ -10,7 +10,12 @@
       <div class="row mb-3">
         <label for="keyword" class="col-3 col-form-label">Keyword</label>
         <div class="col">
-          <input type="text" class="form-control" id="keyword" name='keyword' value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)">
+            <input type="text" class="form-control" id="keyword" name='keyword' matInput [matAutocomplete]="auto" value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)"/>
+            <mat-autocomplete #auto = "matAutocomplete">
+              <mat-option *ngFor = "let option of autocompleteList" [value] = "option">
+                  {{option}}
+              </mat-option>
+            </mat-autocomplete>
         </div>
       </div>
       <!-- Category -->

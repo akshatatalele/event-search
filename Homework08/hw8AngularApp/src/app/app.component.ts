@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, NgForm } from '@angular/forms';
 import { EventService } from './service/event.service'
 import { EventSearch } from './model/event';
 import * as $ from 'jquery'
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpClientModule, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'jquery';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +28,7 @@ export class AppComponent {
   isProgressVisible = false
   dataAvailable = 10
   public latLongLoc: unknown
+  autocompleteList: string[] = []
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
@@ -36,6 +39,7 @@ export class AppComponent {
     this.httpClient.get("https://ipinfo.io/json?token=" + this.APIKey_IpInfo).subscribe(data =>{
       this.getlat(data)
     })
+
 
     // this.eventService.getEventArtistDetails("Maroon5").subscribe(res => {
     //   console.log(res)
@@ -51,6 +55,12 @@ export class AppComponent {
     //   console.log(res)
     //   this.message =res;
     // });
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.autocompleteList.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   getlat(data:any){
@@ -108,12 +118,18 @@ export class AppComponent {
 
   callAutocomplete(word:any){
     this.eventService.getSuggestions(word).subscribe(res => {
-      // console.log(res)
+      console.log(res)
+      this.populateAutocompleteList(res)
     });;
+  }
+
+  populateAutocompleteList(value:any){
+    this.autocompleteList = value
   }
 
   clearAll(){
     // this.isSearchClicked = false
+    this.autocompleteList = []
     this.eventService.changeIsSearchClicked(false);
     this.eventService.changeIsFavClicked(false);
     this.eventService.changeDisplayEventDetails(false)
