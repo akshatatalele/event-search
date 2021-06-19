@@ -70,8 +70,13 @@ export class ResultsComponent implements OnInit {
     this.favTableList = []
     for (var key in response) {
       this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Name'] , response[key]['Category'], response[key]['Venue'], true))
-      this.favIDList.push(response[key]['ID'])
+
+      if(!this.favIDList.includes(response[key]['ID'])){
+        this.favIDList.push(response[key]['ID'])
+      }
     }
+    console.log("Fav list: ", this.favTableList)
+    console.log("Fav list ID: ", this.favIDList)
   }
 
   displayDetails(value:any){
@@ -91,9 +96,7 @@ export class ResultsComponent implements OnInit {
     this.callFavouritesData()
 
     for (var key in response) {
-      console.log("key in fav: ",this.favIDList.includes(response[key]['ID']))
       if (this.favIDList.includes(response[key]['ID'])){
-        console.log("Key in Local storage", response)
         this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], true))
       }else{
         this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
@@ -117,6 +120,7 @@ export class ResultsComponent implements OnInit {
       console.log(res)
       // ===================Changed=================
       this.eventService.updateEventDetails(res)
+      this.eventService.changeIsFavClicked(false);
       this.disableDetailsButton = false
     })
   }
@@ -156,8 +160,10 @@ export class ResultsComponent implements OnInit {
 
   clickOnDetails(){
     this.isDetailsButtonClicked = true
-    this.eventService.changeIsSearchClicked(false);
-    this.eventService.changeDisplayEventDetails(true)
+      this.eventService.changeIsSearchClicked(false);
+      this.eventService.changeDisplayEventDetails(true)
+      this.eventService.changeIsFavClicked(false);
+
   }
 
 }

@@ -270,6 +270,7 @@ function parseEventLDetailResponse(data){
   // # 8. Seat map
   // console.log(data)
   detailResponse = {}
+  detailResponse["ID"] = data['id']
   detailResponse["Name"] = data['name']
 
   // # Artist/Team

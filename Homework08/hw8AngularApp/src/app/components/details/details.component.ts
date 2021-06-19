@@ -58,6 +58,7 @@ export class DetailsComponent implements OnInit {
         }
       }
       else{
+        this.eventDetails.ID = response['Event Info']['ID']
         this.eventDetails.Name = response['Event Info']['Name']
         this.eventDetails.Artists = response['Event Info']['Artist / Team']
         this.eventDetails.Venue = response['Event Info']['Venue']

@@ -64,8 +64,8 @@
 
   <!-- Results / Favorite -->
   <div class="result-options col-9 row justify-content-center">
-      <button class="btn btn-primary">Results</button>
-      <button class="btn btn-primary" (click)="clickOnFavorite()">Favorite</button>
+      <button [class]="classResult" (click) = "clickOnResults()">Results</button>
+      <button [class]="classFav" (click)="clickOnFavorite()">Favorite</button>
   </div>
 
   <!-- Results / Details components

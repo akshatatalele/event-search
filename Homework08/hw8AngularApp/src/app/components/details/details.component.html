@@ -2,9 +2,10 @@
 
   <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
   <div class="justify-content-end float-md-right">
-    <a class="twitter-share-button" href={{twitter_href}} style="outline : none;" target="_blank"><img class="twitter-btn"></a>
-    <button class="btn star"><span class="material-icons" style="vertical-align:middle;">star_border</span></button>
+    <a class="twitter-share-button mr-3 " href={{twitter_href}} style="outline : none;display: inline-block;" target="_blank"><img class="twitter-btn"></a>
+    <div style="display: inline-block;"><span class="material-icons" style="vertical-align:middle;">star_border</span></div>
   </div>
+
   <h2>{{eventDetails.Name}}</h2>
 
   <ul class="nav nav-tabs justify-content-end">

@@ -1,4 +1,5 @@
 export class EventDetails{
+  ID!:string
   Name!:string
   Artists!:string
   Venue!:string

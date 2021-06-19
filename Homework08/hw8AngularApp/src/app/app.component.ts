@@ -29,6 +29,8 @@ export class AppComponent {
   dataAvailable = 10
   public latLongLoc: unknown
   autocompleteList: string[] = []
+  classResult = "btn btn-primary"
+  classFav = "btn text-primary"
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
@@ -115,14 +117,20 @@ export class AppComponent {
   }
 
   clickOnResults(){
+    this.classResult = "btn btn-primary"
+    this.classFav = "btn text-primary"
     this.eventService.changeIsSearchClicked(true);
     this.eventService.changeIsFavClicked(false);
+    this.eventService.changeDisplayEventDetails(false)
   }
 
   clickOnFavorite(){
+    this.classFav = "btn btn-primary"
+    this.classResult = "btn text-primary"
     this.eventService.changeIsFavClicked(true);
     this.eventService.changeIsSearchClicked(false);
     this.eventService.getAllFavoriteEvents();
+    this.eventService.changeDisplayEventDetails(false)
   }
   // getlatlongFromAddr(data:any){
   //   var coords = data['results'][0]['geometry']['location']
