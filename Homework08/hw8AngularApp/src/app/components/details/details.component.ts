@@ -4,6 +4,7 @@ import { ArtistDetails } from 'src/app/model/artistDetails';
 import { VenueDetails } from 'src/app/model/venueDetails';
 import { EventService } from 'src/app/service/event.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { EventTable } from 'src/app/model/eventTable';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class DetailsComponent implements OnInit {
   eventDetails = new EventDetails()
   artistsDetailsList: ArtistDetails[] = []
   venueDetails = new VenueDetails()
+  favoriteEvent = new EventTable("", "", "", "", "", false) //new
   displayEventDetails_ = false
   detailType = 'eventInfo'
   twitter_href = ""
@@ -44,7 +46,21 @@ export class DetailsComponent implements OnInit {
         this.changeDisplayEventDetails_(message)
       }
     )
+
+    //-new
+    this.eventService.favoriteEvent$.subscribe(
+      msg => {
+        this.getFavoriteEvent(msg)
+      }
+    )
+    //-
   }
+
+  //-new
+  getFavoriteEvent(value:any){
+    this.favoriteEvent = value
+  }
+  //-
 
   parseResponseForEventDetails(response:any){
 

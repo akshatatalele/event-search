@@ -74,9 +74,15 @@ export class ResultsComponent implements OnInit {
       if(!this.favIDList.includes(response[key]['ID'])){
         this.favIDList.push(response[key]['ID'])
       }
+
+      for (var key1 in this.eventTableList){
+        if(response[key]["ID"] == this.eventTableList[key1]["ID"]){
+          this.eventTableList[key1]["isFavorite"] = true
+        }else{
+          this.eventTableList[key1]["isFavorite"] = false
+        }
+      }
     }
-    console.log("Fav list: ", this.favTableList)
-    console.log("Fav list ID: ", this.favIDList)
   }
 
   displayDetails(value:any){
@@ -104,19 +110,16 @@ export class ResultsComponent implements OnInit {
 
     }
 
-//=====================================
-
-
-
     this.eventService.changeIsSearchClicked(true);
     if(this.isDetailsButtonClicked != true){
       this.disableDetailsButton = true
     }
   }
 
-  clickedEventDetails(id:any){
-    console.log("clickedEventDetails: ", id)
-    this.eventService.getEventsDetails({"id":id}).subscribe(res => {
+  clickedEventDetails(instance:EventTable){
+    console.log("clickedEventDetails: ", instance)
+    this.eventService.changeFavoriteEvent(instance)
+    this.eventService.getEventsDetails({"id":instance.ID}).subscribe(res => {
       console.log(res)
       // ===================Changed=================
       this.eventService.updateEventDetails(res)

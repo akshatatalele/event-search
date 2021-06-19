@@ -33,11 +33,18 @@ export class EventService {
   private _favouritesDataObservable = new Subject();
   _favouritesDataObservable$ = this._favouritesDataObservable.asObservable();
 
+  private favoriteEvent = new Subject();
+  favoriteEvent$ = this.favoriteEvent.asObservable();
+
   constructor(private httpClient: HttpClient, @Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   // getEvents() {
   //   return this.httpClient.get(`${this.REST_API}`);
   // }
+
+  changeFavoriteEvent(value:EventTable){
+    this.favoriteEvent.next(value)
+  }
 
   changeProgress(value:number){
     this.progress.next(value)

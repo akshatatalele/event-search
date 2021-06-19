@@ -20,7 +20,7 @@
           <tr *ngFor="let e of eventTableList; let i = index">
               <th scope="row">{{ i+1 }}</th>
               <td>{{ e.Date }}</td>
-              <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
+              <td><a (click)="clickedEventDetails(e)"> {{ e.Name }} </a></td>
               <td>{{ e.Category}}</td>
               <td>{{ e.Venue }}</td>
               <td>
@@ -58,7 +58,7 @@
           <tr *ngFor="let e of favTableList; let i = index">
               <th scope="row">{{ i+1 }}</th>
               <td>{{ e.Date }}</td>
-              <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
+              <td><a (click)="clickedEventDetails(e)"> {{ e.Name }} </a></td>
               <td>{{ e.Category}}</td>
               <td>{{ e.Venue }}</td>
               <td>
