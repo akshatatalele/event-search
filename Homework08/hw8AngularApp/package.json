@@ -27,6 +27,7 @@
     "jquery": "^3.6.0",
     "material-design-icons": "^3.0.1",
     "ngeohash": "^0.6.3",
+    "ngx-webstorage-service": "^4.1.0",
     "rxjs": "~6.6.0",
     "spotify-web-api-node": "^5.0.2",
     "tslib": "^2.1.0",

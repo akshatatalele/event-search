@@ -23,7 +23,11 @@
               <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
               <td>{{ e.Category}}</td>
               <td>{{ e.Venue }}</td>
-              <td><span class="material-icons" style="vertical-align:middle;" (click) = "AddToFavorites(e)">star_border</span></td>
+              <td>
+                <span class="material-icons" style="vertical-align: middle;" (click) = "AddToFavorites(e)">
+                  <div *ngIf="e.isFavorite" style="color: gold">star</div><div *ngIf="!e.isFavorite">star_border</div>
+                </span>
+              </td>
           </tr>
           </tbody>
       </table>
@@ -33,3 +37,41 @@
     <div [class]=alertClass role="alert">{{alertText}}</div>
   </div>
 </div>
+
+<div class="main-content row justify-content-center no-gutters" *ngIf="isFavClicked === true">
+  <div class='col-9 row justify-content-center' *ngIf="favTableList.length>0">
+    <table class="table table-hover" >
+          <thead>
+          <tr>
+              <th scope="col">#</th>
+              <th scope="col">Date</th>
+              <th scope="col">Event</th>
+              <th scope="col">Category</th>
+              <th scope="col">Venue Info</th>
+              <th scope="col">Favorite</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let e of favTableList; let i = index">
+              <th scope="row">{{ i+1 }}</th>
+              <td>{{ e.Date }}</td>
+              <td><a (click)="clickedEventDetails(e.ID)"> {{ e.Name }} </a></td>
+              <td>{{ e.Category}}</td>
+              <td>{{ e.Venue }}</td>
+              <td>
+                <span class="material-icons" style="vertical-align: middle;" (click) = "deleteFromFavorites(e)">
+                  <div>delete</div>
+                </span>
+              </td>
+          </tr>
+          </tbody>
+      </table>
+  </div>
+  <div class='col-9 justify-content-center mt-5' *ngIf="favTableList.length == 0">
+      <div class="alert alert-warning" role="warning">No Records.</div>
+  <div>
+
+</div>
+
+
+

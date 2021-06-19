@@ -20,12 +20,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 
-/*
-
-,
-      transition(':leave', [
-        animate('0.3s', style({ transform: 'translateX(100%)' }))
-      ])*/
 export class DetailsComponent implements OnInit {
 
   eventDetails = new EventDetails()

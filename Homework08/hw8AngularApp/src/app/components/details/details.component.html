@@ -85,34 +85,36 @@
       <div *ngFor="let a of artistsDetailsList;">
         <h3>{{a.Name}}</h3>
         <table class="table table-hover table-striped">
-            <tbody>
+          <tbody>
             <tr *ngIf="a.Name != 'NoData'">
-                <th scope="row">Name</th>
-                <td>{{a.Name}}<td>
+              <th scope="row">Name</th>
+              <td>{{a.Name}}<td>
             </tr>
             <tr *ngIf="a.Followers != 0">
-                <th scope="row">Followers</th>
-                <td>{{a.Followers | number:'1.0':'en-US' }}</td>
+              <th scope="row">Followers</th>
+              <td>{{a.Followers | number:'1.0':'en-US' }}</td>
             </tr>
             <tr *ngIf="a.Popularity != 0">
-                <th scope="row">Popularity</th>
-                <td>
-                  <div class="progress-wrapper">
-                      <div class="progress-popularity">{{a.Popularity}}</div>
-                      <round-progress [current]="a.Popularity" [max]="100" [color]="'#a8ee90'" [radius]="20" [stroke]="3" [clockwise] = "false"> </round-progress>
-                    </div>
-                </td>
+              <th scope="row">Popularity</th>
+              <td>
+                <div class="progress-wrapper">
+                  <div class="progress-popularity">{{a.Popularity}}</div>
+                  <round-progress [current]="a.Popularity" [max]="100" [color]="'#a8ee90'" [radius]="20" [stroke]="3" [clockwise] = "false"> </round-progress>
+                </div>
+              </td>
             </tr>
             <tr *ngIf="a.CheckAt != ''">
-                <th scope="row">Check At</th>
-                <td><a href={{a.CheckAt}} target="_blank">Spotify</a></td>
+                  <th scope="row">Check At</th>
+                  <td><a href={{a.CheckAt}} target="_blank">Spotify</a></td>
             </tr>
           </tbody>
         </table>
+      </div>
     </div>
 
     <div id="venueInfo" *ngSwitchCase="'venueInfo'">
-      <table class="table table-hover table-striped">
+
+     <table class="table table-hover table-striped">
         <tbody>
           <tr *ngIf="venueDetails.Address != 'NoData'">
               <th scope="row">Address</th>

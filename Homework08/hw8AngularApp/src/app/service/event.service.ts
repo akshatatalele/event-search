@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import { EventTable } from 'src/app/model/eventTable';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +30,10 @@ export class EventService {
   private progress = new Subject();
   progress$ = this.progress.asObservable();
 
-  constructor(private httpClient: HttpClient) { }
+  private _favouritesDataObservable = new Subject();
+  _favouritesDataObservable$ = this._favouritesDataObservable.asObservable();
+
+  constructor(private httpClient: HttpClient, @Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   // getEvents() {
   //   return this.httpClient.get(`${this.REST_API}`);
@@ -106,6 +111,34 @@ export class EventService {
     }
     console.log(errorMessage);
     return throwError(errorMessage);
+  }
+
+  addEventToFavourites(event: EventTable) {
+    this.storage.set(event.ID, JSON.stringify(event));
+  }
+  removeEventFromfavourites(event: EventTable) {
+    this.storage.remove(event.ID);
+  }
+  getFavouriteEvents(event: EventTable) {
+    return this.storage.get(event.ID);
+  }
+  getAllFavoriteEvents() {
+    var values: EventTable[] = [],
+        keys = Object.keys(localStorage),
+        i = keys.length;
+    while ( i-- ) {
+      if (localStorage.getItem(keys[i]) != null) {
+        var value = JSON.parse(localStorage.getItem(keys[i]) ?? '')
+        var eventObject = this.parseFavouritesListData(value)
+        values.push(eventObject);
+      }
+    }
+    this._favouritesDataObservable.next(values)
+  }
+  parseFavouritesListData(list: any ) {
+    list = JSON.parse(list);
+    var eventObject = new EventTable(list['ID'], list['Date'], list['Name'], list['Category'], list['Venue'], list['isFavorite']);
+    return eventObject
   }
 
 }

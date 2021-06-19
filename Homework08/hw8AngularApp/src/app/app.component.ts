@@ -39,28 +39,6 @@ export class AppComponent {
     this.httpClient.get("https://ipinfo.io/json?token=" + this.APIKey_IpInfo).subscribe(data =>{
       this.getlat(data)
     })
-
-
-    // this.eventService.getEventArtistDetails("Maroon5").subscribe(res => {
-    //   console.log(res)
-    // });;
-
-    // this.event.getEvents().subscribe(res => {
-    //   console.log(res)
-    //   this.message =res;
-    // });
-
-    // var data1 = {"client":"maroon 5", "loc":"LA"}
-    // this.event.getEvent(data1).subscribe(res => {
-    //   console.log(res)
-    //   this.message =res;
-    // });
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.autocompleteList.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   getlat(data:any){
@@ -72,6 +50,7 @@ export class AppComponent {
     // event_.preventDefault();
     this.eventService.changeIsSearchClicked(false);
     this.eventService.changeDisplayEventDetails(false)
+    this.eventService.changeIsFavClicked(false);
     this.isProgressVisible = true
     this.dataAvailable = 30
     if (this.eventInstance.distance == null){
@@ -143,6 +122,7 @@ export class AppComponent {
   clickOnFavorite(){
     this.eventService.changeIsFavClicked(true);
     this.eventService.changeIsSearchClicked(false);
+    this.eventService.getAllFavoriteEvents();
   }
   // getlatlongFromAddr(data:any){
   //   var coords = data['results'][0]['geometry']['location']

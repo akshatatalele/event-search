@@ -14,7 +14,7 @@ import { MatFormFieldModule, MatFormFieldControl } from '@angular/material/form-
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-
+import { StorageServiceModule } from 'ngx-webstorage-service'
 
 @NgModule({
   declarations: [
@@ -35,7 +35,8 @@ import { MatTableModule } from '@angular/material/table';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    StorageServiceModule
   ],
   providers: [],
   bootstrap: [AppComponent, ResultsComponent, DetailsComponent]
