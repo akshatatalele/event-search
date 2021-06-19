@@ -21,6 +21,7 @@ export class ResultsComponent implements OnInit {
   eventTableList: EventTable[] = []
   favTableList: EventTable[] = []
   favIDList:string[] = []
+  clickedEvent = new EventTable("", "", "", "", "", false)
 
   isSearchClicked: boolean = false
   isFavClicked: boolean = false
@@ -64,9 +65,19 @@ export class ResultsComponent implements OnInit {
       }
     )
 
+    this.eventService.favoriteEvent$.subscribe(
+      msg => {
+        this.getClickedEvent(msg)
+      }
+    )
+  }
+
+  getClickedEvent(value:any){
+    this.clickedEvent = value
   }
 
   parseFavListForTable(response:any){
+    console.log("Parse new fav list - clicked event:", this.clickedEvent)
     this.favTableList = []
     for (var key in response) {
       this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Name'] , response[key]['Category'], response[key]['Venue'], true))
@@ -80,6 +91,10 @@ export class ResultsComponent implements OnInit {
           this.eventTableList[key1]["isFavorite"] = true
         }else{
           this.eventTableList[key1]["isFavorite"] = false
+        }
+
+        if(this.eventTableList[key1]["ID"] == this.clickedEvent.ID){
+          this.eventTableList[key1]["isFavorite"] = this.clickedEvent.isFavorite
         }
       }
     }
@@ -101,16 +116,28 @@ export class ResultsComponent implements OnInit {
     this.eventTableList = []
     this.callFavouritesData()
 
-    for (var key in response) {
-      if (this.favIDList.includes(response[key]['ID'])){
-        this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], true))
-      }else{
-        this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
+    if ("error" in response){
+      if(response['error'] == "Failed to get event details"){
+        this.alertClass = "alert alert-danger"
+        this.alertText = response['error']
+      }else if(response['error'] == "No records"){
+        this.alertClass = "alert alert-warning"
+        this.alertText = "No Records"
       }
 
+    }else{
+      for (var key in response) {
+        if (this.favIDList.includes(response[key]['ID'])){
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], true))
+        }else{
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
+        }
+
+      }
+      this.eventService.changeIsSearchClicked(true);
     }
 
-    this.eventService.changeIsSearchClicked(true);
+
     if(this.isDetailsButtonClicked != true){
       this.disableDetailsButton = true
     }
@@ -141,6 +168,14 @@ export class ResultsComponent implements OnInit {
   deleteFromFavorites(instance:any){
     console.log("Deleted from Favourite", instance);
     instance.isFavorite = !instance.isFavorite
+
+    //New
+    if(instance.ID == this.clickedEvent.ID){
+      this.clickedEvent.isFavorite = instance.isFavorite
+      this.eventService.changeFavoriteEvent(this.clickedEvent)
+    }
+    //-
+
     var newFavIDList = []
     for (var i=0;i< this.favIDList.length;i++){
       if(this.favIDList[i] != instance.ID){

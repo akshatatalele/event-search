@@ -31,6 +31,7 @@ export class AppComponent {
   autocompleteList: string[] = []
   classResult = "btn btn-primary"
   classFav = "btn text-primary"
+  firstSearchClicked = false
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
@@ -50,7 +51,13 @@ export class AppComponent {
   // Search button On Click
   async onSubmit(event_:Event){
     // event_.preventDefault();
-    this.eventService.changeIsSearchClicked(false);
+    if (this.firstSearchClicked == false){
+      this.firstSearchClicked = true
+    }
+
+    this.classResult = "btn btn-primary"
+    this.classFav = "btn text-primary"
+    this.eventService.changeIsSearchClicked(true);
     this.eventService.changeDisplayEventDetails(false)
     this.eventService.changeIsFavClicked(false);
     this.isProgressVisible = true
@@ -119,7 +126,12 @@ export class AppComponent {
   clickOnResults(){
     this.classResult = "btn btn-primary"
     this.classFav = "btn text-primary"
-    this.eventService.changeIsSearchClicked(true);
+    if(this.firstSearchClicked == false){
+      this.eventService.changeIsSearchClicked(false);
+    }else{
+      this.eventService.changeIsSearchClicked(true);
+    }
+
     this.eventService.changeIsFavClicked(false);
     this.eventService.changeDisplayEventDetails(false)
   }

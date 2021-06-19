@@ -3,7 +3,11 @@
   <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
   <div class="justify-content-end float-md-right">
     <a class="twitter-share-button mr-3 " href={{twitter_href}} style="outline : none;display: inline-block;" target="_blank"><img class="twitter-btn"></a>
-    <div style="display: inline-block;"><span class="material-icons" style="vertical-align:middle;">star_border</span></div>
+    <div style="display: inline-block;" (click)="clickOnStar()">
+      <span class="material-icons" style="vertical-align:middle;">
+        <div *ngIf="isFavEvent" style="color: gold">star</div><div *ngIf="!isFavEvent">star_border</div>
+      </span>
+    </div>
   </div>
 
   <h2>{{eventDetails.Name}}</h2>
@@ -129,7 +133,7 @@
               <th scope="row">Phone number</th>
               <td>{{venueDetails.PhoneNumber}}</td>
           </tr>
-          <tr *ngIf="venueDetails.OpenHours != ''">
+          <tr *ngIf="venueDetails.OpenHours != 'NoData'">
               <th scope="row">Open Hours</th>
               <td>{{venueDetails.OpenHours}}</td>
           </tr>

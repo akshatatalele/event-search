@@ -1,11 +1,11 @@
 <div class="main-content row justify-content-center no-gutters" *ngIf="isSearchClicked === true">
 
-  <div class="col-9 row justify-content-end float-md-right">
+  <div class="col-9 row justify-content-end float-md-right" *ngIf="eventTableList.length != 0">
     <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails()">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
   </div>
 
   <div class='col-9 row justify-content-center'>
-    <table class="table table-hover" >
+    <table class="table table-hover" *ngIf="eventTableList.length != 0">
           <thead>
           <tr>
               <th scope="col">#</th>
@@ -33,13 +33,13 @@
       </table>
   </div>
 
-  <div class='col-9 justify-content-center'>
+  <div class='col-9 justify-content-center mt-5' *ngIf="eventTableList.length == 0">
     <div [class]=alertClass role="alert">{{alertText}}</div>
   </div>
 </div>
 
 <div class="main-content row justify-content-center no-gutters" *ngIf="isFavClicked === true">
-  <div class="col-9 row justify-content-end float-md-right">
+  <div class="col-9 row justify-content-end float-md-right" *ngIf="favTableList.length>0">
     <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails()">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
   </div>
   <div class='col-9 row justify-content-center' *ngIf="favTableList.length>0">

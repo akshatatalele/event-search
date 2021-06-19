@@ -26,7 +26,8 @@ export class DetailsComponent implements OnInit {
   eventDetails = new EventDetails()
   artistsDetailsList: ArtistDetails[] = []
   venueDetails = new VenueDetails()
-  favoriteEvent = new EventTable("", "", "", "", "", false) //new
+  clickedEvent = new EventTable("", "", "", "", "", false) //new
+  isFavEvent: boolean = false
   displayEventDetails_ = false
   detailType = 'eventInfo'
   twitter_href = ""
@@ -50,15 +51,35 @@ export class DetailsComponent implements OnInit {
     //-new
     this.eventService.favoriteEvent$.subscribe(
       msg => {
-        this.getFavoriteEvent(msg)
+        this.getClickedEvent(msg)
       }
     )
     //-
+
+    // this.eventService._favouritesDataObservable$.subscribe(
+    //   message =>{
+    //     this.parseFavList(message)
+    //   }
+    // )
   }
 
+  // parseFavList(value:any){
+  //   console.log("Fav list subscriber, clicked event: ",this.clickedEvent)
+  //   if (this.clickedEvent.isFavorite == true){
+  //     this.isFavEvent = true
+  //   }else{
+  //     this.isFavEvent = false
+  //   }
+  // }
+
   //-new
-  getFavoriteEvent(value:any){
-    this.favoriteEvent = value
+  getClickedEvent(value:any){
+    this.clickedEvent = value
+    if (this.clickedEvent.isFavorite == true){
+      this.isFavEvent = true
+    }else{
+      this.isFavEvent = false
+    }
   }
   //-
 
@@ -92,6 +113,7 @@ export class DetailsComponent implements OnInit {
 
     // Store Artists information
     if (response['Artists Info']){
+      this.artistsDetailsList = []
       // console.log("Artist Info: ", response['Artists Info'])
       if ("error" in response['Artists Info']){
         if (response['Artists Info']['error'] == "Failed to get artist details results"){
@@ -105,7 +127,6 @@ export class DetailsComponent implements OnInit {
       else if("NoArtist" in response['Artists Info']){
         console.log("No artists")
       }else{
-        this.artistsDetailsList = []
         for(var key in response['Artists Info']){
           if("error" in response['Artists Info'][key]){
             console.log(key, "No details available")
@@ -155,7 +176,22 @@ export class DetailsComponent implements OnInit {
 
   showEventList(){
     this.eventService.changeDisplayEventDetails(false)
+    //Check if Search button is clicked or not, if not then do not display the table
     this.eventService.changeIsSearchClicked(true)
   }
 
+  clickOnStar(){
+    console.log("Clicked on star before toggle: ", this.isFavEvent)
+    this.isFavEvent = !this.isFavEvent
+    this.clickedEvent['isFavorite'] = this.isFavEvent
+    console.log("Clicked on star after toggle: ", this.isFavEvent)
+    console.log("Clicked on star after toggle: ", this.clickedEvent)
+    this.eventService.changeFavoriteEvent(this.clickedEvent)
+    if (this.isFavEvent){
+      this.eventService.addEventToFavourites(this.clickedEvent)
+    }else{
+      this.eventService.removeEventFromfavourites(this.clickedEvent)
+    }
+    this.eventService.getAllFavoriteEvents()
+  }
 }
