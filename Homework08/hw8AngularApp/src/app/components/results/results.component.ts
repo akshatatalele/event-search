@@ -21,7 +21,7 @@ export class ResultsComponent implements OnInit {
   eventTableList: EventTable[] = []
   favTableList: EventTable[] = []
   favIDList:string[] = []
-  clickedEvent = new EventTable("", "", "", "", "", false)
+  clickedEvent = new EventTable("", "", "", "", "", false, "")
 
   isSearchClicked: boolean = false
   isFavClicked: boolean = false
@@ -30,6 +30,7 @@ export class ResultsComponent implements OnInit {
   isDetailsButtonClicked = false
   alertClass = ""
   alertText = ""
+  whichList = ""
 
 
   constructor(private eventService: EventService) { }
@@ -79,8 +80,16 @@ export class ResultsComponent implements OnInit {
   parseFavListForTable(response:any){
     console.log("Parse new fav list - clicked event:", this.clickedEvent)
     this.favTableList = []
+
     for (var key in response) {
-      this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Name'] , response[key]['Category'], response[key]['Venue'], true))
+      var newName = "", tooltip = ""
+        if(response[key]['Name'].length >= 35){
+          newName = response[key]['Name'].substring(0, 32) + "..."
+          tooltip = response[key]['Name']
+        }else{
+          newName = response[key]['Name']
+        }
+      this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
 
       if(!this.favIDList.includes(response[key]['ID'])){
         this.favIDList.push(response[key]['ID'])
@@ -130,10 +139,18 @@ export class ResultsComponent implements OnInit {
 
     }else{
       for (var key in response) {
-        if (this.favIDList.includes(response[key]['ID'])){
-          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], true))
+        var newName = "", tooltip = ""
+        if(response[key]['Event'].length >= 35){
+          newName = response[key]['Event'].substring(0, 32) + "..."
+          tooltip = response[key]['Event']
         }else{
-          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
+          newName = response[key]['Event']
+        }
+
+        if (this.favIDList.includes(response[key]['ID'])){
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
+        }else{
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], false, tooltip))
         }
 
       }
@@ -146,7 +163,7 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  clickedEventDetails(instance:EventTable){
+  clickedEventDetails(instance:EventTable, list:any){
     console.log("clickedEventDetails: ", instance)
     this.eventService.changeFavoriteEvent(instance)
     this.eventService.getEventsDetails({"id":instance.ID}).subscribe(res => {
@@ -160,6 +177,7 @@ export class ResultsComponent implements OnInit {
       this.eventService.changeIsFavClicked(false);
       this.disableDetailsButton = false
     })
+    this.eventService.changeWhichList(list)
   }
 
   AddToFavorites(instance:any){
@@ -203,7 +221,8 @@ export class ResultsComponent implements OnInit {
     this.eventService.getAllFavoriteEvents()
   }
 
-  clickOnDetails(){
+  clickOnDetails(list:any){
+    this.eventService.changeWhichList(list)
     this.isDetailsButtonClicked = true
       this.eventService.changeIsSearchClicked(false);
       this.eventService.changeDisplayEventDetails(true)

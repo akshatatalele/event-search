@@ -15,6 +15,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { StorageServiceModule } from 'ngx-webstorage-service'
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { StorageServiceModule } from 'ngx-webstorage-service'
     MatInputModule,
     MatSelectModule,
     MatTableModule,
-    StorageServiceModule
+    StorageServiceModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent, ResultsComponent, DetailsComponent]

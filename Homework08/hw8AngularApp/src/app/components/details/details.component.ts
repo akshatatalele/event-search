@@ -26,7 +26,7 @@ export class DetailsComponent implements OnInit {
   eventDetails = new EventDetails()
   artistsDetailsList: ArtistDetails[] = []
   venueDetails = new VenueDetails()
-  clickedEvent = new EventTable("", "", "", "", "", false) //new
+  clickedEvent = new EventTable("", "", "", "", "", false, "") //new
   isFavEvent: boolean = false
   displayEventDetails_ = false
   detailType = 'eventInfo'
@@ -38,6 +38,8 @@ export class DetailsComponent implements OnInit {
   showArtistAlert = false
   isArtistButNoDetails = false
   ifLatLongPresent = false
+  isFavClicked = false
+  whichList = ""
 
   constructor(private eventService: EventService) { }
 
@@ -61,8 +63,19 @@ export class DetailsComponent implements OnInit {
         this.getClickedEvent(msg)
       }
     )
+
+    this.eventService.isFavClicked$.subscribe(
+      message => {
+        this.favClicked(message)
+      }
+    )
     //-
 
+    this.eventService.whichList$.subscribe(
+      message => {
+        this.getWhichList(message)
+      }
+    )
     // this.eventService._favouritesDataObservable$.subscribe(
     //   message =>{
     //     this.parseFavList(message)
@@ -78,6 +91,14 @@ export class DetailsComponent implements OnInit {
   //     this.isFavEvent = false
   //   }
   // }
+
+  getWhichList(value:any){
+    this.whichList = value
+  }
+
+  favClicked(value:any){
+    this.isFavClicked = value
+  }
 
   //-new
   getClickedEvent(value:any){
@@ -218,7 +239,11 @@ export class DetailsComponent implements OnInit {
   showEventList(){
     this.eventService.changeDisplayEventDetails(false)
     //Check if Search button is clicked or not, if not then do not display the table
+    if(this.whichList == "favorites"){
+      this.eventService.changeIsFavClicked(true)
+    }else if(this.whichList == "results"){
     this.eventService.changeIsSearchClicked(true)
+    }
   }
 
   clickOnStar(){

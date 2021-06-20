@@ -36,11 +36,17 @@ export class EventService {
   private favoriteEvent = new Subject();
   favoriteEvent$ = this.favoriteEvent.asObservable();
 
+  private whichList = new Subject();
+  whichList$ = this.whichList.asObservable();
+
   constructor(private httpClient: HttpClient, @Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   // getEvents() {
   //   return this.httpClient.get(`${this.REST_API}`);
   // }
+  changeWhichList(value:string){
+    this.whichList.next(value)
+  }
 
   changeFavoriteEvent(value:EventTable){
     this.favoriteEvent.next(value)
@@ -144,7 +150,7 @@ export class EventService {
   }
   parseFavouritesListData(list: any ) {
     list = JSON.parse(list);
-    var eventObject = new EventTable(list['ID'], list['Date'], list['Name'], list['Category'], list['Venue'], list['isFavorite']);
+    var eventObject = new EventTable(list['ID'], list['Date'], list['Name'], list['Category'], list['Venue'], list['isFavorite'], "");
     return eventObject
   }
 
