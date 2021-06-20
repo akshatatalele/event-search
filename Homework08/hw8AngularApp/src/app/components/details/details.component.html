@@ -8,7 +8,7 @@
         <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
         <div class="justify-content-end float-md-right row ml-auto">
           <a class="twitter-share-button mr-3 " href={{twitter_href}} style="outline : none;display: inline-block;" target="_blank"><img class="twitter-btn"></a>
-          <button style="display: inline-block;" class="btn btn-outline-dark" (click)="clickOnStar()">
+          <button style="display: inline-block;" class="btn btn-light favButton" (click)="clickOnStar()">
             <span class="material-icons" style="vertical-align:middle;">
               <div *ngIf="isFavEvent" style="color: gold">star</div><div *ngIf="!isFavEvent">star_border</div>
             </span>

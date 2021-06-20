@@ -47,3 +47,24 @@ h3{
 .details{
   margin-top: 2%;
 }
+
+.favButton:hover{
+  /* color: white; */
+}
+
+.favButton{
+  background-color: white;
+  border: 1px solid black;
+}
+#artistInfo th{
+  width: 45%;
+}
+
+
+#venueInfo th{
+  width: 20%;
+}
+
+#eventInfo th{
+  width: 45%;
+}
