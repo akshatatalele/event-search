@@ -26,7 +26,7 @@ export class DetailsComponent implements OnInit {
   eventDetails = new EventDetails()
   artistsDetailsList: ArtistDetails[] = []
   venueDetails = new VenueDetails()
-  clickedEvent = new EventTable("", "", "", "", "", false, "") //new
+  clickedEvent = new EventTable("", "", "", "", "", false) //new
   isFavEvent: boolean = false
   displayEventDetails_ = false
   detailType = 'eventInfo'

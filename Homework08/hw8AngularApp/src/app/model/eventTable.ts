@@ -8,13 +8,12 @@ export class EventTable{
   isFavorite!:boolean
   tooltip!:string
 
-  constructor(ID:string, Date:string, Name:string, Category:string, Venue:string, isFavorite:boolean, tooltip:string){
+  constructor(ID:string, Date:string, Name:string, Category:string, Venue:string, isFavorite:boolean){
     this.ID = ID;
     this.Date = Date;
     this.Name = Name;
     this.Category = Category;
     this.Venue = Venue;
     this.isFavorite = isFavorite;
-    this.tooltip = tooltip;
   }
 }

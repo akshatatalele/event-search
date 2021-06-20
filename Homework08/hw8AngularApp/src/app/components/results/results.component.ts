@@ -21,7 +21,7 @@ export class ResultsComponent implements OnInit {
   eventTableList: EventTable[] = []
   favTableList: EventTable[] = []
   favIDList:string[] = []
-  clickedEvent = new EventTable("", "", "", "", "", false, "")
+  clickedEvent = new EventTable("", "", "", "", "", false)
 
   isSearchClicked: boolean = false
   isFavClicked: boolean = false
@@ -80,16 +80,16 @@ export class ResultsComponent implements OnInit {
   parseFavListForTable(response:any){
     console.log("Parse new fav list - clicked event:", this.clickedEvent)
     this.favTableList = []
-
+    console.log("Subscriber response: ", response)
     for (var key in response) {
-      var newName = "", tooltip = ""
-        if(response[key]['Name'].length >= 35){
-          newName = response[key]['Name'].substring(0, 32) + "..."
-          tooltip = response[key]['Name']
-        }else{
-          newName = response[key]['Name']
-        }
-      this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
+      // var newName = "", tooltip = ""
+      //   if(response[key]['Name'].length >= 35){
+      //     newName = response[key]['Name'].substring(0, 32) + "..."
+      //     tooltip = response[key]['Name']
+      //   }else{
+      //     newName = response[key]['Name']
+      //   }
+      this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Name'] , response[key]['Category'], response[key]['Venue'], true))
 
       if(!this.favIDList.includes(response[key]['ID'])){
         this.favIDList.push(response[key]['ID'])
@@ -97,15 +97,17 @@ export class ResultsComponent implements OnInit {
 
       for (var key1 in this.eventTableList){
         if(response[key]["ID"] == this.eventTableList[key1]["ID"]){
-          this.eventTableList[key1]["isFavorite"] = true
-        }else{
-          this.eventTableList[key1]["isFavorite"] = false
+          this.eventTableList[key1].isFavorite = true
+          break
         }
-
+        // else{
+        //   this.eventTableList[key1]["isFavorite"] = false
+        // }
         if(this.eventTableList[key1]["ID"] == this.clickedEvent.ID){
           this.eventTableList[key1]["isFavorite"] = this.clickedEvent.isFavorite
         }
       }
+      console.log("Subscriber eventTableList: ", this.eventTableList)
     }
   }
 
@@ -123,7 +125,7 @@ export class ResultsComponent implements OnInit {
 
   parseResponseForTable(response:any){
     this.eventTableList = []
-    this.callFavouritesData()
+    // this.callFavouritesData() // ----------------------------------------------------22:21
 
     if ("error" in response){
       if(response['error'] == "Failed to get event details"){
@@ -139,21 +141,22 @@ export class ResultsComponent implements OnInit {
 
     }else{
       for (var key in response) {
-        var newName = "", tooltip = ""
-        if(response[key]['Event'].length >= 35){
-          newName = response[key]['Event'].substring(0, 32) + "..."
-          tooltip = response[key]['Event']
-        }else{
-          newName = response[key]['Event']
-        }
+        // var newName = "", tooltip = ""
+        // if(response[key]['Event'].length >= 35){
+        //   newName = response[key]['Event'].substring(0, 32) + "..."
+        //   tooltip = response[key]['Event']
+        // }else{
+        //   newName = response[key]['Event']
+        // }
 
         if (this.favIDList.includes(response[key]['ID'])){
-          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], true))
         }else{
-          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], false, tooltip))
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
         }
 
       }
+      console.log("Populating eventTableList: ", this.eventTableList)
       this.eventService.changeIsSearchClicked(true);
     }
 
