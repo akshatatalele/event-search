@@ -34,10 +34,11 @@ export class AppComponent {
   firstSearchClicked = false
   ifCurLocCheck = true
   distancePlaceholder = 0
+  LocationText = ""
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
-  eventInstance = new EventSearch("", "All", 10, "miles", "currentLoc", "")
+  eventInstance = new EventSearch()
 
   ngOnInit(): void {
     //Get current location of the user
@@ -45,6 +46,9 @@ export class AppComponent {
       this.getlat(data)
     })
 
+    this.eventInstance.category = "All"
+    this.eventInstance.units = "miles"
+    this.eventInstance.radioValue = "currentLoc"
     this.distancePlaceholder = 10
   }
 
@@ -131,7 +135,9 @@ export class AppComponent {
 
   clearAll(){
     // this.isSearchClicked = false
+    this.LocationText = ""
     this.autocompleteList = []
+    this.ifCurLocCheck = true
     this.eventService.changeIsSearchClicked(false);
     this.eventService.changeIsFavClicked(false);
     this.eventService.changeDisplayEventDetails(false)

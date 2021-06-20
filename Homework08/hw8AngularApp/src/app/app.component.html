@@ -1,16 +1,24 @@
-<div class="main-content row justify-content-center">
+<div class="container">
+<div class = 'row justify-content-center'>
+<div class="main-content col-sm-12">
 
   <!-- Event search form -->
-  <div class="search-form jumbotron col-sm-9 row justify-content-center">
+  <div class="search-form jumbotron row justify-content-center">
     <h1 class="col-sm-8">Entertainment Event Ticket Search</h1>
 
     <div class = "col-sm-9">
-    <form #eventSearch="ngForm" (ngSubmit)="onSubmit($event)">
+    <form #eventSearch="ngForm" (ngSubmit)="eventSearch.form.valid && onSubmit($event)" class="needs-validation" novalidate><!---->
       <!-- Keyword -->
-      <div class="row mb-3">
-        <label for="keyword" class="col-sm-3 col-form-label">Keyword</label>
-        <div class="col">
-            <input type="text" class="form-control" id="keyword" name='keyword' matInput [matAutocomplete]="auto" value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)" placeholder="Enter Artist, Team or Event Name (eg. Lakers)"/>
+      <div class="row form-group required">
+        <label for="keyword" class="col-sm-3 control-label">Keyword</label>
+        <div class="col"><!---->
+            <input type="text" class="form-control"  [ngClass]="{ 'is-invalid': eventSearch.submitted && keyword.invalid }" required id="keyword" name='keyword'
+            matInput [matAutocomplete]="auto" value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)"
+            placeholder="Enter Artist, Team or Event Name (eg. Lakers)" #keyword="ngModel"/>
+
+            <div class="invalid-feedback" *ngIf="eventSearch.submitted && keyword.invalid">
+              <p *ngIf="keyword.errors?.required">Keyword is required</p>
+            </div>
             <mat-autocomplete #auto = "matAutocomplete">
               <mat-option *ngFor = "let option of autocompleteList" [value] = "option">
                   {{option}}
@@ -19,7 +27,7 @@
         </div>
       </div>
       <!-- Category -->
-      <div class="row mb-3">
+      <div class="row mb-3 form-group">
         <label for="category" class="col-sm-3 col-form-label">Category</label>
         <div class="col-sm-3">
             <select class="form-control" id="category" name='category' value="All" [(ngModel)]="eventInstance.category">
@@ -29,10 +37,10 @@
         </div>
       </div>
       <!-- Distance -->
-      <div class="row mb-3">
+      <div class="row mb-3 form-group">
         <label for="distance" class="col-sm-3 col-form-label">Distance</label>
         <div class="col-sm-3">
-          <input type="number" class="form-control" id="distance" name='distance' value="10" [placeholder]="distancePlaceholder" (ngModel)="eventInstance.distance">
+          <input type="number" class="form-control" id="distance" name='distance' value="10" [placeholder]="distancePlaceholder" [(ngModel)]="eventInstance.distance">
         </div>
         <div class="col-sm-3">
             <select class="form-control" id="units" name='units' value="miles" [(ngModel)]="eventInstance.units">
@@ -42,9 +50,9 @@
         </div>
       </div>
       <!-- From -->
-      <div class="row mb-3">
-        <label for="from" class="col-sm-3 col-form-label">From</label>
-        <div class="col">
+      <div class="row form-group required">
+        <label for="from" class="col-sm-3 control-label">From</label>
+        <div class="col-sm-9"><!---->
           <div class="form-check">
             <input type="radio" class="form-check-input" checked name="locationRadio" id="currentLocationRadio" value="currentLoc" (click)="clickOnRadio(1)" [(ngModel)]="eventInstance.radioValue">
             <label class="form-check-label">Current location</label>
@@ -53,27 +61,37 @@
             <input type="radio" class="form-check-input" name="locationRadio" id="locationRadio" value="location" (click)="clickOnRadio(2)" [(ngModel)]="eventInstance.radioValue">
             <label class="form-check-label">Other, Please specify:</label>
           </div>
-          <input type="text" class="form-control" id="location" name='locationInput' value="" [(ngModel)]="eventInstance.locVal" [disabled]="ifCurLocCheck"><!--true-->
+          <div class="col-sm-12">
+            <input type="text" class="form-control locationInput" id="location" required name='locationInput' [value]="LocationText" [(ngModel)]="eventInstance.locVal"
+            [ngClass]="{ 'is-invalid': eventSearch.submitted && locationInput.invalid }" #locationInput="ngModel"
+            [disabled]="ifCurLocCheck"><!--true-->
+            <div class="invalid-feedback" *ngIf="eventSearch.submitted && locationInput.invalid">
+              <p *ngIf="locationInput.errors?.required">Location is required</p>
+            </div>
+          </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary"><span class="material-icons" style="vertical-align:middle;">search</span>Search</button>
-      <button type="reset" class="btn btn-light btn-outline-secondary ml-4" (click)="clearAll()"><span class="material-icons" style="vertical-align:middle;">clear_all</span>Clear</button>
+      <div class="mb-4 form-group">
+        <button type="submit" class="btn btn-primary"><span class="material-icons" style="vertical-align:middle;">search</span>Search</button>
+        <button type="reset" class="btn btn-light btn-outline-secondary ml-2" (click)="clearAll()"><span class="material-icons" style="vertical-align:middle;">clear_all</span>Clear</button>
+      </div>
     </form>
     </div>
   </div>
 
   <!-- Results / Favorite -->
   <!-- [class.active]="displayList == 'results'" rel="results" [ngClass]="{'btn-primary' : displayList == 'results', 'btn-light': displayList == 'favourites'}" -->
-  <div class="result-options col-sm-9 row justify-content-center">
+  <div class="result-options row justify-content-center mt-4" style="padding:0">
       <button [class]="classResult" (click) = "clickOnResults()">Results</button>
       <button [class]="classFav" (click)="clickOnFavorite()">Favorite</button>
   </div>
 
-  <div class="col-sm-9 mt-5" *ngIf="isProgressVisible === true">
+  <div class="col-sm-12 mt-5" *ngIf="isProgressVisible === true">
     <div class="progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width]="dataAvailable+'%'"></div>
     </div>
   </div>
 
 </div>
-
+</div>
+</div>

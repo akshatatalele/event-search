@@ -1,10 +1,11 @@
+<div class='container'>
 <div class="main-content row justify-content-center no-gutters" *ngIf="isSearchClicked === true">
 
-  <div class="col-sm-9 row justify-content-end float-md-right" *ngIf="eventTableList.length != 0">
+  <div class="col-sm-12 row justify-content-end float-md-right" *ngIf="eventTableList.length != 0">
     <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails('results')">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
   </div>
 
-  <div class='col-sm-9 row justify-content-center'>
+  <div class='col-sm-12 row justify-content-center'>
     <table class="table table-hover" *ngIf="eventTableList.length != 0">
           <thead>
           <tr>
@@ -20,7 +21,7 @@
           <tr *ngFor="let e of eventTableList; let i = index">
               <th scope="row">{{ i+1 }}</th>
               <td>{{ e.Date }}</td>
-              <td><a (click)="clickedEventDetails(e, 'results')" class="eventTooltip" matTooltip={{e.Name}}> {{ e.Name }} </a></td>
+              <td><a (click)="clickedEventDetails(e, 'results')" class="eventTooltip" matTooltip={{e.tooltip}}> {{ e.Name }} </a></td>
               <td>{{ e.Category}}</td>
               <td>{{ e.Venue }}</td>
               <td>
@@ -33,16 +34,16 @@
       </table>
   </div>
 
-  <div class='col-sm-9 justify-content-center mt-5' *ngIf="eventTableList.length == 0">
+  <div class='col-sm-12 justify-content-center mt-5' *ngIf="eventTableList.length == 0">
     <div [class]=alertClass role="alert">{{alertText}}</div>
   </div>
 </div>
 
 <div class="main-content row justify-content-center no-gutters" *ngIf="isFavClicked === true">
-  <div class="col-sm-9 row justify-content-end float-md-right" *ngIf="favTableList.length>0">
+  <div class="col-sm-12 row justify-content-end float-md-right" *ngIf="favTableList.length>0">
     <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails('favorites')">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
   </div>
-  <div class='col-sm-9 row justify-content-center' *ngIf="favTableList.length>0">
+  <div class='col-sm-12 row justify-content-center' *ngIf="favTableList.length>0">
     <table class="table table-hover" >
           <thead>
           <tr>
@@ -58,7 +59,7 @@
           <tr *ngFor="let e of favTableList; let i = index">
               <th scope="row">{{ i+1 }}</th>
               <td>{{ e.Date }}</td>
-              <td><a (click)="clickedEventDetails(e, 'favorites')" class="eventTooltip" matTooltip={{e.Name}}> {{ e.Name }} </a></td>
+              <td><a (click)="clickedEventDetails(e, 'favorites')" class="eventTooltip" matTooltip={{e.tooltip}}> {{ e.Name }} </a></td>
               <td>{{ e.Category}}</td>
               <td>{{ e.Venue }}</td>
               <td>
@@ -70,11 +71,11 @@
           </tbody>
       </table>
   </div>
-  <div class='col-sm-9 justify-content-center mt-5' *ngIf="favTableList.length == 0">
+  <div class='col-sm-12 justify-content-center mt-5' *ngIf="favTableList.length == 0">
       <div class="alert alert-warning" role="warning">No Records.</div>
   <div>
 
 </div>
-
+</div>
 
 

@@ -150,7 +150,7 @@ export class EventService {
   }
   parseFavouritesListData(list: any ) {
     list = JSON.parse(list);
-    var eventObject = new EventTable(list['ID'], list['Date'], list['Name'], list['Category'], list['Venue'], list['isFavorite']);
+    var eventObject = new EventTable(list['ID'], list['Date'], list['Name'], list['Category'], list['Venue'], list['isFavorite'], "");
     return eventObject
   }
 

@@ -21,7 +21,7 @@ export class ResultsComponent implements OnInit {
   eventTableList: EventTable[] = []
   favTableList: EventTable[] = []
   favIDList:string[] = []
-  clickedEvent = new EventTable("", "", "", "", "", false)
+  clickedEvent = new EventTable("", "", "", "", "", false, "")
 
   isSearchClicked: boolean = false
   isFavClicked: boolean = false
@@ -82,14 +82,14 @@ export class ResultsComponent implements OnInit {
     this.favTableList = []
     console.log("Subscriber response: ", response)
     for (var key in response) {
-      // var newName = "", tooltip = ""
-      //   if(response[key]['Name'].length >= 35){
-      //     newName = response[key]['Name'].substring(0, 32) + "..."
-      //     tooltip = response[key]['Name']
-      //   }else{
-      //     newName = response[key]['Name']
-      //   }
-      this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Name'] , response[key]['Category'], response[key]['Venue'], true))
+      var newName = "", tooltip = ""
+        if(response[key]['Name'].length >= 35){
+          newName = response[key]['Name'].substring(0, 32) + "..."
+          tooltip = response[key]['Name']
+        }else{
+          newName = response[key]['Name']
+        }
+      this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
 
       if(!this.favIDList.includes(response[key]['ID'])){
         this.favIDList.push(response[key]['ID'])
@@ -141,18 +141,18 @@ export class ResultsComponent implements OnInit {
 
     }else{
       for (var key in response) {
-        // var newName = "", tooltip = ""
-        // if(response[key]['Event'].length >= 35){
-        //   newName = response[key]['Event'].substring(0, 32) + "..."
-        //   tooltip = response[key]['Event']
-        // }else{
-        //   newName = response[key]['Event']
-        // }
+        var newName = "", tooltip = ""
+        if(response[key]['Event'].length >= 35){
+          newName = response[key]['Event'].substring(0, 32) + "..."
+          tooltip = response[key]['Event']
+        }else{
+          newName = response[key]['Event']
+        }
 
         if (this.favIDList.includes(response[key]['ID'])){
-          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], true))
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
         }else{
-          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], response[key]['Event'] , response[key]['Category'], response[key]['Venue'], false))
+          this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], false, tooltip))
         }
 
       }

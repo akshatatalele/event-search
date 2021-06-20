@@ -26,7 +26,7 @@ export class DetailsComponent implements OnInit {
   eventDetails = new EventDetails()
   artistsDetailsList: ArtistDetails[] = []
   venueDetails = new VenueDetails()
-  clickedEvent = new EventTable("", "", "", "", "", false) //new
+  clickedEvent = new EventTable("", "", "", "", "", false, "") //new
   isFavEvent: boolean = false
   displayEventDetails_ = false
   detailType = 'eventInfo'
@@ -146,7 +146,8 @@ export class DetailsComponent implements OnInit {
           this.eventDetails.TicketStatus = response['Event Info']['Ticket Status']
           this.eventDetails.BuyTicketAt = response['Event Info']['Buy Ticket At']
           this.eventDetails.SeatMap = response['Event Info']['Seatmap']
-          this.twitter_href = "https://twitter.com/intent/tweet?text=" + this.eventDetails.Name + " located at " + this.eventDetails.Venue + ". #CSCI571EventSearch"
+          this.twitter_href = "https://twitter.com/intent/tweet?text=Check+out+" + this.eventDetails.Name + "+located+at+" + this.eventDetails.Venue + ".&hashtags=CSCI571EventSearch"
+
           this.eventService.changeDisplayEventDetails(true)
           this.eventService.changeIsSearchClicked(false)
         }
