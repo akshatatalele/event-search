@@ -57,6 +57,7 @@ export class AppComponent {
   }
 
   clickOnRadio(value:any){
+    this.eventInstance.locVal = ""
     this.ifCurLocCheck = (value === 1)
   }
 

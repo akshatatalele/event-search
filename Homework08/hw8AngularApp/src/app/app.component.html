@@ -40,7 +40,7 @@
       <div class="row mb-3 form-group">
         <label for="distance" class="col-sm-3 col-form-label">Distance</label>
         <div class="col-sm-3">
-          <input type="number" class="form-control" id="distance" name='distance' value="10" [placeholder]="distancePlaceholder" [(ngModel)]="eventInstance.distance">
+          <input type="number" min=0 class="form-control" id="distance" name='distance' value="10" [placeholder]="distancePlaceholder" [(ngModel)]="eventInstance.distance">
         </div>
         <div class="col-sm-3">
             <select class="form-control" id="units" name='units' value="miles" [(ngModel)]="eventInstance.units">
@@ -72,7 +72,7 @@
         </div>
       </div>
       <div class="mb-4 form-group">
-        <button type="submit" class="btn btn-primary"><span class="material-icons" style="vertical-align:middle;">search</span>Search</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!eventSearch.valid"><span class="material-icons" style="vertical-align:middle;">search</span>Search</button>
         <button type="reset" class="btn btn-light btn-outline-secondary ml-2" (click)="clearAll()"><span class="material-icons" style="vertical-align:middle;">clear_all</span>Clear</button>
       </div>
     </form>
