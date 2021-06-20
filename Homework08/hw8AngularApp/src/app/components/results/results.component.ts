@@ -28,8 +28,8 @@ export class ResultsComponent implements OnInit {
   animate = true
   disableDetailsButton = true
   isDetailsButtonClicked = false
-  alertClass = "alert alert-danger"
-  alertText = "A simple danger alert—check it out!"
+  alertClass = ""
+  alertText = ""
 
 
   constructor(private eventService: EventService) { }
@@ -123,6 +123,9 @@ export class ResultsComponent implements OnInit {
       }else if(response['error'] == "No records"){
         this.alertClass = "alert alert-warning"
         this.alertText = "No Records"
+      }else if(response['error'] == "API call failed"){
+        this.alertClass = "alert alert-danger"
+        this.alertText = response['error']
       }
 
     }else{
@@ -150,6 +153,10 @@ export class ResultsComponent implements OnInit {
       console.log(res)
       // ===================Changed=================
       this.eventService.updateEventDetails(res)
+      this.eventService.changeIsFavClicked(false);
+      this.disableDetailsButton = false
+    }, error => {
+      this.eventService.updateEventDetails(JSON.parse('{"error":"API call failed"}'))
       this.eventService.changeIsFavClicked(false);
       this.disableDetailsButton = false
     })

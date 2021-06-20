@@ -32,6 +32,7 @@ export class AppComponent {
   classResult = "btn btn-primary"
   classFav = "btn text-primary"
   firstSearchClicked = false
+  ifCurLocCheck = true
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
@@ -46,6 +47,10 @@ export class AppComponent {
 
   getlat(data:any){
     this.currentLoc = data.loc
+  }
+
+  clickOnRadio(value:any){
+    this.ifCurLocCheck = (value === 1)
   }
 
   // Search button On Click
@@ -100,8 +105,11 @@ export class AppComponent {
         this.dataAvailable=50
         this.isProgressVisible = false
         this.eventService.sendMessage(res);
-
-    });;3
+    }, error =>{
+      console.log("error")
+      this.isProgressVisible = false
+      this.eventService.sendMessage(JSON.parse('{"error":"API call failed"}'));
+    });
   }
 
   callAutocomplete(word:any){

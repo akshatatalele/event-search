@@ -3,6 +3,7 @@ export class ArtistDetails{
   Followers!:number
   Popularity!:number
   CheckAt!:string
+  ifDetailsPresent!:boolean
 
   constructor(){
 
