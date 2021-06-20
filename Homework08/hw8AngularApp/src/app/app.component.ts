@@ -33,6 +33,7 @@ export class AppComponent {
   classFav = "btn text-primary"
   firstSearchClicked = false
   ifCurLocCheck = true
+  distancePlaceholder = 0
 
   constructor(private eventService: EventService,private httpClient: HttpClient) { }
 
@@ -43,6 +44,8 @@ export class AppComponent {
     this.httpClient.get("https://ipinfo.io/json?token=" + this.APIKey_IpInfo).subscribe(data =>{
       this.getlat(data)
     })
+
+    this.distancePlaceholder = 10
   }
 
   getlat(data:any){
@@ -106,17 +109,20 @@ export class AppComponent {
         this.isProgressVisible = false
         this.eventService.sendMessage(res);
     }, error =>{
-      console.log("error")
+      console.log("API call error")
       this.isProgressVisible = false
       this.eventService.sendMessage(JSON.parse('{"error":"API call failed"}'));
     });
+    this.eventService.getAllFavoriteEvents()
   }
 
   callAutocomplete(word:any){
     this.eventService.getSuggestions(word).subscribe(res => {
       console.log(res)
       this.populateAutocompleteList(res)
-    });;
+    }, error =>{
+      console.log("API call Error")
+    });
   }
 
   populateAutocompleteList(value:any){
@@ -132,6 +138,7 @@ export class AppComponent {
   }
 
   clickOnResults(){
+
     this.classResult = "btn btn-primary"
     this.classFav = "btn text-primary"
     if(this.firstSearchClicked == false){
@@ -142,6 +149,7 @@ export class AppComponent {
 
     this.eventService.changeIsFavClicked(false);
     this.eventService.changeDisplayEventDetails(false)
+    this.eventService.getAllFavoriteEvents()
   }
 
   clickOnFavorite(){

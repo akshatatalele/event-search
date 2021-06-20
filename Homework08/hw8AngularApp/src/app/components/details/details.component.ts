@@ -244,6 +244,7 @@ export class DetailsComponent implements OnInit {
     }else if(this.whichList == "results"){
     this.eventService.changeIsSearchClicked(true)
     }
+    this.eventService.getAllFavoriteEvents()
   }
 
   clickOnStar(){

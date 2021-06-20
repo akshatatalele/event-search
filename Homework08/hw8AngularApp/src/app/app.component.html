@@ -10,7 +10,7 @@
       <div class="row mb-3">
         <label for="keyword" class="col-3 col-form-label">Keyword</label>
         <div class="col">
-            <input type="text" class="form-control" id="keyword" name='keyword' matInput [matAutocomplete]="auto" value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)"/>
+            <input type="text" class="form-control" id="keyword" name='keyword' matInput [matAutocomplete]="auto" value="" [(ngModel)]="eventInstance.keyword" (input)="callAutocomplete(eventInstance.keyword)" placeholder="Enter Artist, Team or Event Name (eg. Lakers)"/>
             <mat-autocomplete #auto = "matAutocomplete">
               <mat-option *ngFor = "let option of autocompleteList" [value] = "option">
                   {{option}}
@@ -32,7 +32,7 @@
       <div class="row mb-3">
         <label for="distance" class="col-3 col-form-label">Distance</label>
         <div class="col-3">
-          <input type="number" class="form-control" id="distance" name='distance' value="10" placeholder="10" [(ngModel)]="eventInstance.distance">
+          <input type="number" class="form-control" id="distance" name='distance' value="10" [placeholder]="distancePlaceholder" [(ngModel)]="eventInstance.distance">
         </div>
         <div class="col-3">
             <select class="form-control" id="units" name='units' value="miles" [(ngModel)]="eventInstance.units">
