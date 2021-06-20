@@ -175,6 +175,7 @@ export class DetailsComponent implements OnInit {
           this.alertText = "No Artists"
           this.showArtistAlert = true
         }else{
+          this.showArtistAlert = false
           for(var key in response['Artists Info']){
             var artistDetails = new ArtistDetails()
             if("error" in response['Artists Info'][key]){

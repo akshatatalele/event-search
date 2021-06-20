@@ -1,7 +1,7 @@
 <div class='container'>
   <div class="row main-content justify-content-center no-gutters" *ngIf="isSearchClicked === true">
-    <div class="col-sm-12">
-      <div class="row justify-content-end float-md-right ml-auto" *ngIf="eventTableList.length != 0" style="clear: both;">
+    <div class="row col-sm-12">
+      <div class="row col-sm-12 justify-content-end float-md-right ml-auto" *ngIf="eventTableList.length != 0" style="clear: both;">
         <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails('results')">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
       </div>
 
@@ -41,8 +41,8 @@
   </div>
 
   <div class="row main-content justify-content-center no-gutters" *ngIf="isFavClicked === true">
-    <div class="col-sm-12">
-      <div class="row justify-content-end float-md-right ml-auto" *ngIf="favTableList.length>0" style="clear: both;">
+    <div class=" row col-sm-12">
+      <div class="row col-sm-12 justify-content-end float-md-right ml-auto" *ngIf="favTableList.length>0" style="clear: both;">
         <button class="btn btn-light btn-outline-secondary" [disabled]=disableDetailsButton (click) = "clickOnDetails('favorites')">Details<span class="material-icons" style="vertical-align:middle;">chevron_right</span></button>
       </div>
       <div class='justify-content-center table-responsive'>

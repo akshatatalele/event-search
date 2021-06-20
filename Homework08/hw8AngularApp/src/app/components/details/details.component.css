@@ -30,7 +30,7 @@ round-progress{
 h2{
   font-size: xx-large;
     text-align: center;
-    margin-bottom: 5%;
+    margin-bottom: 4%;
     margin-top: 4%;
 }
 
@@ -38,3 +38,12 @@ ul{
   margin-top: 1%;
 }
 
+h3{
+  font-size: larger;
+  font-weight: 550;
+  text-align: center;
+}
+
+.details{
+  margin-top: 2%;
+}
