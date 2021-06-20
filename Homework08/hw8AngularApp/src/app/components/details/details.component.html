@@ -4,14 +4,16 @@
     <div *ngIf="showAlert === false">
       <h2>{{eventDetails.Name}}</h2>
 
-      <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
-      <div class="justify-content-end float-sm-right">
-        <a class="twitter-share-button mr-3 " href={{twitter_href}} style="outline : none;display: inline-block;" target="_blank"><img class="twitter-btn"></a>
-        <button style="display: inline-block;" class="btn btn-outline-dark" (click)="clickOnStar()">
-          <span class="material-icons" style="vertical-align:middle;">
-            <div *ngIf="isFavEvent" style="color: gold">star</div><div *ngIf="!isFavEvent">star_border</div>
-          </span>
-        </button>
+      <div class="row col-sm-12">
+        <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
+        <div class="justify-content-end float-md-right row ml-auto">
+          <a class="twitter-share-button mr-3 " href={{twitter_href}} style="outline : none;display: inline-block;" target="_blank"><img class="twitter-btn"></a>
+          <button style="display: inline-block;" class="btn btn-outline-dark" (click)="clickOnStar()">
+            <span class="material-icons" style="vertical-align:middle;">
+              <div *ngIf="isFavEvent" style="color: gold">star</div><div *ngIf="!isFavEvent">star_border</div>
+            </span>
+          </button>
+        </div>
       </div>
 
       <ul class="nav nav-tabs justify-content-end">
