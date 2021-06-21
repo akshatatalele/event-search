@@ -126,7 +126,7 @@
               </div>
             </div>
           </div>
-          <div class='mt-5' *ngIf="showArtistAlert === true">
+          <div class='col-sm-12 mt-5' *ngIf="showArtistAlert === true">
             <div [class]=alertClass role="alert">{{alertText}}</div>
           </div>
         </div>
@@ -171,7 +171,7 @@
             </div>
           </div>
 
-          <div class='mt-5' *ngIf="showVenueAlert === true">
+          <div class='col-sm-12 mt-5' *ngIf="showVenueAlert === true">
             <div [class]=alertClass role="alert">{{alertText}}</div>
           </div>
 
@@ -183,7 +183,7 @@
 
   <div class='container' *ngIf="displayEventDetails_ === true">
     <div *ngIf="showAlert === true">
-      <div class='mt-5'>
+      <div class='col-sm-12 mt-5'>
         <div [class]=alertClass role="alert">{{alertText}}</div>
       </div>
     </div>

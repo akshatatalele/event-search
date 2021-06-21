@@ -80,25 +80,51 @@ export class ResultsComponent implements OnInit {
   parseFavListForTable(response:any){
     console.log("Parse new fav list - clicked event:", this.clickedEvent)
     this.favTableList = []
+    var newFavList = []
     console.log("Subscriber response: ", response)
+    console.log("subscriber fav id list before: ", this.favIDList)
     for (var key in response) {
+      console.log("response.key", response[key])
       var newName = "", tooltip = ""
-        if(response[key]['Name'].length >= 35){
-          newName = response[key]['Name'].substring(0, 32) + "..."
+        if(response[key]['Name'].length >= 30){
+          newName = response[key]['Name'].substring(0, 27) + "..."
           tooltip = response[key]['Name']
         }else{
           newName = response[key]['Name']
         }
       this.favTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
 
-      if(!this.favIDList.includes(response[key]['ID'])){
-        this.favIDList.push(response[key]['ID'])
+      // console.log("List empty or not: ", this.favIDList.length)
+      if (this.favIDList.length != 0){
+        for(var favid in this.favIDList){
+          if(this.favIDList[favid] == response[key]['ID']){
+            //if favidlist id is in fav
+            newFavList.push(this.favIDList[favid])
+          }
+        }
+      }else{
+        newFavList.push(response[key]["ID"])
       }
 
+      // if(!this.favIDList.includes(response[key]['ID'])){
+      //   //new favid not in fav id list
+      //   this.favIDList.push(response[key]['ID'])
+      // }else{
+      //   if(this.clickedEvent.ID == response[key]['ID']){
+      //     var newFavIDList = []
+      //     for (var i=0;i< this.favIDList.length;i++){
+      //       if(this.favIDList[i] != response[key]['ID']){
+      //         newFavIDList.push(this.favIDList[i])
+      //       }
+      //     }
+      //     this.favIDList = newFavIDList
+      //   }
+      // }
+// && this.clickedEvent.ID == response[key]['ID']
       for (var key1 in this.eventTableList){
         if(response[key]["ID"] == this.eventTableList[key1]["ID"]){
           this.eventTableList[key1].isFavorite = true
-          break
+          //break
         }
         // else{
         //   this.eventTableList[key1]["isFavorite"] = false
@@ -107,8 +133,10 @@ export class ResultsComponent implements OnInit {
           this.eventTableList[key1]["isFavorite"] = this.clickedEvent.isFavorite
         }
       }
+      console.log("subscriber fav id list after: ", this.favIDList)
       console.log("Subscriber eventTableList: ", this.eventTableList)
     }
+    this.favIDList = newFavList
   }
 
   displayDetails(value:any){
@@ -142,14 +170,15 @@ export class ResultsComponent implements OnInit {
     }else{
       for (var key in response) {
         var newName = "", tooltip = ""
-        if(response[key]['Event'].length >= 35){
-          newName = response[key]['Event'].substring(0, 32) + "..."
+        if(response[key]['Event'].length >= 30){
+          newName = response[key]['Event'].substring(0, 27) + "..."
           tooltip = response[key]['Event']
         }else{
           newName = response[key]['Event']
         }
 
         if (this.favIDList.includes(response[key]['ID'])){
+
           this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], true, tooltip))
         }else{
           this.eventTableList.push(new EventTable(response[key]['ID'], response[key]['Date'], newName , response[key]['Category'], response[key]['Venue'], false, tooltip))
@@ -211,7 +240,7 @@ export class ResultsComponent implements OnInit {
       }
     }
     this.favIDList = newFavIDList
-
+    // console.log("Delete")
     if (instance.isFavorite){
       this.eventService.addEventToFavourites(instance)
     }else{

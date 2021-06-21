@@ -15,5 +15,6 @@ export class EventTable{
     this.Category = Category;
     this.Venue = Venue;
     this.isFavorite = isFavorite;
+    this.tooltip = tooltip;
   }
 }
