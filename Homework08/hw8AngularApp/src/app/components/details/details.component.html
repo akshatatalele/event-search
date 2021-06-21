@@ -18,13 +18,13 @@
 
       <ul class="nav nav-tabs justify-content-end">
         <li class="nav-item">
-          <a class="nav-link active" [class.active]="detailType == 'eventInfo'" rel="eventInfo" (click)="detailType ='eventInfo'">Event</a>
+          <a class="nav-link active" [class.active]="detailType == 'eventInfo'" rel="eventInfo" (click)="detailType ='eventInfo'" style="cursor:pointer">Event</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="detailType == 'artistInfo'" rel="artistInfo" (click)="detailType ='artistInfo'">Artist/Teams</a>
+          <a class="nav-link" [class.active]="detailType == 'artistInfo'" rel="artistInfo" (click)="detailType ='artistInfo'" style="cursor:pointer">Artist/Teams</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="detailType == 'venueInfo'" rel="venueInfo" (click)="detailType ='venueInfo'">Venue</a>
+          <a class="nav-link" [class.active]="detailType == 'venueInfo'" rel="venueInfo" (click)="detailType ='venueInfo'" style="cursor:pointer">Venue</a>
         </li>
       </ul>
 
@@ -164,10 +164,9 @@
             </table>
 
             <div *ngIf="ifLatLongPresent == true">
-              MAPS COMMENTED
-              <!--<agm-map [latitude]="venueDetails.Latitude" [longitude]="venueDetails.Longitude" style = 'height: 400px'>
+              <agm-map [latitude]="venueDetails.Latitude" [longitude]="venueDetails.Longitude" style = 'height: 400px'>
                 <agm-marker [latitude]="venueDetails.Latitude" [longitude]="venueDetails.Longitude"></agm-marker>
-              </agm-map>-->
+              </agm-map>
             </div>
           </div>
 

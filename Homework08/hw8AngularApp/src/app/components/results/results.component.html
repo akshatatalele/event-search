@@ -21,11 +21,11 @@
               <tr *ngFor="let e of eventTableList; let i = index">
                   <th scope="row">{{ i+1 }}</th>
                   <td>{{ e.Date }}</td>
-                  <td><a (click)="clickedEventDetails(e, 'results')" class="eventTooltip" matTooltip={{e.tooltip}}> {{ e.Name }} </a></td>
+                  <td><a (click)="clickedEventDetails(e, 'results')" class="eventTooltip" matTooltip={{e.tooltip}} style="cursor:pointer"> {{ e.Name }} </a></td>
                   <td>{{ e.Category}}</td>
                   <td>{{ e.Venue }}</td>
                   <td>
-                    <span class="material-icons" style="vertical-align: middle;" (click) = "AddToFavorites(e)">
+                    <span class="material-icons" style="vertical-align: middle;" (click) = "AddToFavorites(e)" style="cursor:pointer">
                       <div *ngIf="e.isFavorite" style="color: gold">star</div><div *ngIf="!e.isFavorite">star_border</div>
                     </span>
                   </td>
@@ -61,11 +61,11 @@
                 <tr *ngFor="let e of favTableList; let i = index">
                     <th scope="row">{{ i+1 }}</th>
                     <td>{{ e.Date }}</td>
-                    <td><a (click)="clickedEventDetails(e, 'favorites')" class="eventTooltip" matTooltip={{e.tooltip}}> {{ e.Name }} </a></td>
+                    <td><a (click)="clickedEventDetails(e, 'favorites')" class="eventTooltip" matTooltip={{e.tooltip}} style="cursor:pointer"> {{ e.Name }} </a></td>
                     <td>{{ e.Category}}</td>
                     <td>{{ e.Venue }}</td>
                     <td>
-                      <span class="material-icons" style="vertical-align: middle;" (click) = "deleteFromFavorites(e)">
+                      <span class="material-icons" style="vertical-align: middle;" (click) = "deleteFromFavorites(e)" style="cursor:pointer">
                         <div>delete</div>
                       </span>
                     </td>
