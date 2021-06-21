@@ -103,6 +103,9 @@ export class ResultsComponent implements OnInit {
             newFavList.push(this.favIDList[favid])
           }
         }
+        if(response[key]["ID"] == this.clickedEvent.ID){
+          newFavList.push(response[key]["ID"])
+        }
       }else{
         newFavList.push(response[key]["ID"])
       }
