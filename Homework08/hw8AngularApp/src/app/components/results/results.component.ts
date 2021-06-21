@@ -83,6 +83,7 @@ export class ResultsComponent implements OnInit {
     var newFavList = []
     console.log("Subscriber response: ", response)
     console.log("subscriber fav id list before: ", this.favIDList)
+    console.log("Subscriber eventTableList after: ", this.eventTableList)
     for (var key in response) {
       console.log("response.key", response[key])
       var newName = "", tooltip = ""
@@ -121,22 +122,32 @@ export class ResultsComponent implements OnInit {
       //   }
       // }
 // && this.clickedEvent.ID == response[key]['ID']
-      for (var key1 in this.eventTableList){
-        if(response[key]["ID"] == this.eventTableList[key1]["ID"]){
-          this.eventTableList[key1].isFavorite = true
-          //break
-        }
-        // else{
-        //   this.eventTableList[key1]["isFavorite"] = false
-        // }
-        if(this.eventTableList[key1]["ID"] == this.clickedEvent.ID){
-          this.eventTableList[key1]["isFavorite"] = this.clickedEvent.isFavorite
-        }
-      }
-      console.log("subscriber fav id list after: ", this.favIDList)
-      console.log("Subscriber eventTableList: ", this.eventTableList)
+      // for (var key1 in this.eventTableList){
+      //   if(response[key]["ID"] == this.eventTableList[key1]["ID"]){
+      //     this.eventTableList[key1].isFavorite = true
+      //   }
+      //   if(this.eventTableList[key1]["ID"] == this.clickedEvent.ID){
+      //     this.eventTableList[key1]["isFavorite"] = this.clickedEvent.isFavorite
+      //   }
+      // }
+
     }
     this.favIDList = newFavList
+    console.log("subscriber fav id list after: ", this.favIDList)
+
+    for(var key in this.eventTableList){
+      console.log(this.favIDList.includes(this.eventTableList[key]["ID"]))
+      if(!this.favIDList.includes(this.eventTableList[key]["ID"])){
+        this.eventTableList[key]['isFavorite'] = false
+      }
+
+      // for(var key1 in this.favIDList){
+      //   if(this.eventTableList[key]['ID'] == this.favIDList[key1]){
+      //     this.eventTableList[key]['isFavorite'] = true
+      //   }
+      // }
+    }
+    console.log("Subscriber eventTableList after: ", this.eventTableList)
   }
 
   displayDetails(value:any){
@@ -233,13 +244,13 @@ export class ResultsComponent implements OnInit {
     }
     //-
 
-    var newFavIDList = []
-    for (var i=0;i< this.favIDList.length;i++){
-      if(this.favIDList[i] != instance.ID){
-        newFavIDList.push(this.favIDList[i])
-      }
-    }
-    this.favIDList = newFavIDList
+    // var newFavIDList = []
+    // for (var i=0;i< this.favIDList.length;i++){
+    //   if(this.favIDList[i] != instance.ID){
+    //     newFavIDList.push(this.favIDList[i])
+    //   }
+    // }
+    // this.favIDList = newFavIDList
     // console.log("Delete")
     if (instance.isFavorite){
       this.eventService.addEventToFavourites(instance)
