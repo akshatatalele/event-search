@@ -1,0 +1,26 @@
+.search-form{
+  margin:0;
+  padding:0;
+  border: 2px solid rgb(207, 207, 207);
+  margin-top: 3%;
+}
+
+h1{
+  font-size: large;
+  text-align: center;
+  margin-top: 1.5%;
+  margin-bottom: 2%;
+}
+
+.locationInput{
+  margin-left: 1%;
+}
+
+.jumbotron{
+  background-color: #f4f5f7
+}
+
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
