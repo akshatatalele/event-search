@@ -2,18 +2,30 @@ package com.example.hw09android;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VenueInfo_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VenueInfo_Fragment extends Fragment {
+public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
+
+    private GoogleMap maps;
+    View view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,6 +72,25 @@ public class VenueInfo_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         System.out.println("OnCreateView EventDetailsActivity - VenueInfo");
-        return inflater.inflate(R.layout.fragment_venue_info_, container, false);
+        view = inflater.inflate(R.layout.fragment_venue_info_, container, false);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        return view;
+    }
+
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        maps = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        maps.addMarker(new MarkerOptions()
+                .position(sydney)
+                .title("Marker in Sydney"));
+        maps.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

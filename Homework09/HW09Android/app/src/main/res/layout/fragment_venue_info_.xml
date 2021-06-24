@@ -31,7 +31,7 @@
             <TextView
                 android:id="@+id/ID_VD_Name_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- Address -->
@@ -53,7 +53,7 @@
             <TextView
                 android:id="@+id/ID_VD_Address_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- City -->
@@ -75,7 +75,7 @@
             <TextView
                 android:id="@+id/ID_VD_City_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- Phone Number -->
@@ -97,7 +97,7 @@
             <TextView
                 android:id="@+id/ID_VD_PhoneNumber_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- Open Hours -->
@@ -119,7 +119,7 @@
             <TextView
                 android:id="@+id/ID_VD_OpenHours_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- General Rule -->
@@ -141,7 +141,7 @@
             <TextView
                 android:id="@+id/ID_VD_GeneralRule_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <!-- Child Rule -->
@@ -163,8 +163,16 @@
             <TextView
                 android:id="@+id/ID_VD_ChildRule_Value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+            tools:context=".MapsActivity" />
+
 
     </LinearLayout>
 </FrameLayout>
