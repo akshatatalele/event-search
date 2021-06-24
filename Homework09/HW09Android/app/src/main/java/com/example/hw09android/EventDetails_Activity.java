@@ -17,6 +17,7 @@ public class EventDetails_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("OnCreate EventDetailsActivity");
         setContentView(R.layout.activity_event_details);
 
         tabLayout = findViewById(R.id.ID_eventDetails_tablayout);

@@ -59,6 +59,7 @@ public class ArtistInfo_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        System.out.println("OnCreateView EventDetailsActivity - ArtistInfo");
         return inflater.inflate(R.layout.fragment_artist_info_, container, false);
     }
 }

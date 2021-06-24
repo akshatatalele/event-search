@@ -7,6 +7,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +30,8 @@ public class EventInfo_Fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    View view;
+    RequestQueue requestQueue;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,6 +72,37 @@ public class EventInfo_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_info_, container, false);
+        view = inflater.inflate(R.layout.fragment_event_info_, container, false);
+        System.out.println("OnCreateView EventDetailsActivity - EventInfo");
+        requestQueue = Volley.newRequestQueue(this.getContext());
+        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"vvG1IZ4zCXpxU9\"}";
+
+        getEventDetails(requestURL);
+//        LinearLayout artistLinearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Artists);
+//        TextView artistView = view.findViewById(R.id.ID_ED_Artist_Value);
+//        artistView.setText("Maroon 5");
+////        artistLinearLayout.setVisibility(view.GONE);
+//        TextView venueView = view.findViewById(R.id.ID_ED_Venue_Value);
+//        venueView.setText("Banc California Stadium");
+
+        return view;
+    }
+
+    private void getEventDetails(String requestURL){
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response);
+                    }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+
+        requestQueue.add(request);
+
     }
 }
