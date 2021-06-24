@@ -73,10 +73,9 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         System.out.println("OnCreateView EventDetailsActivity - VenueInfo");
         view = inflater.inflate(R.layout.fragment_venue_info_, container, false);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        mapFragment.getMapAsync(this);*/
         return view;
     }
 

@@ -1,5 +1,6 @@
 package com.example.hw09android;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -31,7 +32,7 @@ public class EventInfo_Fragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     View view;
-    RequestQueue requestQueue;
+    String myStr;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,10 +75,7 @@ public class EventInfo_Fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_event_info_, container, false);
         System.out.println("OnCreateView EventDetailsActivity - EventInfo");
-        requestQueue = Volley.newRequestQueue(this.getContext());
-        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"vvG1IZ4zCXpxU9\"}";
 
-        getEventDetails(requestURL);
 //        LinearLayout artistLinearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Artists);
 //        TextView artistView = view.findViewById(R.id.ID_ED_Artist_Value);
 //        artistView.setText("Maroon 5");
@@ -85,24 +83,14 @@ public class EventInfo_Fragment extends Fragment {
 //        TextView venueView = view.findViewById(R.id.ID_ED_Venue_Value);
 //        venueView.setText("Banc California Stadium");
 
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            myStr = bundle.getString("response");
+        }
+        System.out.println("Response in Event fragment: " + myStr);
+
         return view;
     }
 
-    private void getEventDetails(String requestURL){
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                    }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
-                }
-            });
 
-        requestQueue.add(request);
-
-    }
 }

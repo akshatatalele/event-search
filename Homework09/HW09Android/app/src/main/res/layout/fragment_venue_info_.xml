@@ -13,6 +13,8 @@
         android:orientation="vertical">
 
         <!-- Name -->
+
+        <!-- Address -->
         <LinearLayout
             android:id="@+id/ID_VDetails_Name_Category"
             android:layout_width="match_parent"
@@ -34,7 +36,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!-- Address -->
         <LinearLayout
             android:id="@+id/ID_VDetails_Address_Category"
             android:layout_width="match_parent"
@@ -166,12 +167,12 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <fragment
+        <!--<fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200sp"
-            tools:context=".MapsActivity" />
+            tools:context=".MapsActivity" />-->
 
 
     </LinearLayout>
