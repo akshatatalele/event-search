@@ -34,6 +34,11 @@ public class EventDetails_Activity extends AppCompatActivity {
     EventDetailsFragmentAdapter eventDetailsFragmentAdapter;
     private Toolbar mTopToolbar;
     private Menu menu;
+    final int[] ICONS = new int[]{
+            R.drawable.info_outline,
+            R.drawable.artist,
+            R.drawable.venue
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +84,14 @@ public class EventDetails_Activity extends AppCompatActivity {
                 }
         );
 
-//        mTopToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-//        setSupportActionBar(mTopToolbar);
+        setTabIcons();
 
+    }
+
+    public void setTabIcons(){
+        for (int i = 0; i < 3; i++){
+            tabLayout.getTabAt(i).setIcon(ICONS[i]);
+        }
     }
 
     public void setSupportActionBar(Toolbar mTopToolbar) {

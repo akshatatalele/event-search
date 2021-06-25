@@ -2,12 +2,13 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer"
-    tools:context=".EventDetails_Activity"
+    app:contentInsetStart="0dp"
 
-    >
+    app:contentInsetStartWithNavigation="0dp"
+    tools:context=".EventDetails_Activity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,21 +17,25 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/ID_eventDetails_tablayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="0dp">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="0dp"
                 android:text="EVENT" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="0dp"
                 android:text="ARTIST" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="0dp"
                 android:text="VENUE" />
         </com.google.android.material.tabs.TabLayout>
 
@@ -38,7 +43,8 @@
             android:id="@+id/ID_eventDetails_ViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/ID_eventDetails_tablayout" />
+            android:layout_below="@+id/ID_eventDetails_tablayout"
+            android:layout_marginTop="0dp" />
     </RelativeLayout>
 
 
