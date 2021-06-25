@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +25,7 @@ public class EventDetails_Activity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     EventDetailsFragmentAdapter eventDetailsFragmentAdapter;
+    private Toolbar mTopToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class EventDetails_Activity extends AppCompatActivity {
                 }
         );
 
+//        mTopToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(mTopToolbar);
 
     }
 

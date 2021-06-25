@@ -1,12 +1,26 @@
 package com.example.hw09android;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,6 +85,82 @@ public class ArtistInfo_Fragment extends Fragment {
         System.out.println("Response in Artist fragment: " + myStr);
 
 
+        createArtistsView();
         return view;
+    }
+
+    public void createArtistsView(){
+
+        TextView textView = new TextView(this.getContext());
+        textView.setText("Maroon 5");
+
+        LinearLayout rowLinearLayout = createVerticalLinearLayout();
+        rowLinearLayout.addView(textView);
+        rowLinearLayout.addView(createHorizontalLinearLayout("Name", "Maroon 5"));
+        rowLinearLayout.addView(createHorizontalLinearLayout("Followers", "12345"));
+        rowLinearLayout.addView(createHorizontalLinearLayout("Popularity", "91"));
+        String spotifyURL = "http://www.google.com";
+        rowLinearLayout.addView(createHorizontalLinearLayout("Spotify", "<a href = '" + spotifyURL + "'>Spotify</a>"));
+
+        TableRow artist1 = createTableRow();
+        artist1.addView(rowLinearLayout);
+
+        TableLayout tableLayout = view.findViewById(R.id.ID_VDetails_TableLayout);
+        tableLayout.addView(artist1);
+
+
+    }
+
+    public TextView createLabelTextView(String labelName){
+        TextView textView = new TextView(this.getContext());
+        textView.setText(labelName);
+        textView.setLayoutParams(new RelativeLayout.LayoutParams(500, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        textView.setTranslationX(0);
+        return textView;
+    }
+
+    public TextView createValueTextView(String labelName){
+        TextView textView = new TextView(this.getContext());
+        textView.setText(labelName);
+        textView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        return textView;
+    }
+
+    public LinearLayout createHorizontalLinearLayout(String label, String value){
+        LinearLayout linearLayout = new LinearLayout(this.getContext());
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        linearLayout.addView(createLabelTextView(label));
+
+        TextView link = new TextView(this.getContext());
+        if (label == "Spotify"){
+
+            link.setClickable(true);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                link.setText(Html.fromHtml(value, Html.FROM_HTML_MODE_COMPACT));
+            }else{
+                link.setText(Html.fromHtml(value));
+            }
+            link.setMovementMethod(LinkMovementMethod.getInstance());
+            link.setLinkTextColor(Color.BLUE);
+            linearLayout.addView(link);
+        }else{
+            linearLayout.addView(createValueTextView(value));
+        }
+
+
+        return linearLayout;
+    }
+
+    public LinearLayout createVerticalLinearLayout(){
+        LinearLayout linearLayout = new LinearLayout(this.getContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        return linearLayout;
+    }
+
+    public TableRow createTableRow(){
+        TableRow tableRow = new TableRow(this.getContext());
+        tableRow.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        return tableRow;
     }
 }

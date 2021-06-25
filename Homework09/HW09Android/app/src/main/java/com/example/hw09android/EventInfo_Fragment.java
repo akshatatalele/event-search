@@ -83,6 +83,7 @@ public class EventInfo_Fragment extends Fragment {
 //        TextView venueView = view.findViewById(R.id.ID_ED_Venue_Value);
 //        venueView.setText("Banc California Stadium");
 
+
         Bundle bundle = getArguments();
         if (bundle != null){
             myStr = bundle.getString("response");

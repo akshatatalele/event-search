@@ -13,7 +13,8 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAf8dVq0WH0Mz0h0ef7PAbaAlncbrsRWyc" />
-        <activity android:name=".EventDetails_Activity"></activity>
+        <activity android:name=".EventDetails_Activity"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
