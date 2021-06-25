@@ -26,6 +26,7 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap maps;
     View view;
+    String myStr;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +77,11 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
         /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);*/
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            myStr = bundle.getString("response");
+        }
+        System.out.println("Response in Venue fragment: " + myStr);
         return view;
     }
 

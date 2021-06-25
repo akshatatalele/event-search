@@ -2,10 +2,12 @@ package com.example.hw09android;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,10 +36,6 @@ public class EventDetails_Activity extends AppCompatActivity {
 
         eventDetailsFragmentAdapter = new EventDetailsFragmentAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager2.setAdapter(eventDetailsFragmentAdapter);
-
-//        tabLayout.addTab(tabLayout.newTab().setText("Event"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Artist"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Venue"));
 
         tabLayout.addOnTabSelectedListener(
                 new TabLayout.OnTabSelectedListener() {
@@ -69,5 +67,6 @@ public class EventDetails_Activity extends AppCompatActivity {
 
 
     }
+
 
 }

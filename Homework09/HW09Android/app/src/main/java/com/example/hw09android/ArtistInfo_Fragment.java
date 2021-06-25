@@ -23,6 +23,8 @@ public class ArtistInfo_Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    View view;
+    String myStr;
 
     public ArtistInfo_Fragment() {
         // Required empty public constructor
@@ -60,6 +62,15 @@ public class ArtistInfo_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         System.out.println("OnCreateView EventDetailsActivity - ArtistInfo");
-        return inflater.inflate(R.layout.fragment_artist_info_, container, false);
+        view = inflater.inflate(R.layout.fragment_artist_info_, container, false);
+
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            myStr = bundle.getString("response");
+        }
+        System.out.println("Response in Artist fragment: " + myStr);
+
+
+        return view;
     }
 }

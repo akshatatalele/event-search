@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, EventDetails_Activity.class);
                         startActivity(intent);
                         requestQueue = Volley.newRequestQueue(MainActivity.this);
-                        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"vvG1IZ4zCXpxU9\"}";
+//                        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"vvG1IZ4zCXpxU9\"}";
+                        String requestURL = "http://10.0.2.2:8080/api/get-event-details/{\"id\":\"vvG1IZ4zCXpxU9\"}";
 
                         getEventDetails(requestURL);
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
 //                        System.out.println(response);
-
+                        System.out.println("MainActivity response: " + response);
                         // set Fragmentclass Arguments
                         EventInfo_Fragment eventInfo_fragment = new EventInfo_Fragment();
                         new Handler().post(new Runnable() {
@@ -61,7 +62,31 @@ public class MainActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("response", String.valueOf(response));
                         eventInfo_fragment.setArguments(bundle);
-                        fragmentTransaction.replace(R.id.flFragment, eventInfo_fragment).commitAllowingStateLoss();
+                        fragmentTransaction.replace(R.id.flFragment_event, eventInfo_fragment).commitAllowingStateLoss();
+                            }
+                        });
+
+                        ArtistInfo_Fragment artistInfo_fragment = new ArtistInfo_Fragment();
+                        new Handler().post(new Runnable() {
+                            public void run() {
+                                FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                                        .beginTransaction();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("response", String.valueOf(response));
+                                artistInfo_fragment.setArguments(bundle);
+                                fragmentTransaction.replace(R.id.flFragment_event, artistInfo_fragment).commitAllowingStateLoss();
+                            }
+                        });
+
+                        VenueInfo_Fragment venueInfo_fragment = new VenueInfo_Fragment();
+                        new Handler().post(new Runnable() {
+                            public void run() {
+                                FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                                        .beginTransaction();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("response", String.valueOf(response));
+                                venueInfo_fragment.setArguments(bundle);
+                                fragmentTransaction.replace(R.id.flFragment_event, venueInfo_fragment).commitAllowingStateLoss();
                             }
                         });
                         System.out.println("AFTER API CALL");

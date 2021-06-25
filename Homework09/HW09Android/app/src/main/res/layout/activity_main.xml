@@ -13,9 +13,10 @@
         android:text="Button" />
 
     <FrameLayout
-        android:id="@+id/flFragment"
+        android:id="@+id/flFragment_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </FrameLayout>
+
 </RelativeLayout>
