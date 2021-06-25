@@ -91,6 +91,7 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         maps = googleMap;
 
+        maps.getUiSettings().setZoomControlsEnabled(true);
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         maps.addMarker(new MarkerOptions()
