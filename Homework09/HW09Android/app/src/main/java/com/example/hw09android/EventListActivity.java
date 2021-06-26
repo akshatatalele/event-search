@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -75,6 +77,13 @@ public class EventListActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        try {
+                            parseEventListResponse("{\"error\":\"API call failed\"}");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
         });
 
@@ -86,26 +95,47 @@ public class EventListActivity extends AppCompatActivity {
     public void parseEventListResponse(String response) throws IOException, JSONException {
         HashMap<String, String> map = new HashMap<String, String>();
         JSONObject jObject = new JSONObject(response);
-        Iterator<?> keys = jObject.keys();
-        List details = new ArrayList();
-        while( keys.hasNext() ){
-            String value = jObject.getString((String)keys.next());
-            details.add(value.toString());
+        TextView errorTextView = findViewById(R.id.ID_EL_error_textview);
+        RecyclerView recyclerView = findViewById(R.id.ID_EventList_recyclerView);
+        if (jObject.has("error")){
+            if(jObject.getString("error").equals("API call failed")){
+                errorTextView.setText("API call failed");
+                errorTextView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }else if(jObject.getString("error").equals("Failed to get event details")){
+                errorTextView.setText("Failed to get event list");
+                errorTextView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }else if(jObject.getString("error").equals("No records")){
+                errorTextView.setText("No Records");
+                errorTextView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }
+        } else{
+            errorTextView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            Iterator<?> keys = jObject.keys();
+            List details = new ArrayList();
+            while( keys.hasNext() ){
+                String value = jObject.getString((String)keys.next());
+                details.add(value.toString());
+            }
+
+            for (int i = 0; i<details.size(); i++){
+                JSONObject jObject1 = new JSONObject((String) details.get(i));
+                EventTable eventTable = new EventTable();
+                eventTable.setID(jObject1.getString("ID"));
+                eventTable.setDate(jObject1.getString("Date"));
+                System.out.println(jObject1.getString("Event"));
+                eventTable.setName(jObject1.getString("Event"));
+                eventTable.setCategory(jObject1.getString("Category"));
+                eventTable.setVenue(jObject1.getString("Venue"));
+                eventTable.setIsFavorite(false);
+
+                System.out.println(eventTable.toString());
+                eventResponseList.add(eventTable);
+            }
         }
 
-        for (int i = 0; i<details.size(); i++){
-            JSONObject jObject1 = new JSONObject((String) details.get(i));
-            EventTable eventTable = new EventTable();
-            eventTable.setID(jObject1.getString("ID"));
-            eventTable.setDate(jObject1.getString("Date"));
-            System.out.println(jObject1.getString("Event"));
-            eventTable.setName(jObject1.getString("Event"));
-            eventTable.setCategory(jObject1.getString("Category"));
-            eventTable.setVenue(jObject1.getString("Venue"));
-            eventTable.setIsFavorite(false);
-
-            System.out.println(eventTable.toString());
-            eventResponseList.add(eventTable);
-        }
     }
 }

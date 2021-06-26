@@ -126,6 +126,11 @@ public class EventDetails_Activity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                Bundle bundle = new Bundle();
+                bundle.putString("response", String.valueOf("{\"error\":\"API Call Failed\"}"));
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                eventDetailsFragmentAdapter = new EventDetailsFragmentAdapter(fragmentManager, getLifecycle(), bundle);
+                viewPager2.setAdapter(eventDetailsFragmentAdapter);
             }
         });
 
@@ -180,7 +185,8 @@ public class EventDetails_Activity extends AppCompatActivity {
         }
         if (id == R.id.twitter) {
             Toast.makeText(EventDetails_Activity.this, "Twitter clicked", Toast.LENGTH_LONG).show();
-            String url = "http://www.google.com";
+            //"https://twitter.com/intent/tweet?text=Check+out+" + this.eventDetails.Name + "+located+at+" + this.eventDetails.Venue + ".&hashtags=CSCI571EventSearch"
+            String url = "https://twitter.com/intent/tweet?text=Check+out+" + eventDataModel.Name + "+located+at+" + eventDataModel.Venue + ".&hashtags=CSCI571EventSearch";
             Uri uriUrl = Uri.parse(url);
             Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
             startActivity(launchBrowser);

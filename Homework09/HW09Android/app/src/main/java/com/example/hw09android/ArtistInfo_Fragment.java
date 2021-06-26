@@ -103,78 +103,92 @@ public class ArtistInfo_Fragment extends Fragment {
         TableLayout tableLayout = view.findViewById(R.id.ID_VDetails_TableLayout);
 
         JSONObject jObject = new JSONObject(myStr);
-        JSONObject eventInfo = new JSONObject(jObject.getString("Artists Info"));
-
-        if (eventInfo.has("error")){
-            if (eventInfo.getString("error").equals("Failed to get artist details results")){
-                errorTextView.setText("Failed to get artist details results");
-            }else if (eventInfo.getString("error").equals("No details available")){
-                errorTextView.setText("No details available");
-            }
-            errorTextView.setVisibility(View.VISIBLE);
-            tableLayout.setVisibility(View.GONE);
-        }else if (eventInfo.has("NoArtist")){
-            errorTextView.setText("No Artists");
+        if (jObject.has("error")){
+            //client side API call failed
+            errorTextView.setText("API call failed");
             errorTextView.setVisibility(View.VISIBLE);
             tableLayout.setVisibility(View.GONE);
         }else{
-            errorTextView.setVisibility(View.GONE);
-            tableLayout.setVisibility(View.VISIBLE);
-            Iterator<String> keys = eventInfo.keys();
+            if(!jObject.has("Artists Info")){
+                //server side api fail
+                errorTextView.setText("Failed to get artist details");
+                errorTextView.setVisibility(View.VISIBLE);
+                tableLayout.setVisibility(View.GONE);
+            }else{
+                JSONObject eventInfo = new JSONObject(jObject.getString("Artists Info"));
 
-            while(keys.hasNext()) {
-                String key = keys.next();
-                JSONObject artist = new JSONObject(eventInfo.getString(key));
-                if (artist.has("error")){
-                    //Artists name: No details
-                    TextView errortextview = new TextView(this.getContext());
-                    errortextview.setText(key + ": No Details");
-                    errortextview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                    errortextview.setTranslationX(0);
-
-                    LinearLayout linearLayout = new LinearLayout(this.getContext());
-                    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-                    linearLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                    linearLayout.addView(errortextview);
-
-                    LinearLayout rowLinearLayout = createVerticalLinearLayout();
-                    rowLinearLayout.addView(linearLayout);
-
-                    TableRow artist1 = createTableRow();
-                    artist1.addView(rowLinearLayout);
-
-                    tableLayout.addView(artist1);
-
+                if (eventInfo.has("error")){
+                    if (eventInfo.getString("error").equals("Failed to get artist details results")){
+                        errorTextView.setText("Failed to get artist details results");
+                    }else if (eventInfo.getString("error").equals("No details available")){
+                        errorTextView.setText("No details available");
+                    }
+                    errorTextView.setVisibility(View.VISIBLE);
+                    tableLayout.setVisibility(View.GONE);
+                }else if (eventInfo.has("NoArtist")){
+                    errorTextView.setText("No Artists");
+                    errorTextView.setVisibility(View.VISIBLE);
+                    tableLayout.setVisibility(View.GONE);
                 }else{
+                    errorTextView.setVisibility(View.GONE);
+                    tableLayout.setVisibility(View.VISIBLE);
+                    Iterator<String> keys = eventInfo.keys();
 
-                    LinearLayout rowLinearLayout = createVerticalLinearLayout();
+                    while(keys.hasNext()) {
+                        String key = keys.next();
+                        JSONObject artist = new JSONObject(eventInfo.getString(key));
+                        if (artist.has("error")){
+                            //Artists name: No details
+                            TextView errortextview = new TextView(this.getContext());
+                            errortextview.setText(key + ": No Details");
+                            errortextview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                            errortextview.setTranslationX(0);
 
-                    if(!key.equals("NoData")){
-                        rowLinearLayout.addView(createHorizontalLinearLayout("Name", key));
+                            LinearLayout linearLayout = new LinearLayout(this.getContext());
+                            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                            linearLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                            linearLayout.addView(errortextview);
+
+                            LinearLayout rowLinearLayout = createVerticalLinearLayout();
+                            rowLinearLayout.addView(linearLayout);
+
+                            TableRow artist1 = createTableRow();
+                            artist1.addView(rowLinearLayout);
+
+                            tableLayout.addView(artist1);
+
+                        }else{
+
+                            LinearLayout rowLinearLayout = createVerticalLinearLayout();
+
+                            if(!key.equals("NoData")){
+                                rowLinearLayout.addView(createHorizontalLinearLayout("Name", key));
+                            }
+
+                            if(!artist.getString("Followers").equals(0)){
+                                rowLinearLayout.addView(createHorizontalLinearLayout("Followers", artist.getString("Followers")));
+                            }
+
+                            if (!artist.getString("Popularity").equals(0) ){
+                                rowLinearLayout.addView(createHorizontalLinearLayout("Popularity", artist.getString("Popularity")));
+                            }
+
+                            if (!artist.getString("CheckAt").equals("")){
+                                String spotifyURL = artist.getString("CheckAt");
+                                rowLinearLayout.addView(createHorizontalLinearLayout("Spotify", "<a href = '" + spotifyURL + "'>Spotify</a>"));
+                            }
+
+                            TableRow artist1 = createTableRow();
+                            artist1.addView(rowLinearLayout);
+
+
+                            tableLayout.addView(artist1);
+                        }
+                        System.out.println(artist);
                     }
 
-                    if(!artist.getString("Followers").equals(0)){
-                        rowLinearLayout.addView(createHorizontalLinearLayout("Followers", artist.getString("Followers")));
-                    }
-
-                    if (!artist.getString("Popularity").equals(0) ){
-                        rowLinearLayout.addView(createHorizontalLinearLayout("Popularity", artist.getString("Popularity")));
-                    }
-
-                    if (!artist.getString("CheckAt").equals("")){
-                        String spotifyURL = artist.getString("CheckAt");
-                        rowLinearLayout.addView(createHorizontalLinearLayout("Spotify", "<a href = '" + spotifyURL + "'>Spotify</a>"));
-                    }
-
-                    TableRow artist1 = createTableRow();
-                    artist1.addView(rowLinearLayout);
-
-
-                    tableLayout.addView(artist1);
                 }
-                System.out.println(artist);
             }
-
         }
     }
 
