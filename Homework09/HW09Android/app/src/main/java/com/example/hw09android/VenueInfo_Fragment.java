@@ -1,14 +1,19 @@
 package com.example.hw09android;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +21,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +37,7 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap maps;
     View view;
     String myStr;
+    double lat, lng;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,18 +85,115 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         System.out.println("OnCreateView EventDetailsActivity - VenueInfo");
         view = inflater.inflate(R.layout.fragment_venue_info_, container, false);
-        /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
+
+        setVenueInfoOnFragment();
+
+        return view;
+    }
+
+    public void setVenueInfoOnFragment(){
         Bundle bundle = getArguments();
         if (bundle != null){
             myStr = bundle.getString("response");
         }
         System.out.println("Response in Venue fragment: " + myStr);
-        return view;
+        TextView errorTextView = view.findViewById(R.id.ID_VD_error_TextView);
+        LinearLayout linearLayoutMain = view.findViewById(R.id.ID_VenueDetails_LinearLayout);
+
+        try {
+            JSONObject jObject = new JSONObject(myStr);
+            JSONObject eventInfo = new JSONObject(jObject.getString("Venue Info"));
+            JSONObject venueName = new JSONObject(jObject.getString("Event Info"));
+
+            Iterator<?> keys = eventInfo.keys();
+            while( keys.hasNext() ){
+                if(keys.next().equals("error")){
+                    System.out.println("Failed to get event details");
+                    if(eventInfo.getString((String) keys.next()).equals("Failed to get venue details results")){
+                        errorTextView.setText("No details available");
+                    }else if(eventInfo.getString((String) keys.next()).equals("No details available")){
+
+                    }
+                    errorTextView.setVisibility(View.VISIBLE);
+                    linearLayoutMain.setVisibility(View.GONE);
+                    break;
+                }
+            }
+
+            errorTextView.setVisibility(View.GONE);
+            linearLayoutMain.setVisibility(View.VISIBLE);
+            if (venueName.getString("Venue").equals("NoData")){
+                LinearLayout artistLinearLayout = view.findViewById(R.id.ID_VDetails_Name_Category);
+                artistLinearLayout.setVisibility(view.GONE);
+            }else{
+                TextView artistView = view.findViewById(R.id.ID_VD_Name_Value);
+                artistView.setText(venueName.getString("Venue"));
+            }
+
+            if (eventInfo.getString("Address").equals("NoData")){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_Address_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                TextView textView = view.findViewById(R.id.ID_VD_Address_Value);
+                textView.setText(eventInfo.getString("Address"));
+            }
+
+            if (eventInfo.getString("City").equals("NoData")){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_City_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                TextView textView = view.findViewById(R.id.ID_VD_City_Value);
+                textView.setText(eventInfo.getString("City"));
+            }
+
+            if (eventInfo.getString("PhoneNumber").equals("")){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_PhoneNumber_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                TextView textView = view.findViewById(R.id.ID_VD_PhoneNumber_Value);
+                textView.setText(eventInfo.getString("PhoneNumber"));
+            }
+
+            if (eventInfo.getString("OpenHours").equals("NoData")){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_OpenHours_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                TextView textView = view.findViewById(R.id.ID_VD_OpenHours_Value);
+                textView.setText(eventInfo.getString("OpenHours"));
+            }
+
+            if (eventInfo.getString("GeneralRule").equals("NoData")){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_GeneralRule_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                TextView textView = view.findViewById(R.id.ID_VD_GeneralRule_Value);
+                textView.setText(eventInfo.getString("GeneralRule"));
+            }
+
+            if (eventInfo.getString("ChildRule").equals("NoData")){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_ChildRule_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                TextView textView = view.findViewById(R.id.ID_VD_ChildRule_Value);
+                textView.setText(eventInfo.getString("ChildRule"));
+            }
+
+            if (Double.parseDouble(eventInfo.getString("Latitude")) == 0
+                    && Double.parseDouble(eventInfo.getString("Longitude")) == 0){
+                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_map_Category);
+                linearLayout.setVisibility(view.GONE);
+            }else{
+                lat = Double.parseDouble(eventInfo.getString("Latitude"));
+                lng = Double.parseDouble(eventInfo.getString("Longitude"));
+                /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(this);*/
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-
-
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -93,10 +201,10 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
 
         maps.getUiSettings().setZoomControlsEnabled(true);
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(lat, lng);
         maps.addMarker(new MarkerOptions()
                 .position(sydney)
-                .title("Marker in Sydney"));
+                .title("Venue"));
         maps.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

@@ -7,7 +7,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
-        android:id="@+id/ID_EventDetails_LinearLayout"
+        android:id="@+id/ID_VenueDetails_LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -167,13 +167,28 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ID_VDetails_map_Category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:orientation="horizontal">
         <!--<fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200sp"
             tools:context=".MapsActivity" />-->
+    </LinearLayout>
 
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/ID_VD_error_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Failed to get Venue details"
+        android:textAlignment="center" />
 </FrameLayout>
