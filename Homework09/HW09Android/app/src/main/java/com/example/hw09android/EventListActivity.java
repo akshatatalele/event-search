@@ -1,6 +1,8 @@
 package com.example.hw09android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
@@ -27,6 +29,9 @@ public class EventListActivity extends AppCompatActivity {
     ObjectMapper objectMapper = new ObjectMapper();
     RequestQueue requestQueue;
     List<EventTable> eventResponseList = new ArrayList<>();
+    private RecyclerView eventsListRecyclerView;
+    private RecyclerView.Adapter eventsListAdapter;
+    private RecyclerView.LayoutManager eventsListLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,14 @@ public class EventListActivity extends AppCompatActivity {
                         System.out.println("EventListActivity response: " + response);
                         try {
                             parseEventListResponse(response.toString());
+                            eventsListRecyclerView = (RecyclerView) findViewById(R.id.ID_EventList_recyclerView);
+                            eventsListRecyclerView.hasFixedSize();
+
+                            eventsListLayoutManager = new LinearLayoutManager(EventListActivity.this);
+                            eventsListRecyclerView.setLayoutManager(eventsListLayoutManager);
+
+                            eventsListAdapter = new EventListRecyclerViewAdapter(eventResponseList, EventListActivity.this);
+                            eventsListRecyclerView.setAdapter(eventsListAdapter);
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
@@ -63,6 +76,8 @@ public class EventListActivity extends AppCompatActivity {
                         error.printStackTrace();
                     }
         });
+
+
 
         requestQueue.add(request);
 
