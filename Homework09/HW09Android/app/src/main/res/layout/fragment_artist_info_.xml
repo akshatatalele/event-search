@@ -5,12 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".ArtistInfo_Fragment">
 
-    <TableLayout
-        android:id="@+id/ID_VDetails_TableLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-    </TableLayout>
+        <TableLayout
+            android:id="@+id/ID_VDetails_TableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TableLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/ID_AD_error_TextView"

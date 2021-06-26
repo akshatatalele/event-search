@@ -5,191 +5,196 @@
     android:layout_height="match_parent"
     tools:context=".EventInfo_Fragment">
 
-    <LinearLayout
-        android:id="@+id/ID_EventDetails_LinearLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- Artist -->
         <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_Artists"
+            android:id="@+id/ID_EventDetails_LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/ID_ED_Artist_Label"
-                android:layout_width="150sp"
+            <!-- Artist -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Artists"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Artist(s)/Teams"
-                android:translationX="0sp" />
+                android:gravity="center|left"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/ID_ED_Artist_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/ID_ED_Artist_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Artist(s)/Teams"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Artist_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Venue -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Venue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Venue_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Venue"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Venue_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Date -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Date_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Date"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Date_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Category -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Category_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Category"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Category_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Price Range -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_PriceRange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_PriceRange_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Price Range"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_PriceRange_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Ticket Status -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_TicketStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_TicketStatus_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Ticket Status"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_TicketStatus_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Buy Ticket At -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_BuyTicketAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_BuyTicketAt_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Buy Ticket At"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_BuyTicketAt_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ticketmaster" />
+            </LinearLayout>
+
+            <!-- Seat map -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_SeatMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_SeatMap_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Seat Map"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_SeatMap_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View Seat Map Here" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <!-- Venue -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_Venue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_Venue_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Venue"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_Venue_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Date -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_Date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_Date_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Date"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_Date_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Category -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_Category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_Category_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Category"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_Category_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Price Range -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_PriceRange"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_PriceRange_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Price Range"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_PriceRange_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Ticket Status -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_TicketStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_TicketStatus_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Ticket Status"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_TicketStatus_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Buy Ticket At -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_BuyTicketAt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_BuyTicketAt_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Buy Ticket At"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_BuyTicketAt_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ticketmaster"/>
-        </LinearLayout>
-
-        <!-- Seat map -->
-        <LinearLayout
-            android:id="@+id/ID_EDetails_LinearLayout_SeatMap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/ID_ED_SeatMap_Label"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:width="150sp"
-                android:text="Seat Map"
-                android:translationX="0sp" />
-
-            <TextView
-                android:id="@+id/ID_ED_SeatMap_Value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="View Seat Map Here"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/ID_ED_Error_TextView"
