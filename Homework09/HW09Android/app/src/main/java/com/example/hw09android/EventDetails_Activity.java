@@ -25,13 +25,21 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class EventDetails_Activity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    EventDetailsFragmentAdapter eventDetailsFragmentAdapter;
+    EventDetailsFragmentAdapter eventDetailsFragmentAdapter, adapter;
+    RequestQueue requestQueue;
+    ObjectMapper objectMapper = new ObjectMapper();
+    EventTable eventDataModel;
+
     private Toolbar mTopToolbar;
     private Menu menu;
     final int[] ICONS = new int[]{
@@ -46,15 +54,26 @@ public class EventDetails_Activity extends AppCompatActivity {
         System.out.println("OnCreate EventDetailsActivity");
         setContentView(R.layout.activity_event_details);
 
+        Intent intent = getIntent();
+        String eventDataModelStr = intent.getStringExtra("eventDetails");
+        System.out.println(eventDataModelStr.toString());
+        try {
+            eventDataModel = objectMapper.readValue(eventDataModelStr, EventTable.class);
+            System.out.println(eventDataModel.ID);
+            getEventDetails(eventDataModel.ID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         mTopToolbar = (Toolbar) findViewById(R.id.drawer);
         setSupportActionBar(mTopToolbar);
-        getSupportActionBar().setTitle("Event Name");
+        getSupportActionBar().setTitle(eventDataModel.Name);
 
         tabLayout = findViewById(R.id.ID_eventDetails_tablayout);
         viewPager2 = findViewById(R.id.ID_eventDetails_ViewPager);
 
-        eventDetailsFragmentAdapter = new EventDetailsFragmentAdapter(getSupportFragmentManager(), getLifecycle());
-        viewPager2.setAdapter(eventDetailsFragmentAdapter);
+//        eventDetailsFragmentAdapter = new EventDetailsFragmentAdapter(getSupportFragmentManager(), getLifecycle());
+//        viewPager2.setAdapter(eventDetailsFragmentAdapter);
 
         tabLayout.addOnTabSelectedListener(
                 new TabLayout.OnTabSelectedListener() {
@@ -88,6 +107,31 @@ public class EventDetails_Activity extends AppCompatActivity {
 
     }
 
+    private void getEventDetails(String id){
+        System.out.println("BEFORE API CALL");
+        requestQueue = Volley.newRequestQueue(this);
+        String requestURL = "http://10.0.2.2:8080/api/get-event-details/{\"id\":\"" + id + "\"}";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("response", String.valueOf(response));
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        eventDetailsFragmentAdapter = new EventDetailsFragmentAdapter(fragmentManager, getLifecycle(), bundle);
+                        viewPager2.setAdapter(eventDetailsFragmentAdapter);
+                        System.out.println("AFTER API CALL");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        requestQueue.add(request);
+
+    }
     public void setTabIcons(){
         for (int i = 0; i < 3; i++){
             tabLayout.getTabAt(i).setIcon(ICONS[i]);
@@ -102,7 +146,14 @@ public class EventDetails_Activity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         this.menu = menu;
-        menu.findItem(R.id.favorite_filled).setVisible(false);
+        if (eventDataModel.isFavorite == true){
+            menu.findItem(R.id.favorite_filled).setVisible(true);
+            menu.findItem(R.id.favorite_border).setVisible(false);
+        }
+        else if (eventDataModel.isFavorite == false){
+            menu.findItem(R.id.favorite_filled).setVisible(false);
+            menu.findItem(R.id.favorite_border).setVisible(true);
+        }
         return true;
     }
 

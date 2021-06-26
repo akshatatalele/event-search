@@ -2,6 +2,8 @@ package com.example.hw09android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,21 +12,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
 
 public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventListRecyclerViewAdapter.ViewHolder> {
 
+    RequestQueue requestQueue;
     ObjectMapper objectMapper = new ObjectMapper();
     List<EventTable> eventTableList;
     Context context;
+
 
     public EventListRecyclerViewAdapter(List<EventTable> eventTableList, Context context) {
         this.eventTableList = eventTableList;
@@ -69,10 +81,10 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(context, EventDetails_Activity.class);
                 try {
-                    System.out.println("Event List from adapter" + eventTableList.get(position).toString());
-                    intent.putExtra("eventData", objectMapper.writeValueAsString(eventTableList.get(position)));
+                    intent.putExtra("eventDetails", objectMapper.writeValueAsString(eventTableList.get(position)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

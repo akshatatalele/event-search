@@ -65,6 +65,7 @@ public class EventListActivity extends AppCompatActivity {
 
                             eventsListAdapter = new EventListRecyclerViewAdapter(eventResponseList, EventListActivity.this);
                             eventsListRecyclerView.setAdapter(eventsListAdapter);
+                            System.out.println("EventListActivity - END");
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
@@ -80,7 +81,6 @@ public class EventListActivity extends AppCompatActivity {
 
 
         requestQueue.add(request);
-
     }
 
     public void parseEventListResponse(String response) throws IOException, JSONException {

@@ -145,7 +145,7 @@
 
         <!-- Buy Ticket At -->
         <LinearLayout
-            android:id="@+id/ID_EDetails_BuyTicketAt_Category"
+            android:id="@+id/ID_EDetails_LinearLayout_BuyTicketAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
@@ -168,7 +168,7 @@
 
         <!-- Seat map -->
         <LinearLayout
-            android:id="@+id/ID_EDetails_SeatMap_Category"
+            android:id="@+id/ID_EDetails_LinearLayout_SeatMap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
@@ -190,5 +190,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/ID_ED_Error_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Failed to get event details"
+        android:textAlignment="center" />
 
 </FrameLayout>
