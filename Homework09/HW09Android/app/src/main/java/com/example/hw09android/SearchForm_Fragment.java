@@ -29,9 +29,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +55,7 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
     double currLongitude;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
-    TextView keywordValidationTextView, locationValidationTextView, keywordAutoCompleteTextView, distanceTextView, otherLocationTextView;
+    TextView keywordValidationTextView, locationValidationTextView, distanceTextView, otherLocationTextView;
     Spinner categorySpinner, unitsSpinner;
     RadioGroup radioGroup;
     RadioButton currLocationRadio, otherLocationRadio;
@@ -147,13 +149,13 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
         locationValidationTextView = view.findViewById(R.id.ID_SF_locValidation_label);
         locationValidationTextView.setVisibility(View.GONE);
 
-        keywordAutoCompleteTextView = view.findViewById(R.id.ID_SF_Autocomplete_textview);
-        System.out.println("Keyword: " + keywordAutoCompleteTextView.getText().toString());
+        autoCompleteTextView = view.findViewById(R.id.ID_SF_Autocomplete_textview);
+        System.out.println("Keyword: " + autoCompleteTextView.getText().toString());
 
         autoCompleteAdapter =new AutoCompleteAdapter(this.getContext(), android.R.layout.simple_dropdown_item_1line);
 //        keywordAutoCompleteTextView.setThreshold(2);
 //        keywordAutoCompleteTextView.setAdapter(autoCompleteAdapter);
-        keywordAutoCompleteTextView.addTextChangedListener(
+        autoCompleteTextView.addTextChangedListener(
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -251,11 +253,57 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
                     @Override
                     public void onClick(View v) {
 
-                        
+                        Integer keywordLen = autoCompleteTextView.getText().toString().length();
+                        if (!Integer.valueOf(0).equals(keywordLen)) {
+                            String keyword = autoCompleteTextView.getText().toString();
+                            userInput.put("\"Keyword\"", "\""+keyword+"\"");
+                        } else {
+                            keywordValidationTextView.setVisibility(View.VISIBLE);
+                            Toast.makeText(getActivity(), "Please fix all fields with errors", Toast.LENGTH_SHORT).show();
+                        }
 
-                        System.out.println(userInput.toString());
+                        String category = categorySpinner.getSelectedItem().toString();
+                        if (category != null) {
+                            userInput.put("\"Category\"", "\""+category+"\"");
+                        }
 
+                        Integer distanceLength = distanceTextView.getText().toString().length();
+                        if (!Integer.valueOf(0).equals(distanceLength)) {
+                            userInput.put("\"Distance\"", Integer.parseInt(distanceTextView.getText().toString()));
+                        } else {
+                            userInput.put("\"Distance\"", 10);
+                        }
 
+                        Integer unitsLen = unitsSpinner.getSelectedItem().toString().length();
+                        if (!Integer.valueOf(0).equals(unitsLen)) {
+                            String units = unitsSpinner.getSelectedItem().toString();
+                            if (units.equals("Miles")){
+                                userInput.put("\"Units\"", "\"miles\"");
+                            }else{
+                                userInput.put("\"Units\"", "\"km\"");
+                            }
+                        }
+
+                        if (currLocationRadio.isChecked()) {
+                            userInput.put("\"radio\"", "\"\"");
+                            userInput.put("\"LatLong\"", "\""+currLatitude+","+currLongitude+"\"");
+                        } else if (otherLocationRadio.isChecked()) {
+                            userInput.put("\"radio\"", "\"location\"");
+
+                            Integer otherLocationLength = otherLocationTextView.getText().toString().length();
+                            if (!Integer.valueOf(0).equals(otherLocationLength)) {
+                                String otherLocation = otherLocationTextView.getText().toString();
+                                userInput.put("\"LatLong\"", "\""+otherLocation+"\"");
+                            } else {
+                                locationValidationTextView.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+//                        if(keywordValidationTextView.getVisibility())
+                        System.out.println("Request url "+ userInput.toString());
+                        Intent intent = new Intent(getActivity(),EventListActivity.class);
+                        intent.putExtra("searchFormInput",userInput.toString());
+                        startActivity(intent);
                     }
                 }
         );
