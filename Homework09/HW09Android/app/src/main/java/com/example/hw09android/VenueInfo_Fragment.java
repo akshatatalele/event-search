@@ -105,7 +105,7 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
             JSONObject eventInfo = new JSONObject(jObject.getString("Venue Info"));
             JSONObject venueName = new JSONObject(jObject.getString("Event Info"));
 
-            Iterator<?> keys = eventInfo.keys();
+            /*Iterator<?> keys = eventInfo.keys();
             while( keys.hasNext() ){
                 if(keys.next().equals("error")){
                     System.out.println("Failed to get event details");
@@ -118,77 +118,89 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
                     linearLayoutMain.setVisibility(View.GONE);
                     break;
                 }
-            }
+            }*/
 
-            errorTextView.setVisibility(View.GONE);
-            linearLayoutMain.setVisibility(View.VISIBLE);
-            if (venueName.getString("Venue").equals("NoData")){
-                LinearLayout artistLinearLayout = view.findViewById(R.id.ID_VDetails_Name_Category);
-                artistLinearLayout.setVisibility(view.GONE);
+            if (eventInfo.has("error")){
+                System.out.println("Failed to get event details");
+                if(eventInfo.getString("error").equals("Failed to get venue details results")){
+                    errorTextView.setText("Failed to get venue details results");
+                }else if(eventInfo.getString("error").equals("No details available")){
+                    errorTextView.setText("No details available");
+                }
+                errorTextView.setVisibility(View.VISIBLE);
+                linearLayoutMain.setVisibility(View.GONE);
             }else{
-                TextView artistView = view.findViewById(R.id.ID_VD_Name_Value);
-                artistView.setText(venueName.getString("Venue"));
-            }
+                errorTextView.setVisibility(View.GONE);
+                linearLayoutMain.setVisibility(View.VISIBLE);
+                if (venueName.getString("Venue").equals("NoData")){
+                    LinearLayout artistLinearLayout = view.findViewById(R.id.ID_VDetails_Name_Category);
+                    artistLinearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView artistView = view.findViewById(R.id.ID_VD_Name_Value);
+                    artistView.setText(venueName.getString("Venue"));
+                }
 
-            if (eventInfo.getString("Address").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_Address_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_VD_Address_Value);
-                textView.setText(eventInfo.getString("Address"));
-            }
+                if (eventInfo.getString("Address").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_Address_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_VD_Address_Value);
+                    textView.setText(eventInfo.getString("Address"));
+                }
 
-            if (eventInfo.getString("City").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_City_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_VD_City_Value);
-                textView.setText(eventInfo.getString("City"));
-            }
+                if (eventInfo.getString("City").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_City_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_VD_City_Value);
+                    textView.setText(eventInfo.getString("City"));
+                }
 
-            if (eventInfo.getString("PhoneNumber").equals("")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_PhoneNumber_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_VD_PhoneNumber_Value);
-                textView.setText(eventInfo.getString("PhoneNumber"));
-            }
+                if (eventInfo.getString("PhoneNumber").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_PhoneNumber_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_VD_PhoneNumber_Value);
+                    textView.setText(eventInfo.getString("PhoneNumber"));
+                }
 
-            if (eventInfo.getString("OpenHours").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_OpenHours_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_VD_OpenHours_Value);
-                textView.setText(eventInfo.getString("OpenHours"));
-            }
+                if (eventInfo.getString("OpenHours").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_OpenHours_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_VD_OpenHours_Value);
+                    textView.setText(eventInfo.getString("OpenHours"));
+                }
 
-            if (eventInfo.getString("GeneralRule").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_GeneralRule_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_VD_GeneralRule_Value);
-                textView.setText(eventInfo.getString("GeneralRule"));
-            }
+                if (eventInfo.getString("GeneralRule").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_GeneralRule_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_VD_GeneralRule_Value);
+                    textView.setText(eventInfo.getString("GeneralRule"));
+                }
 
-            if (eventInfo.getString("ChildRule").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_ChildRule_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_VD_ChildRule_Value);
-                textView.setText(eventInfo.getString("ChildRule"));
-            }
+                if (eventInfo.getString("ChildRule").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_ChildRule_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_VD_ChildRule_Value);
+                    textView.setText(eventInfo.getString("ChildRule"));
+                }
 
-            if (Double.parseDouble(eventInfo.getString("Latitude")) == 0
-                    && Double.parseDouble(eventInfo.getString("Longitude")) == 0){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_map_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                lat = Double.parseDouble(eventInfo.getString("Latitude"));
-                lng = Double.parseDouble(eventInfo.getString("Longitude"));
+                if (Double.parseDouble(eventInfo.getString("Latitude")) == 0
+                        && Double.parseDouble(eventInfo.getString("Longitude")) == 0){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_VDetails_map_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    lat = Double.parseDouble(eventInfo.getString("Latitude"));
+                    lng = Double.parseDouble(eventInfo.getString("Longitude"));
                 /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                         .findFragmentById(R.id.map);
                 mapFragment.getMapAsync(this);*/
+                }
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

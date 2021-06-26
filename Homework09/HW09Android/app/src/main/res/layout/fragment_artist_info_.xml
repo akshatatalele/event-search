@@ -11,4 +11,12 @@
         android:layout_height="wrap_content">
 
     </TableLayout>
+
+    <TextView
+        android:id="@+id/ID_AD_error_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Failed to get artists details"
+        android:textAlignment="center" />
 </FrameLayout>

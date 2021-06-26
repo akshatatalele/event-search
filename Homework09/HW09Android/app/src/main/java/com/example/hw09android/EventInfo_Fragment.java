@@ -106,7 +106,7 @@ public class EventInfo_Fragment extends Fragment {
         try {
             JSONObject jObject = new JSONObject(myStr);
             JSONObject eventInfo = new JSONObject(jObject.getString("Event Info"));
-            Iterator<?> keys = eventInfo.keys();
+            /*Iterator<?> keys = eventInfo.keys();
             while( keys.hasNext() ){
                 if(keys.next().equals("error")){
                     System.out.println("Failed to get event details");
@@ -114,89 +114,95 @@ public class EventInfo_Fragment extends Fragment {
                     linearLayoutMain.setVisibility(View.GONE);
                     break;
                 }
-            }
-
-            errorTextView.setVisibility(View.GONE);
-            linearLayoutMain.setVisibility(View.VISIBLE);
-            if (eventInfo.getString("Artist / Team").equals("")){
-                LinearLayout artistLinearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Artists);
-                artistLinearLayout.setVisibility(view.GONE);
+            }*/
+            if (eventInfo.has("error")){
+                System.out.println("Failed to get event details");
+                errorTextView.setVisibility(View.VISIBLE);
+                linearLayoutMain.setVisibility(View.GONE);
             }else{
-                TextView artistView = view.findViewById(R.id.ID_ED_Artist_Value);
-                artistView.setText(eventInfo.getString("Artist / Team"));
-            }
-
-            if (eventInfo.getString("Venue").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Venue);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_ED_Venue_Value);
-                textView.setText(eventInfo.getString("Venue"));
-            }
-
-            if (eventInfo.getString("Date").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Date);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_ED_Date_Value);
-                textView.setText(eventInfo.getString("Date"));
-            }
-
-            if (eventInfo.getString("Genres").equals("")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Category);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_ED_Category_Value);
-                textView.setText(eventInfo.getString("Genres"));
-            }
-
-            if (eventInfo.getString("Price Ranges").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_PriceRange);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_ED_PriceRange_Value);
-                textView.setText(eventInfo.getString("Price Ranges"));
-            }
-
-            if (eventInfo.getString("Ticket Status").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_TicketStatus);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                TextView textView = view.findViewById(R.id.ID_ED_TicketStatus_Value);
-                textView.setText(eventInfo.getString("Ticket Status"));
-            }
-
-            if (eventInfo.getString("Buy Ticket At").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_BuyTicketAt);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                String html = "<a href = '" + eventInfo.getString("Buy Ticket At") + "'>Buy Ticket At</a>";
-                TextView textView = view.findViewById(R.id.ID_ED_BuyTicketAt_Value);
-                textView.setClickable(true);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    textView.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
+                errorTextView.setVisibility(View.GONE);
+                linearLayoutMain.setVisibility(View.VISIBLE);
+                if (eventInfo.getString("Artist / Team").equals("")){
+                    LinearLayout artistLinearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Artists);
+                    artistLinearLayout.setVisibility(view.GONE);
                 }else{
-                    textView.setText(Html.fromHtml(html));
+                    TextView artistView = view.findViewById(R.id.ID_ED_Artist_Value);
+                    artistView.setText(eventInfo.getString("Artist / Team"));
                 }
-                textView.setMovementMethod(LinkMovementMethod.getInstance());
-                textView.setLinkTextColor(Color.BLUE);
+
+                if (eventInfo.getString("Venue").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Venue);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_ED_Venue_Value);
+                    textView.setText(eventInfo.getString("Venue"));
+                }
+
+                if (eventInfo.getString("Date").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Date);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_ED_Date_Value);
+                    textView.setText(eventInfo.getString("Date"));
+                }
+
+                if (eventInfo.getString("Genres").equals("")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_Category);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_ED_Category_Value);
+                    textView.setText(eventInfo.getString("Genres"));
+                }
+
+                if (eventInfo.getString("Price Ranges").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_PriceRange);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_ED_PriceRange_Value);
+                    textView.setText(eventInfo.getString("Price Ranges"));
+                }
+
+                if (eventInfo.getString("Ticket Status").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_TicketStatus);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    TextView textView = view.findViewById(R.id.ID_ED_TicketStatus_Value);
+                    textView.setText(eventInfo.getString("Ticket Status"));
+                }
+
+                if (eventInfo.getString("Buy Ticket At").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_BuyTicketAt);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    String html = "<a href = '" + eventInfo.getString("Buy Ticket At") + "'>Buy Ticket At</a>";
+                    TextView textView = view.findViewById(R.id.ID_ED_BuyTicketAt_Value);
+                    textView.setClickable(true);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        textView.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
+                    }else{
+                        textView.setText(Html.fromHtml(html));
+                    }
+                    textView.setMovementMethod(LinkMovementMethod.getInstance());
+                    textView.setLinkTextColor(Color.BLUE);
+                }
+
+                if (eventInfo.getString("Seatmap").equals("NoData")){
+                    LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_SeatMap);
+                    linearLayout.setVisibility(view.GONE);
+                }else{
+                    String html = "<a href = '" + eventInfo.getString("Seatmap") + "'>View Seat Map Here</a>";
+                    TextView textView = view.findViewById(R.id.ID_ED_SeatMap_Value);
+                    textView.setClickable(true);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        textView.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
+                    }else{
+                        textView.setText(Html.fromHtml(html));
+                    }
+                    textView.setMovementMethod(LinkMovementMethod.getInstance());
+                    textView.setLinkTextColor(Color.BLUE);
+                }
             }
 
-            if (eventInfo.getString("Seatmap").equals("NoData")){
-                LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_SeatMap);
-                linearLayout.setVisibility(view.GONE);
-            }else{
-                String html = "<a href = '" + eventInfo.getString("Seatmap") + "'>View Seat Map Here</a>";
-                TextView textView = view.findViewById(R.id.ID_ED_SeatMap_Value);
-                textView.setClickable(true);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    textView.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
-                }else{
-                    textView.setText(Html.fromHtml(html));
-                }
-                textView.setMovementMethod(LinkMovementMethod.getInstance());
-                textView.setLinkTextColor(Color.BLUE);
-            }
 
         } catch (JSONException e) {
             e.printStackTrace();

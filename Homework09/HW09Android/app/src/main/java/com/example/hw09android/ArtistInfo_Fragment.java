@@ -22,6 +22,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ArtistInfo_Fragment#newInstance} factory method to
@@ -78,37 +84,98 @@ public class ArtistInfo_Fragment extends Fragment {
         System.out.println("OnCreateView EventDetailsActivity - ArtistInfo");
         view = inflater.inflate(R.layout.fragment_artist_info_, container, false);
 
+        try {
+            createArtistsView();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public void createArtistsView() throws JSONException {
+
         Bundle bundle = getArguments();
         if (bundle != null){
             myStr = bundle.getString("response");
         }
         System.out.println("Response in Artist fragment: " + myStr);
-
-
-        createArtistsView();
-        return view;
-    }
-
-    public void createArtistsView(){
-
-        TextView textView = new TextView(this.getContext());
-        textView.setText("Maroon 5");
-
-        LinearLayout rowLinearLayout = createVerticalLinearLayout();
-        rowLinearLayout.addView(textView);
-        rowLinearLayout.addView(createHorizontalLinearLayout("Name", "Maroon 5"));
-        rowLinearLayout.addView(createHorizontalLinearLayout("Followers", "12345"));
-        rowLinearLayout.addView(createHorizontalLinearLayout("Popularity", "91"));
-        String spotifyURL = "http://www.google.com";
-        rowLinearLayout.addView(createHorizontalLinearLayout("Spotify", "<a href = '" + spotifyURL + "'>Spotify</a>"));
-
-        TableRow artist1 = createTableRow();
-        artist1.addView(rowLinearLayout);
-
+        TextView errorTextView = view.findViewById(R.id.ID_AD_error_TextView);
         TableLayout tableLayout = view.findViewById(R.id.ID_VDetails_TableLayout);
-        tableLayout.addView(artist1);
+
+        JSONObject jObject = new JSONObject(myStr);
+        JSONObject eventInfo = new JSONObject(jObject.getString("Artists Info"));
+
+        if (eventInfo.has("error")){
+            if (eventInfo.getString("error").equals("Failed to get artist details results")){
+                errorTextView.setText("Failed to get artist details results");
+            }else if (eventInfo.getString("error").equals("No details available")){
+                errorTextView.setText("No details available");
+            }
+            errorTextView.setVisibility(View.VISIBLE);
+            tableLayout.setVisibility(View.GONE);
+        }else if (eventInfo.has("NoArtist")){
+            errorTextView.setText("No Artists");
+            errorTextView.setVisibility(View.VISIBLE);
+            tableLayout.setVisibility(View.GONE);
+        }else{
+            errorTextView.setVisibility(View.GONE);
+            tableLayout.setVisibility(View.VISIBLE);
+            Iterator<String> keys = eventInfo.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                JSONObject artist = new JSONObject(eventInfo.getString(key));
+                if (artist.has("error")){
+                    //Artists name: No details
+                    TextView errortextview = new TextView(this.getContext());
+                    errortextview.setText(key + ": No Details");
+                    errortextview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                    errortextview.setTranslationX(0);
+
+                    LinearLayout linearLayout = new LinearLayout(this.getContext());
+                    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                    linearLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                    linearLayout.addView(errortextview);
+
+                    LinearLayout rowLinearLayout = createVerticalLinearLayout();
+                    rowLinearLayout.addView(linearLayout);
+
+                    TableRow artist1 = createTableRow();
+                    artist1.addView(rowLinearLayout);
+
+                    tableLayout.addView(artist1);
+
+                }else{
+
+                    LinearLayout rowLinearLayout = createVerticalLinearLayout();
+
+                    if(!key.equals("NoData")){
+                        rowLinearLayout.addView(createHorizontalLinearLayout("Name", key));
+                    }
+
+                    if(!artist.getString("Followers").equals(0)){
+                        rowLinearLayout.addView(createHorizontalLinearLayout("Followers", artist.getString("Followers")));
+                    }
+
+                    if (!artist.getString("Popularity").equals(0) ){
+                        rowLinearLayout.addView(createHorizontalLinearLayout("Popularity", artist.getString("Popularity")));
+                    }
+
+                    if (!artist.getString("CheckAt").equals("")){
+                        String spotifyURL = artist.getString("CheckAt");
+                        rowLinearLayout.addView(createHorizontalLinearLayout("Spotify", "<a href = '" + spotifyURL + "'>Spotify</a>"));
+                    }
+
+                    TableRow artist1 = createTableRow();
+                    artist1.addView(rowLinearLayout);
 
 
+                    tableLayout.addView(artist1);
+                }
+                System.out.println(artist);
+            }
+
+        }
     }
 
     public TextView createLabelTextView(String labelName){
