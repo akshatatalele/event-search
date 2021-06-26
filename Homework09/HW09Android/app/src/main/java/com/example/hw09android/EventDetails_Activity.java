@@ -106,7 +106,7 @@ public class EventDetails_Activity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -114,7 +114,7 @@ public class EventDetails_Activity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.favorite_border) {
+       if (id == R.id.favorite_border) {
 //            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.heart_fill_white));
             Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
             menu.findItem(R.id.favorite_border).setVisible(false);
