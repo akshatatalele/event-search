@@ -55,4 +55,12 @@ public class EventTable {
     public void setIsFavorite(boolean isFavorite) {
         this.isFavorite = isFavorite;
     }
+
+    @Override
+    public String toString() {
+        return "EventTable{" +
+                "ID='" + ID + '\'' +
+                ", Name='" + Name + '\'' +
+                '}';
+    }
 }

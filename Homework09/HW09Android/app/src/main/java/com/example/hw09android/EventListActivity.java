@@ -98,11 +98,13 @@ public class EventListActivity extends AppCompatActivity {
             EventTable eventTable = new EventTable();
             eventTable.setID(jObject1.getString("ID"));
             eventTable.setDate(jObject1.getString("Date"));
+            System.out.println(jObject1.getString("Event"));
             eventTable.setName(jObject1.getString("Event"));
             eventTable.setCategory(jObject1.getString("Category"));
             eventTable.setVenue(jObject1.getString("Venue"));
             eventTable.setIsFavorite(false);
 
+            System.out.println(eventTable.toString());
             eventResponseList.add(eventTable);
         }
     }
