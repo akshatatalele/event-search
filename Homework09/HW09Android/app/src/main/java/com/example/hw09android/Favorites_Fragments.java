@@ -82,6 +82,7 @@ public class Favorites_Fragments extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_favorites__fragments, container, false);
+        eventFavoriteList.clear();
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("favorite", Context.MODE_PRIVATE);
         Map<String, ?> allEntries = sharedPreferences.getAll();
         if(allEntries.size() != 0){
@@ -117,5 +118,43 @@ public class Favorites_Fragments extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        eventFavoriteList.clear();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("favorite", Context.MODE_PRIVATE);
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+        if(allEntries.size() != 0){
+            view.findViewById(R.id.ID_FL_error_textview).setVisibility(View.GONE);
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                EventTable eventTable = new EventTable();
+                try {
+                    JSONObject jsonObject = new JSONObject((String) entry.getValue());
+                    eventTable.setID(jsonObject.getString("id"));
+                    eventTable.setName(jsonObject.getString("name"));
+                    eventTable.setDate(jsonObject.getString("date"));
+                    eventTable.setCategory(jsonObject.getString("category"));
+                    eventTable.setVenue(jsonObject.getString("venue"));
+                    eventTable.setIsFavorite(jsonObject.getBoolean("isFavorite"));
+                    eventFavoriteList.add(eventTable);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            eventsListRecyclerView = (RecyclerView) view.findViewById(R.id.ID_FavList_recyclerView);
+            eventsListRecyclerView.hasFixedSize();
+
+            eventsListLayoutManager = new LinearLayoutManager(this.getContext());
+            eventsListRecyclerView.setLayoutManager(eventsListLayoutManager);
+
+            eventsListAdapter = new EventListRecyclerViewAdapter(eventFavoriteList, this.getContext(), "favorite");
+            eventsListRecyclerView.setAdapter(eventsListAdapter);
+        }else{
+            view.findViewById(R.id.ID_FavList_recyclerView).setVisibility(View.GONE);
+            view.findViewById(R.id.ID_FL_error_textview).setVisibility(View.VISIBLE);
+        }
     }
 }

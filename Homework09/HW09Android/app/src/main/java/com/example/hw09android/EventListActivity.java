@@ -37,7 +37,7 @@ public class EventListActivity extends AppCompatActivity {
     private RecyclerView.Adapter eventsListAdapter;
     private RecyclerView.LayoutManager eventsListLayoutManager;
 
-    /*@Override
+    @Override
     protected void onRestart() {
         super.onRestart();
         setContentView(R.layout.activity_event_list);
@@ -47,7 +47,7 @@ public class EventListActivity extends AppCompatActivity {
         System.out.println("In EventListActivity OnRestart "+getEventListRequestParam);
 
         getEventListResponse(getEventListRequestParam);
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,7 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     public void parseEventListResponse(String response) throws IOException, JSONException {
+        eventResponseList.clear();
         HashMap<String, String> map = new HashMap<String, String>();
         JSONObject jObject = new JSONObject(response);
         TextView errorTextView = findViewById(R.id.ID_EL_error_textview);
