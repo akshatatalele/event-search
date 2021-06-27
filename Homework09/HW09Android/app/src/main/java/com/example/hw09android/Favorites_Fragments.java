@@ -1,12 +1,26 @@
 package com.example.hw09android;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +28,13 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Favorites_Fragments extends Fragment {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    List<EventTable> eventFavoriteList = new ArrayList<>();
+    private RecyclerView eventsListRecyclerView;
+    private RecyclerView.Adapter eventsListAdapter;
+    private RecyclerView.LayoutManager eventsListLayoutManager;
+    View view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,12 +74,48 @@ public class Favorites_Fragments extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites__fragments, container, false);
+        view = inflater.inflate(R.layout.fragment_favorites__fragments, container, false);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("favorite", Context.MODE_PRIVATE);
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+        if(allEntries.size() != 0){
+            view.findViewById(R.id.ID_FL_error_textview).setVisibility(View.GONE);
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                EventTable eventTable = new EventTable();
+                try {
+                    JSONObject jsonObject = new JSONObject((String) entry.getValue());
+                    eventTable.setID(jsonObject.getString("id"));
+                    eventTable.setName(jsonObject.getString("name"));
+                    eventTable.setDate(jsonObject.getString("date"));
+                    eventTable.setCategory(jsonObject.getString("category"));
+                    eventTable.setVenue(jsonObject.getString("venue"));
+                    eventTable.setIsFavorite(jsonObject.getBoolean("isFavorite"));
+                    eventFavoriteList.add(eventTable);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            eventsListRecyclerView = (RecyclerView) view.findViewById(R.id.ID_FavList_recyclerView);
+            eventsListRecyclerView.hasFixedSize();
+
+            eventsListLayoutManager = new LinearLayoutManager(this.getContext());
+            eventsListRecyclerView.setLayoutManager(eventsListLayoutManager);
+
+            eventsListAdapter = new EventListRecyclerViewAdapter(eventFavoriteList, this.getContext(), "favorite");
+            eventsListRecyclerView.setAdapter(eventsListAdapter);
+        }else{
+            view.findViewById(R.id.ID_FavList_recyclerView).setVisibility(View.GONE);
+            view.findViewById(R.id.ID_FL_error_textview).setVisibility(View.VISIBLE);
+        }
+
+
+        return view;
     }
 }

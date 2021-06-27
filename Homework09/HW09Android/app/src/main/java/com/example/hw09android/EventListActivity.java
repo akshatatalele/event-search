@@ -79,7 +79,7 @@ public class EventListActivity extends AppCompatActivity {
                             eventsListLayoutManager = new LinearLayoutManager(EventListActivity.this);
                             eventsListRecyclerView.setLayoutManager(eventsListLayoutManager);
 
-                            eventsListAdapter = new EventListRecyclerViewAdapter(eventResponseList, EventListActivity.this);
+                            eventsListAdapter = new EventListRecyclerViewAdapter(eventResponseList, EventListActivity.this, "search");
                             eventsListRecyclerView.setAdapter(eventsListAdapter);
                             System.out.println("EventListActivity - END");
                         } catch (IOException | JSONException e) {

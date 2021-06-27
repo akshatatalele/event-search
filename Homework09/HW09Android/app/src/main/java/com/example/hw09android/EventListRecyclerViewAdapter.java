@@ -40,11 +40,13 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
     ObjectMapper objectMapper = new ObjectMapper();
     List<EventTable> eventTableList;
     Context context;
+    String listType;
+    View view;
 
-
-    public EventListRecyclerViewAdapter(List<EventTable> eventTableList, Context context) {
+    public EventListRecyclerViewAdapter(List<EventTable> eventTableList, Context context, String listType) {
         this.eventTableList = eventTableList;
         this.context = context;
+        this.listType = listType;
     }
 
     @NonNull
@@ -105,10 +107,14 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
                             holder.favoriteButton.setBackgroundResource(R.drawable.heart_outline_black);
                             sharedPrefChange.remove(eventToCheck);
                             sharedPrefChange.commit();
+                            if(listType == "favorite"){
+                                eventTableList.remove(position);
+                            }
+                            notifyDataSetChanged();
                         } else {
                             holder.favoriteButton.setBackgroundResource(R.drawable.heart_fill_red);
                             try {
-                                sharedPrefChange.putString(eventToCheck, eventTableList.get(position).ID+objectMapper.writeValueAsString(eventTableList.get(position)));
+                                sharedPrefChange.putString(eventToCheck, objectMapper.writeValueAsString(eventTableList.get(position)));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

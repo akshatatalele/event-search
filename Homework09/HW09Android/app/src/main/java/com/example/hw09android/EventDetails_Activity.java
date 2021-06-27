@@ -190,7 +190,7 @@ public class EventDetails_Activity extends AppCompatActivity {
             menu.findItem(R.id.favorite_border).setVisible(false);
             menu.findItem(R.id.favorite_filled).setVisible(true);
            try {
-               sharedPrefChange.putString(eventToCheck, eventDataModel.ID+objectMapper.writeValueAsString(eventDataModel));
+               sharedPrefChange.putString(eventToCheck, objectMapper.writeValueAsString(eventDataModel));
                sharedPrefChange.apply();
            } catch (IOException e) {
                e.printStackTrace();
