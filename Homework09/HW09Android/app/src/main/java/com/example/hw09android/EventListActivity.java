@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -35,6 +37,18 @@ public class EventListActivity extends AppCompatActivity {
     private RecyclerView.Adapter eventsListAdapter;
     private RecyclerView.LayoutManager eventsListLayoutManager;
 
+    /*@Override
+    protected void onRestart() {
+        super.onRestart();
+        setContentView(R.layout.activity_event_list);
+
+        String getEventListRequestParam = getIntent().getExtras().getString("searchFormInput");
+
+        System.out.println("In EventListActivity OnRestart "+getEventListRequestParam);
+
+        getEventListResponse(getEventListRequestParam);
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +56,7 @@ public class EventListActivity extends AppCompatActivity {
 
         String getEventListRequestParam = getIntent().getExtras().getString("searchFormInput");
 
-        System.out.println("In EventListActivity "+getEventListRequestParam);
+        System.out.println("In EventListActivity OnCreate "+getEventListRequestParam);
 
         getEventListResponse(getEventListRequestParam);
     }

@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -151,14 +153,26 @@ public class EventDetails_Activity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         this.menu = menu;
-        if (eventDataModel.isFavorite == true){
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("favorite", Context.MODE_PRIVATE);
+        String eventToCheck = eventDataModel.ID;
+        if (sharedPreferences.contains(eventToCheck)) {
+            menu.findItem(R.id.favorite_filled).setVisible(true);
+            menu.findItem(R.id.favorite_border).setVisible(false);
+        }else{
+            menu.findItem(R.id.favorite_filled).setVisible(false);
+            menu.findItem(R.id.favorite_border).setVisible(true);
+        }
+
+
+        /*if (eventDataModel.isFavorite == true){
             menu.findItem(R.id.favorite_filled).setVisible(true);
             menu.findItem(R.id.favorite_border).setVisible(false);
         }
         else if (eventDataModel.isFavorite == false){
             menu.findItem(R.id.favorite_filled).setVisible(false);
             menu.findItem(R.id.favorite_border).setVisible(true);
-        }
+        }*/
         return true;
     }
 
@@ -168,26 +182,35 @@ public class EventDetails_Activity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+       SharedPreferences sharedPreferences = this.getSharedPreferences("favorite", Context.MODE_PRIVATE);
+       SharedPreferences.Editor sharedPrefChange = sharedPreferences.edit();
+       String eventToCheck = eventDataModel.ID;
 
-        //noinspection SimplifiableIfStatement
        if (id == R.id.favorite_border) {
-//            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.heart_fill_white));
-            Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
             menu.findItem(R.id.favorite_border).setVisible(false);
             menu.findItem(R.id.favorite_filled).setVisible(true);
+           try {
+               sharedPrefChange.putString(eventToCheck, eventDataModel.ID+objectMapper.writeValueAsString(eventDataModel));
+               sharedPrefChange.apply();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
             return true;
         }
+
         if (id == R.id.favorite_filled) {
-            Toast.makeText(EventDetails_Activity.this, "Removed from Favorites", Toast.LENGTH_LONG).show();
             menu.findItem(R.id.favorite_border).setVisible(true);
             menu.findItem(R.id.favorite_filled).setVisible(false);
+            sharedPrefChange.remove(eventToCheck);
+            sharedPrefChange.commit();
             return true;
         }
+
         if (id == R.id.twitter) {
             Toast.makeText(EventDetails_Activity.this, "Twitter clicked", Toast.LENGTH_LONG).show();
             //"https://twitter.com/intent/tweet?text=Check+out+" + this.eventDetails.Name + "+located+at+" + this.eventDetails.Venue + ".&hashtags=CSCI571EventSearch"
-            String url = "https://twitter.com/intent/tweet?text=Check+out+" + eventDataModel.Name + "+located+at+" + eventDataModel.Venue + ".&hashtags=CSCI571EventSearch";
-            Uri uriUrl = Uri.parse(url);
+            String twitter_url = "https://twitter.com/intent/tweet?text=Check+out+" + eventDataModel.Name + "+located+at+" + eventDataModel.Venue + ".&hashtags=CSCI571EventSearch";
+            Uri uriUrl = Uri.parse(twitter_url);
             Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
             startActivity(launchBrowser);
             return true;

@@ -2,14 +2,18 @@ package com.example.hw09android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
@@ -78,6 +82,42 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
             Glide.with(context).load(R.drawable.miscellaneous_icon).into(holder.eventIcon);
         }
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences("favorite", Context.MODE_PRIVATE);
+
+        if(sharedPreferences.contains(eventTableList.get(position).ID)){
+            eventTableList.get(position).isFavorite = true;
+            holder.favoriteButton.setBackgroundResource(R.drawable.heart_fill_red);
+        }else{
+            eventTableList.get(position).isFavorite = false;
+            holder.favoriteButton.setBackgroundResource(R.drawable.heart_outline_black);
+        }
+
+        holder.favoriteButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("favorite", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor sharedPrefChange = sharedPreferences.edit();
+                        String eventToCheck = eventTableList.get(position).ID;
+                        eventTableList.get(position).setIsFavorite(!eventTableList.get(position).isFavorite);
+
+                        if (sharedPreferences.contains(eventToCheck)) {
+                            holder.favoriteButton.setBackgroundResource(R.drawable.heart_outline_black);
+                            sharedPrefChange.remove(eventToCheck);
+                            sharedPrefChange.commit();
+                        } else {
+                            holder.favoriteButton.setBackgroundResource(R.drawable.heart_fill_red);
+                            try {
+                                sharedPrefChange.putString(eventToCheck, eventTableList.get(position).ID+objectMapper.writeValueAsString(eventTableList.get(position)));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            sharedPrefChange.apply();
+                        }
+                    }
+                }
+        );
+
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +143,7 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
         ImageView eventIcon ;
         TextView eventName, eventVenue, eventDate;
         RelativeLayout relativeLayout;
+        ImageButton favoriteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,6 +152,7 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
             eventVenue = itemView.findViewById(R.id.ID_EL_Venue);
             eventDate = itemView.findViewById(R.id.ID_EL_Date);
             relativeLayout = itemView.findViewById(R.id.one_line_event_item_layout);
+            favoriteButton = itemView.findViewById(R.id.ID_EL_Favorite_button);
         }
     }
 }

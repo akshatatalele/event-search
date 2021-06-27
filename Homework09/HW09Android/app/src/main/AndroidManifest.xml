@@ -21,7 +21,7 @@
 
         <activity
             android:name=".EventDetails_Activity"
-            android:parentActivityName=".EventListActivity" />
+            android:parentActivityName=".EventListActivity" ></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
