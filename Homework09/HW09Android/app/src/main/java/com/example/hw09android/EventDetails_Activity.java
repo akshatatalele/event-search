@@ -37,7 +37,7 @@ public class EventDetails_Activity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    EventDetailsFragmentAdapter eventDetailsFragmentAdapter, adapter;
+    EventDetailsFragmentAdapter eventDetailsFragmentAdapter;
     RequestQueue requestQueue;
     ObjectMapper objectMapper = new ObjectMapper();
     EventTable eventDataModel;
