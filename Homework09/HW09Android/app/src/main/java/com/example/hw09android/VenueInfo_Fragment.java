@@ -208,9 +208,9 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
                         }else{
                             lat = Double.parseDouble(eventInfo.getString("Latitude"));
                             lng = Double.parseDouble(eventInfo.getString("Longitude"));
-                /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                        .findFragmentById(R.id.map);
-                mapFragment.getMapAsync(this);*/
+                            /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                                    .findFragmentById(R.id.map);
+                            mapFragment.getMapAsync(this);*/
                         }
                     }
                 }
@@ -232,5 +232,7 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
                 .position(sydney)
                 .title("Venue"));
         maps.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        float zoomLevel = 16.0f; //This goes up to 21
+        maps.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel));
     }
 }

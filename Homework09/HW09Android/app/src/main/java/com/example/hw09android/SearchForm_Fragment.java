@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -45,9 +46,9 @@ import java.util.Map;
 public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     View view;
-    ObjectMapper objectMapper =new ObjectMapper();
-    private Handler handler;
-    private AutoCompleteAdapter autoCompleteAdapter;
+//    ObjectMapper objectMapper =new ObjectMapper();
+//    private Handler handler;
+//    private AutoCompleteAdapter autoCompleteAdapter;
     AppCompatAutoCompleteTextView autoCompleteTextView;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -55,11 +56,13 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
     double currLongitude;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
+    EditText keyword;
     TextView keywordValidationTextView, locationValidationTextView, distanceTextView, otherLocationTextView;
     Spinner categorySpinner, unitsSpinner;
     RadioGroup radioGroup;
     RadioButton currLocationRadio, otherLocationRadio;
     Button searchButton, clearButton;
+    boolean isAllFieldsChecked = false;
     Map userInput=new HashMap();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -141,15 +144,7 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
-        // Keyword validation text - set visible false
-        keywordValidationTextView = view.findViewById(R.id.ID_SF_keywordValidation_label);
-        keywordValidationTextView.setVisibility(View.GONE);
-
-        // Other location validation text - set visible false
-        locationValidationTextView = view.findViewById(R.id.ID_SF_locValidation_label);
-        locationValidationTextView.setVisibility(View.GONE);
-
-        autoCompleteTextView = view.findViewById(R.id.ID_SF_Autocomplete_textview);
+        /*autoCompleteTextView = view.findViewById(R.id.ID_SF_Autocomplete_textview);
         System.out.println("Keyword: " + autoCompleteTextView.getText().toString());
 
         autoCompleteAdapter =new AutoCompleteAdapter(this.getContext(), android.R.layout.simple_dropdown_item_1line);
@@ -188,7 +183,10 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
                 }
                 return false;
             }
-        });
+        });*/
+
+        //Keyword
+        keyword = view.findViewById(R.id.ID_SF_Autocomplete_textview);
 
         //Category
         categorySpinner = view.findViewById(R.id.ID_SF_Category_spinner);
@@ -222,7 +220,6 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
                     public void onClick(View v) {
                         otherLocationTextView.setText("");
                         otherLocationTextView.setEnabled(false);
-                        locationValidationTextView.setVisibility(View.GONE);
                     }
                 }
         );
@@ -253,63 +250,83 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
                     @Override
                     public void onClick(View v) {
 
-                        Integer keywordLen = autoCompleteTextView.getText().toString().length();
-                        if (!Integer.valueOf(0).equals(keywordLen)) {
-                            String keyword = autoCompleteTextView.getText().toString();
-                            userInput.put("\"Keyword\"", "\""+keyword+"\"");
-                        } else {
-                            keywordValidationTextView.setVisibility(View.VISIBLE);
-                            Toast.makeText(getActivity(), "Please fix all fields with errors", Toast.LENGTH_SHORT).show();
-                        }
+                        isAllFieldsChecked = CheckAllFields();
 
-                        String category = categorySpinner.getSelectedItem().toString();
-                        if (category != null) {
-                            userInput.put("\"Category\"", "\""+category+"\"");
-                        }
-
-                        Integer distanceLength = distanceTextView.getText().toString().length();
-                        if (!Integer.valueOf(0).equals(distanceLength)) {
-                            userInput.put("\"Distance\"", Integer.parseInt(distanceTextView.getText().toString()));
-                        } else {
-                            userInput.put("\"Distance\"", 10);
-                        }
-
-                        Integer unitsLen = unitsSpinner.getSelectedItem().toString().length();
-                        if (!Integer.valueOf(0).equals(unitsLen)) {
-                            String units = unitsSpinner.getSelectedItem().toString();
-                            if (units.equals("Miles")){
-                                userInput.put("\"Units\"", "\"miles\"");
-                            }else{
-                                userInput.put("\"Units\"", "\"km\"");
+                        if (isAllFieldsChecked) {
+                            Integer keywordLen = keyword.getText().toString().length();
+                            if (!Integer.valueOf(0).equals(keywordLen)) {
+                                String keyword1 = keyword.getText().toString();
+                                userInput.put("\"Keyword\"", "\""+keyword1+"\"");
                             }
-                        }
 
-                        if (currLocationRadio.isChecked()) {
-                            userInput.put("\"radio\"", "\"\"");
-                            userInput.put("\"LatLong\"", "\""+currLatitude+","+currLongitude+"\"");
-                        } else if (otherLocationRadio.isChecked()) {
-                            userInput.put("\"radio\"", "\"location\"");
+                            String category = categorySpinner.getSelectedItem().toString();
+                            if (category != null) {
+                                userInput.put("\"Category\"", "\""+category+"\"");
+                            }
 
-                            Integer otherLocationLength = otherLocationTextView.getText().toString().length();
-                            if (!Integer.valueOf(0).equals(otherLocationLength)) {
-                                String otherLocation = otherLocationTextView.getText().toString();
-                                userInput.put("\"LatLong\"", "\""+otherLocation+"\"");
+                            Integer distanceLength = distanceTextView.getText().toString().length();
+                            if (!Integer.valueOf(0).equals(distanceLength)) {
+                                userInput.put("\"Distance\"", Integer.parseInt(distanceTextView.getText().toString()));
                             } else {
-                                locationValidationTextView.setVisibility(View.VISIBLE);
+                                userInput.put("\"Distance\"", 10);
                             }
-                        }
+
+                            Integer unitsLen = unitsSpinner.getSelectedItem().toString().length();
+                            if (!Integer.valueOf(0).equals(unitsLen)) {
+                                String units = unitsSpinner.getSelectedItem().toString();
+                                if (units.equals("Miles")){
+                                    userInput.put("\"Units\"", "\"miles\"");
+                                }else{
+                                    userInput.put("\"Units\"", "\"km\"");
+                                }
+                            }
+
+                            if (currLocationRadio.isChecked()) {
+                                userInput.put("\"radio\"", "\"\"");
+                                userInput.put("\"LatLong\"", "\""+currLatitude+","+currLongitude+"\"");
+                            } else if (otherLocationRadio.isChecked()) {
+                                userInput.put("\"radio\"", "\"location\"");
+
+                                Integer otherLocationLength = otherLocationTextView.getText().toString().length();
+                                if (!Integer.valueOf(0).equals(otherLocationLength)) {
+                                    String otherLocation = otherLocationTextView.getText().toString();
+                                    userInput.put("\"LatLong\"", "\""+otherLocation+"\"");
+                                }
+                            }
 
 //                        if(keywordValidationTextView.getVisibility())
-                        System.out.println("Request url "+ userInput.toString());
-                        Intent intent = new Intent(getActivity(),EventListActivity.class);
-                        intent.putExtra("searchFormInput",userInput.toString());
-                        startActivity(intent);
+                            System.out.println("Request url "+ userInput.toString());
+                            Intent intent = new Intent(getActivity(),EventListActivity.class);
+                            intent.putExtra("searchFormInput",userInput.toString());
+                            startActivity(intent);
+                        }
+
                     }
                 }
         );
 
 
         return view;
+    }
+
+    private boolean CheckAllFields() {
+        if (keyword.length() == 0 && otherLocationTextView.isEnabled() == true && otherLocationTextView.length() == 0){
+            keyword.setError("Please enter mandatory field");
+            otherLocationTextView.setError("Please enter mandatory field");
+            return false;
+        }
+
+        if (keyword.length() == 0) {
+            keyword.setError("Please enter mandatory field");
+            return false;
+        }
+
+        if (otherLocationTextView.length() == 0 && otherLocationTextView.isEnabled() == true) {
+            otherLocationTextView.setError("Please enter mandatory field");
+            return false;
+        }
+        // after all validation return true.
+        return true;
     }
 
     @Override
@@ -323,13 +340,13 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
     }
 
     public void clear() {
-        keywordValidationTextView.setVisibility(View.GONE);
-        locationValidationTextView.setVisibility(View.GONE);
-        autoCompleteTextView.setText("");
+        keyword.setText("");
+        keyword.setError(null);
         categorySpinner.setSelection(0);
         distanceTextView.setText("");
         currLocationRadio.setChecked(true);
         otherLocationTextView.setText("");
         otherLocationTextView.setEnabled(false);
+        otherLocationTextView.setError(null);
     }
 }
