@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -348,5 +349,11 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
         otherLocationTextView.setText("");
         otherLocationTextView.setEnabled(false);
         otherLocationTextView.setError(null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        clear();
     }
 }

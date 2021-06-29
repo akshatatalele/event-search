@@ -60,18 +60,11 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
     @Override
     public void onBindViewHolder(@NonNull EventListRecyclerViewAdapter.ViewHolder holder, int position) {
 
-        if(eventTableList.get(position).Name.length() >= 35){
-            String newName = eventTableList.get(position).Name.substring(0, 25) + "...";
-            holder.eventName.setText(newName);
-        }else{
-            holder.eventName.setText(eventTableList.get(position).Name);
-        }
+        holder.eventName.setText(eventTableList.get(position).Name);
         holder.eventVenue.setText(eventTableList.get(position).Venue);
         holder.eventDate.setText(eventTableList.get(position).Date);
-        if(eventTableList.get(position).Category.contains("Music")){
-            Glide.with(context).load(R.drawable.music_icon).into(holder.eventIcon);
-        }
-        else if(eventTableList.get(position).Category.contains("Film")){
+
+        if(eventTableList.get(position).Category.contains("Film")){
             Glide.with(context).load(R.drawable.film_icon).into(holder.eventIcon);
         }
         else if(eventTableList.get(position).Category.contains("Arts & Theatre")){
@@ -82,6 +75,9 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
         }
         else if(eventTableList.get(position).Category.contains("Miscellaneous")){
             Glide.with(context).load(R.drawable.miscellaneous_icon).into(holder.eventIcon);
+        }
+        else if(eventTableList.get(position).Category.contains("Music")){
+            Glide.with(context).load(R.drawable.music_icon).into(holder.eventIcon);
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("favorite", Context.MODE_PRIVATE);
