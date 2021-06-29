@@ -2,6 +2,7 @@ package com.example.hw09android;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -140,9 +141,14 @@ public class ArtistInfo_Fragment extends Fragment {
                         if (artist.has("error")){
                             //Artists name: No details
                             TextView errortextview = new TextView(this.getContext());
-                            errortextview.setText(key + ": No Details");
-                            errortextview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                            errortextview.setText(key + ": No Details.");
+//                            errortextview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            params.setMargins(30, 20,0, 0);
+                            errortextview.setLayoutParams(params);
                             errortextview.setTranslationX(0);
+                            errortextview.setTextSize(17);
+                            errortextview.setTypeface(null, Typeface.BOLD);
 
                             LinearLayout linearLayout = new LinearLayout(this.getContext());
                             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -195,15 +201,26 @@ public class ArtistInfo_Fragment extends Fragment {
     public TextView createLabelTextView(String labelName){
         TextView textView = new TextView(this.getContext());
         textView.setText(labelName);
-        textView.setLayoutParams(new RelativeLayout.LayoutParams(500, RelativeLayout.LayoutParams.WRAP_CONTENT));
+//        textView.setLayoutParams(new RelativeLayout.LayoutParams(500, RelativeLayout.LayoutParams.WRAP_CONTENT));
         textView.setTranslationX(0);
+        textView.setTextSize(17);
+        textView.setTypeface(null, Typeface.BOLD);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(500, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 40,0, 40);
+        textView.setLayoutParams(params);
+        textView.setWidth(150);
         return textView;
     }
 
     public TextView createValueTextView(String labelName){
         TextView textView = new TextView(this.getContext());
         textView.setText(labelName);
-        textView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+//        textView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 40,0, 40);
+        params.width = 350;
+        textView.setLayoutParams(params);
+        textView.setTextSize(17);
         return textView;
     }
 
@@ -222,6 +239,12 @@ public class ArtistInfo_Fragment extends Fragment {
             }else{
                 link.setText(Html.fromHtml(value));
             }
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 40,0, 40);
+            params.width = 350;
+            link.setLayoutParams(params);
+            link.setTextSize(17);
+            link.setPaintFlags(0);
             link.setMovementMethod(LinkMovementMethod.getInstance());
             link.setLinkTextColor(Color.BLUE);
             linearLayout.addView(link);
