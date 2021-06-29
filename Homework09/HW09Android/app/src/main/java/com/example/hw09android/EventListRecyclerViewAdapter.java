@@ -60,9 +60,8 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
     @Override
     public void onBindViewHolder(@NonNull EventListRecyclerViewAdapter.ViewHolder holder, int position) {
 
-        holder.relativeLayout1.setVisibility(View.GONE);
         if(eventTableList.get(position).Name.length() >= 35){
-            String newName = eventTableList.get(position).Name.substring(0, 32) + "...";
+            String newName = eventTableList.get(position).Name.substring(0, 25) + "...";
             holder.eventName.setText(newName);
         }else{
             holder.eventName.setText(eventTableList.get(position).Name);
@@ -110,13 +109,8 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
                             sharedPrefChange.commit();
                             if(listType == "favorite"){
                                 eventTableList.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, eventTableList.size());
-                                if(eventTableList.size() == 0){
-                                    holder.relativeLayout1.setVisibility(View.VISIBLE);
-                                }
                             }
-//                            notifyDataSetChanged();
+                            notifyDataSetChanged();
 
                         } else {
                             holder.favoriteButton.setBackgroundResource(R.drawable.heart_fill_red);
@@ -157,7 +151,6 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
         TextView eventName, eventVenue, eventDate;
         RelativeLayout relativeLayout;
         ImageButton favoriteButton;
-        RelativeLayout relativeLayout1;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -167,7 +160,6 @@ public class EventListRecyclerViewAdapter extends RecyclerView.Adapter<EventList
             eventDate = itemView.findViewById(R.id.ID_EL_Date);
             relativeLayout = itemView.findViewById(R.id.one_line_event_item_layout);
             favoriteButton = itemView.findViewById(R.id.ID_EL_Favorite_button);
-            relativeLayout1 = itemView.findViewById(R.id.IF_RecyclerView_error);
 
         }
     }

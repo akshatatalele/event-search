@@ -113,6 +113,8 @@ public class EventDetails_Activity extends AppCompatActivity {
         System.out.println("BEFORE API CALL");
         requestQueue = Volley.newRequestQueue(this);
         String requestURL = "http://10.0.2.2:8080/api/get-event-details/{\"id\":\"" + id + "\"}";
+        //https://homework08.wl.r.appspot.com/
+//        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"" + id + "\"}";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
                 new Response.Listener<JSONObject>() {
                     @Override

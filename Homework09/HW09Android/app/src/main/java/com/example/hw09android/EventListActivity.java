@@ -64,6 +64,7 @@ public class EventListActivity extends AppCompatActivity {
     public void getEventListResponse(String requestParam){
 
         String requestURL = "http://10.0.2.2:8080/api/get-event-list/"+requestParam.replaceAll("=", ":");
+//        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-list/%7B%22Keyword%22:%22Maroon%205%22,%22Category%22:%22All%22,%22Distance%22:10,%22Units%22:%22miles%22,%22radio%22:%22%22,%22LatLong%22:%2234.0030,-118.2863%22%7D";
         System.out.println(requestURL);
         requestQueue = Volley.newRequestQueue(EventListActivity.this);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
@@ -81,7 +82,7 @@ public class EventListActivity extends AppCompatActivity {
 
                             eventsListAdapter = new EventListRecyclerViewAdapter(eventResponseList, EventListActivity.this, "search");
                             eventsListRecyclerView.setAdapter(eventsListAdapter);
-                            System.out.println("EventListActivity - END");
+                            System.out.println("EventListActivity - END " + eventResponseList);
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
@@ -141,16 +142,15 @@ public class EventListActivity extends AppCompatActivity {
                 EventTable eventTable = new EventTable();
                 eventTable.setID(jObject1.getString("ID"));
                 eventTable.setDate(jObject1.getString("Date"));
-                System.out.println(jObject1.getString("Event"));
                 eventTable.setName(jObject1.getString("Event"));
                 eventTable.setCategory(jObject1.getString("Category"));
                 eventTable.setVenue(jObject1.getString("Venue"));
                 eventTable.setIsFavorite(false);
 
-                System.out.println(eventTable.toString());
+//                System.out.println("event: "+i+" "+eventTable.toString());
                 eventResponseList.add(eventTable);
             }
         }
-
+        System.out.println("event response list: "+eventResponseList);
     }
 }

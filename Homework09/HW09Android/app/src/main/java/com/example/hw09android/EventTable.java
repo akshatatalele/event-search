@@ -60,7 +60,11 @@ public class EventTable {
     public String toString() {
         return "EventTable{" +
                 "ID='" + ID + '\'' +
+                ", Date='" + Date + '\'' +
                 ", Name='" + Name + '\'' +
+                ", Category='" + Category + '\'' +
+                ", Venue='" + Venue + '\'' +
+                ", isFavorite=" + isFavorite +
                 '}';
     }
 }
