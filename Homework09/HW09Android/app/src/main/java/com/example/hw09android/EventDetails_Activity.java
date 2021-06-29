@@ -11,6 +11,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -144,6 +146,7 @@ public class EventDetails_Activity extends AppCompatActivity {
     public void setTabIcons(){
         for (int i = 0; i < 3; i++){
             tabLayout.getTabAt(i).setIcon(ICONS[i]);
+            tabLayout.getTabAt(i).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         }
     }
 
