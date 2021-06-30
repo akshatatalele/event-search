@@ -232,7 +232,7 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
                 .position(sydney)
                 .title("Venue"));
         maps.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        float zoomLevel = 16.0f; //This goes up to 21
+        float zoomLevel = 15.0f;
         maps.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel));
     }
 }
