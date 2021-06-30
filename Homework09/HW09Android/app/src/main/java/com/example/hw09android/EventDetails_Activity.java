@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -81,6 +82,10 @@ public class EventDetails_Activity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle(Html.fromHtml("<font color=\"black\">"+ eventDataModel.Name +"</font>"));
 
+        final Drawable upArrow = getResources().getDrawable(R.drawable.baseline_arrow_back_24);
+        upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
         tabLayout = findViewById(R.id.ID_eventDetails_tablayout);
         viewPager2 = findViewById(R.id.ID_eventDetails_ViewPager);
 
@@ -122,9 +127,8 @@ public class EventDetails_Activity extends AppCompatActivity {
     private void getEventDetails(String id){
         System.out.println("BEFORE API CALL");
         requestQueue = Volley.newRequestQueue(this);
-        String requestURL = "http://10.0.2.2:8080/api/get-event-details/{\"id\":\"" + id + "\"}";
-        //https://homework08.wl.r.appspot.com/
-//        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"" + id + "\"}";
+
+        String requestURL = "https://homework08.wl.r.appspot.com/api/get-event-details/{\"id\":\"" + id + "\"}";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requestURL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -220,7 +224,6 @@ public class EventDetails_Activity extends AppCompatActivity {
         }
 
         if (id == R.id.twitter) {
-            Toast.makeText(EventDetails_Activity.this, "Twitter clicked", Toast.LENGTH_LONG).show();
             //"https://twitter.com/intent/tweet?text=Check+out+" + this.eventDetails.Name + "+located+at+" + this.eventDetails.Venue + ".&hashtags=CSCI571EventSearch"
             String twitter_url = "https://twitter.com/intent/tweet?text=Check+out+" + eventDataModel.Name + "+located+at+" + eventDataModel.Venue + ".&hashtags=CSCI571EventSearch";
             Uri uriUrl = Uri.parse(twitter_url);

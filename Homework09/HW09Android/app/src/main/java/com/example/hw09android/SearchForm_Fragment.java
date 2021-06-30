@@ -47,9 +47,6 @@ import java.util.Map;
 public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     View view;
-//    ObjectMapper objectMapper =new ObjectMapper();
-//    private Handler handler;
-//    private AutoCompleteAdapter autoCompleteAdapter;
     AppCompatAutoCompleteTextView autoCompleteTextView;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -145,47 +142,6 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
-        /*autoCompleteTextView = view.findViewById(R.id.ID_SF_Autocomplete_textview);
-        System.out.println("Keyword: " + autoCompleteTextView.getText().toString());
-
-        autoCompleteAdapter =new AutoCompleteAdapter(this.getContext(), android.R.layout.simple_dropdown_item_1line);
-//        keywordAutoCompleteTextView.setThreshold(2);
-//        keywordAutoCompleteTextView.setAdapter(autoCompleteAdapter);
-        autoCompleteTextView.addTextChangedListener(
-                new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        System.out.println("In method Ontext change");
-                        handler.removeMessages(TRIGGER_AUTO_COMPLETE);
-                        handler.sendEmptyMessageDelayed(TRIGGER_AUTO_COMPLETE,
-                                AUTO_COMPLETE_DELAY);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                }
-        );
-
-        handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if (msg.what == TRIGGER_AUTO_COMPLETE) {
-                    System.out.println("In method handleMessage change");
-                    if (!TextUtils.isEmpty(autoCompleteTextView.getText())) {
-                        System.out.println(autoCompleteTextView.getText().toString());
-                    }
-                }
-                return false;
-            }
-        });*/
-
         //Keyword
         keyword = view.findViewById(R.id.ID_SF_Autocomplete_textview);
 
@@ -193,6 +149,7 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
         categorySpinner = view.findViewById(R.id.ID_SF_Category_spinner);
         ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.category_array, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setOnItemSelectedListener(this);
 
@@ -355,5 +312,8 @@ public class SearchForm_Fragment extends Fragment implements AdapterView.OnItemS
     public void onResume() {
         super.onResume();
         clear();
+        keyword.clearFocus();
+        distanceTextView.clearFocus();
+        otherLocationTextView.clearFocus();
     }
 }

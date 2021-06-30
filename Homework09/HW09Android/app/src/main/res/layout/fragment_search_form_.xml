@@ -56,6 +56,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ID_SF_Category_label" />
@@ -81,16 +82,15 @@
             android:layout_width="353dp"
             android:layout_height="47dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="13dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:ems="10"
             android:hint="10"
             android:inputType="number"
             app:layout_constraintBottom_toTopOf="@+id/ID_SF_Units_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ID_SF_Distance_label" />
+            app:layout_constraintTop_toBottomOf="@+id/ID_SF_Distance_label"
+            tools:text="10" />
 
         <Spinner
             android:id="@+id/ID_SF_Units_spinner"
@@ -164,6 +164,7 @@
             android:layout_width="155dp"
             android:layout_height="47dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/grey"
             android:text="SEARCH"
@@ -178,6 +179,7 @@
             android:layout_width="155dp"
             android:layout_height="47dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/grey"
             android:text="CLEAR"

@@ -181,7 +181,7 @@ public class EventInfo_Fragment extends Fragment {
                         LinearLayout linearLayout = view.findViewById(R.id.ID_EDetails_LinearLayout_BuyTicketAt);
                         linearLayout.setVisibility(view.GONE);
                     }else{
-                        String html = "<a href = '" + eventInfo.getString("Buy Ticket At") + "'>Buy Ticket At</a>";
+                        String html = "<a href = '" + eventInfo.getString("Buy Ticket At") + "'>Ticketmaster</a>";
                         TextView textView = view.findViewById(R.id.ID_ED_BuyTicketAt_Value);
                         textView.setClickable(true);
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

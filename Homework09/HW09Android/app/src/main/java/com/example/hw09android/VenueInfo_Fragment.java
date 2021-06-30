@@ -208,9 +208,9 @@ public class VenueInfo_Fragment extends Fragment implements OnMapReadyCallback {
                         }else{
                             lat = Double.parseDouble(eventInfo.getString("Latitude"));
                             lng = Double.parseDouble(eventInfo.getString("Longitude"));
-                            /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                                     .findFragmentById(R.id.map);
-                            mapFragment.getMapAsync(this);*/
+                            mapFragment.getMapAsync(this);
                         }
                     }
                 }

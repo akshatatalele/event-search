@@ -90,6 +90,7 @@ public class Favorites_Fragments extends Fragment {
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                 EventTable eventTable = new EventTable();
                 try {
+//                    System.out.println("Favorites data parse: "+(String) entry.getValue());
                     JSONObject jsonObject = new JSONObject((String) entry.getValue());
                     eventTable.setID(jsonObject.getString("id"));
                     eventTable.setName(jsonObject.getString("name"));
