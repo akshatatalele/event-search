@@ -1,12 +1,15 @@
 package com.example.hw09android;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -42,6 +45,10 @@ public class EventListActivity extends AppCompatActivity {
         super.onRestart();
         setContentView(R.layout.activity_event_list);
 
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(Html.fromHtml("<font color=\"black\">Event Search</font>"));
+
         String getEventListRequestParam = getIntent().getExtras().getString("searchFormInput");
 
         System.out.println("In EventListActivity OnRestart "+getEventListRequestParam);
@@ -53,6 +60,11 @@ public class EventListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(Html.fromHtml("<font color=\"black\">Event Search</font>"));
+        ;
 
         String getEventListRequestParam = getIntent().getExtras().getString("searchFormInput");
 

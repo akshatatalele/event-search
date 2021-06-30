@@ -1,6 +1,7 @@
 package com.example.hw09android;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -13,9 +14,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,6 +61,7 @@ public class EventDetails_Activity extends AppCompatActivity {
         System.out.println("OnCreate EventDetailsActivity");
         setContentView(R.layout.activity_event_details);
 
+
         Intent intent = getIntent();
         String eventDataModelStr = intent.getStringExtra("eventDetails");
         System.out.println(eventDataModelStr.toString());
@@ -72,6 +76,10 @@ public class EventDetails_Activity extends AppCompatActivity {
         mTopToolbar = (Toolbar) findViewById(R.id.drawer);
         setSupportActionBar(mTopToolbar);
         getSupportActionBar().setTitle(eventDataModel.Name);
+
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(Html.fromHtml("<font color=\"black\">"+ eventDataModel.Name +"</font>"));
 
         tabLayout = findViewById(R.id.ID_eventDetails_tablayout);
         viewPager2 = findViewById(R.id.ID_eventDetails_ViewPager);

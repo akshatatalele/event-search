@@ -1,5 +1,6 @@
 package com.example.hw09android;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -7,8 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,6 +37,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#000000"));
+
+        // Set BackgroundDrawable
+        actionBar.setTitle(Html.fromHtml("<font color=\"black\"> Event Search</font>"));
 
         tabLayout = findViewById(R.id.ID_SearchForm_tablayout);
         viewPager2 = findViewById(R.id.ID_SearchForm_ViewPager);
