@@ -1,0 +1,193 @@
+<div>
+  <div class='container' *ngIf="displayEventDetails_ === true" [@EnterLeave]>
+
+    <div *ngIf="showAlert === false">
+      <h2>{{eventDetails.Name}}</h2>
+
+      <div class="row col-sm-12" style="padding-right: 0;">
+        <button class="btn btn-light btn-outline-secondary" (click)="showEventList()"><span class="material-icons" style="vertical-align:middle">chevron_left</span>List</button>
+        <div class="justify-content-end float-md-right row ml-auto">
+          <a class="twitter-share-button mr-3 " href={{twitter_href}} style="outline : none;display: inline-block;" target="_blank"><img class="twitter-btn"></a>
+          <button style="display: inline-block;" class="btn btn-light favButton" (click)="clickOnStar()">
+            <span class="material-icons" style="vertical-align:middle;">
+              <div *ngIf="isFavEvent" style="color: gold">star</div><div *ngIf="!isFavEvent">star_border</div>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <ul class="nav nav-tabs justify-content-end">
+        <li class="nav-item">
+          <a class="nav-link active" [class.active]="detailType == 'eventInfo'" rel="eventInfo" (click)="detailType ='eventInfo'" style="cursor:pointer">Event</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="detailType == 'artistInfo'" rel="artistInfo" (click)="detailType ='artistInfo'" style="cursor:pointer">Artist/Teams</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="detailType == 'venueInfo'" rel="venueInfo" (click)="detailType ='venueInfo'" style="cursor:pointer">Venue</a>
+        </li>
+      </ul>
+
+      <div [ngSwitch]="detailType">
+
+
+        <div id="eventInfo" *ngSwitchCase="'eventInfo'" class="details">
+          <table class="table table-hover table-striped">
+            <tbody>
+                <tr *ngIf="eventDetails.Artists != ''">
+                  <th scope="row">Artist/Team(s)</th>
+                  <td>{{eventDetails.Artists}}</td>
+                </tr>
+                <tr *ngIf="eventDetails.Venue != 'NoData'">
+                  <th scope="row">Venue</th>
+                  <td>{{eventDetails.Venue}}</td>
+                </tr>
+                <tr *ngIf="eventDetails.Date != 'NoData'">
+                  <th scope="row">Time</th>
+                  <td>{{eventDetails.Date | date: 'MMM d, y'}}</td>
+                </tr>
+                <tr *ngIf="eventDetails.Category != ''">
+                  <th scope="row">Category</th>
+                  <td>{{eventDetails.Category}}</td>
+                </tr>
+                <tr *ngIf="eventDetails.PriceRange != 'NoData'">
+                  <th scope="row">Price Range</th>
+                  <td>{{eventDetails.PriceRange}}</td>
+                </tr>
+                <tr *ngIf="eventDetails.TicketStatus != 'NoData'">
+                  <th scope="row">Ticket Status</th>
+                  <td>{{eventDetails.TicketStatus}}</td>
+                </tr>
+                <tr *ngIf="eventDetails.BuyTicketAt != 'NoData'">
+                  <th scope="row">Buy Ticket At</th>
+                  <td><a href={{eventDetails.BuyTicketAt}} target="_blank">Ticketmaster</a></td>
+                </tr>
+                <tr *ngIf="eventDetails.SeatMap != 'NoData'">
+                  <th scope="row">Seat Map</th>
+                  <td> <a href="#" data-toggle="modal" data-target="#seatMapModal">View Seat Map Here</a></td>
+                  <!-- Modal -->
+                  <div class="modal fade" id="seatMapModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">View Seat Map</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <img src={{eventDetails.SeatMap}} class="container">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+
+
+        <div id="artistInfo" *ngSwitchCase="'artistInfo'" class="details">
+          <div *ngIf="showArtistAlert === false">
+            <div *ngFor="let a of artistsDetailsList;" class="mb-3">
+              <h3>{{a.Name}}</h3>
+              <div *ngIf="a.ifDetailsPresent === true">
+                <table class="table table-hover table-striped">
+                  <tbody>
+                    <tr *ngIf="a.Name != 'NoData'">
+                      <th scope="row">Name</th>
+                      <td>{{a.Name}}</td>
+                    </tr>
+                    <tr *ngIf="a.Followers != 0">
+                      <th scope="row">Followers</th>
+                      <td>{{a.Followers | number:'1.0':'en-US' }}</td>
+                    </tr>
+                    <tr *ngIf="a.Popularity != 0">
+                      <th scope="row">Popularity</th>
+                      <td>
+                        <div class="progress-wrapper">
+                          <div class="progress-popularity">{{a.Popularity}}</div>
+                          <round-progress [current]="a.Popularity" [max]="100" [color]="'#a8ee90'" [radius]="20" [stroke]="3" [clockwise] = "false"> </round-progress>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="a.CheckAt != ''">
+                          <th scope="row">Check At</th>
+                          <td><a href={{a.CheckAt}} target="_blank">Spotify</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="a.ifDetailsPresent === false" style="text-align:center">
+                <span>No details available</span>
+              </div>
+            </div>
+          </div>
+          <div class='col-sm-12 mt-5' *ngIf="showArtistAlert === true">
+            <div [class]=alertClass role="alert">{{alertText}}</div>
+          </div>
+        </div>
+
+        <div id="venueInfo" *ngSwitchCase="'venueInfo'" class="details">
+
+          <div *ngIf="showVenueAlert === false">
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr *ngIf="venueDetails.Address != 'NoData'">
+                    <th scope="row">Address</th>
+                    <td>{{venueDetails.Address}}</td>
+                </tr>
+                <tr *ngIf="venueDetails.City != 'NoData'">
+                    <th scope="row">City</th>
+                    <td>{{venueDetails.City}}</td>
+                </tr>
+                <tr *ngIf="venueDetails.PhoneNumber != 'NoData'">
+                    <th scope="row">Phone number</th>
+                    <td>{{venueDetails.PhoneNumber}}</td>
+                </tr>
+                <tr *ngIf="venueDetails.OpenHours != 'NoData'">
+                    <th scope="row">Open Hours</th>
+                    <td>{{venueDetails.OpenHours}}</td>
+                </tr>
+                <tr *ngIf="venueDetails.GeneralRule != 'NoData'">
+                    <th scope="row">General Rule</th>
+                    <td>{{venueDetails.GeneralRule}}</td>
+                </tr>
+                <tr *ngIf="venueDetails.ChildRule != 'NoData'">
+                    <th scope="row">Child Rule</th>
+                    <td>{{venueDetails.ChildRule}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="ifLatLongPresent == true">
+              <!--<agm-map [latitude]="venueDetails.Latitude" [longitude]="venueDetails.Longitude" style = 'height: 400px'>
+                <agm-marker [latitude]="venueDetails.Latitude" [longitude]="venueDetails.Longitude"></agm-marker>
+              </agm-map>-->
+            </div>
+          </div>
+
+          <div class='col-sm-12 mt-5' *ngIf="showVenueAlert === true">
+            <div [class]=alertClass role="alert">{{alertText}}</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class='container' *ngIf="displayEventDetails_ === true">
+    <div *ngIf="showAlert === true">
+      <div class='col-sm-12 mt-5'>
+        <div [class]=alertClass role="alert">{{alertText}}</div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VenueInfo_Fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ID_VenueDetails_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical">
+
+            <!-- Name -->
+
+            <!-- Address -->
+            <LinearLayout
+                android:id="@+id/ID_VDetails_Name_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_Name_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:width="150sp"
+                    android:text="Name"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_VD_Name_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ID_VDetails_Address_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_Address_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Address"
+                    android:translationX="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ID_VD_Address_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- City -->
+            <LinearLayout
+                android:id="@+id/ID_VDetails_City_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_City_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="City"
+                    android:translationX="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ID_VD_City_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Phone Number -->
+            <LinearLayout
+                android:id="@+id/ID_VDetails_PhoneNumber_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_PhoneNumber_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Phone Number"
+                    android:translationX="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ID_VD_PhoneNumber_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <!-- Open Hours -->
+            <LinearLayout
+                android:id="@+id/ID_VDetails_OpenHours_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_OpenHours_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Open Hours"
+                    android:translationX="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ID_VD_OpenHours_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <!-- General Rule -->
+            <LinearLayout
+                android:id="@+id/ID_VDetails_GeneralRule_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_GeneralRule_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="General Rule"
+                    android:translationX="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ID_VD_GeneralRule_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Child Rule -->
+            <LinearLayout
+                android:id="@+id/ID_VDetails_ChildRule_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_VD_ChildRule_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:width="150sp"
+                    android:text="Child Rule"
+                    android:translationX="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ID_VD_ChildRule_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ID_VDetails_map_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="370sp"
+                    android:layout_height="300sp"
+                    tools:context=".MapsActivity" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+    <TextView
+        android:id="@+id/ID_VD_error_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Failed to get Venue details"
+        android:textAlignment="center" />
+</FrameLayout>

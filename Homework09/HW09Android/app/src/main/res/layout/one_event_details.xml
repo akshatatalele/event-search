@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/one_line_event_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxHeight="70dp"
+    android:minHeight="70dp">
+
+    <ImageView
+        android:id="@+id/ID_EL_Icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/ID_EL_Name"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TextView"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/ID_EL_Venue"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="30dp"
+        android:text="TextView"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@+id/ID_EL_Icon"
+        app:layout_constraintTop_toBottomOf="@+id/ID_EL_Name" />
+
+    <TextView
+        android:id="@+id/ID_EL_Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="55dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/ID_EL_Icon"
+        app:layout_constraintTop_toBottomOf="@+id/ID_EL_Venue" />
+
+    <ImageButton
+        android:id="@+id/ID_EL_Favorite_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/heart_outline_black" />
+
+</RelativeLayout>

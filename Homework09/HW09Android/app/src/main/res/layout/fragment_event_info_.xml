@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventInfo_Fragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ID_EventDetails_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical">
+
+            <!-- Artist -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Artists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Artist_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Artist(s)/Teams"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Artist_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Venue -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Venue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Venue_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Venue"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Venue_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Date -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Date_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Date"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_Date_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Category -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_Category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_Category_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Category"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp"
+                    android:layout_alignParentRight="true"/>
+
+                <TextView
+                    android:id="@+id/ID_ED_Category_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|left"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:singleLine="false"
+                    android:textSize="17sp"
+                    android:layout_alignParentLeft="true"/>
+            </LinearLayout>
+
+            <!-- Price Range -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_PriceRange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_PriceRange_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Price Range"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_PriceRange_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Ticket Status -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_TicketStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_TicketStatus_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Ticket Status"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_TicketStatus_Value"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Buy Ticket At -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_BuyTicketAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_BuyTicketAt_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Buy Ticket At"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_BuyTicketAt_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Ticketmaster"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Seat map -->
+            <LinearLayout
+                android:id="@+id/ID_EDetails_LinearLayout_SeatMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ID_ED_SeatMap_Label"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:width="150sp"
+                    android:text="Seat Map"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:translationX="0sp" />
+
+                <TextView
+                    android:id="@+id/ID_ED_SeatMap_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="View Seat Map Here"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/ID_ED_Error_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Failed to get event details"
+        android:textAlignment="center" />
+
+</FrameLayout>

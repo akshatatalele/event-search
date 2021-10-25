@@ -1,0 +1,74 @@
+.progress-wrapper{
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.progress-popularity{
+  top: 20%;
+  left: 30%;
+  position: absolute;
+  z-index: 9;
+  font-size: 15px;
+}
+round-progress{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.twitter-btn{
+  background-image: url('https://csci571.com/hw/hw8/images/Twitter.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  border-style: none;
+  border: 0px;
+  outline : none;
+}
+
+h2{
+  font-size: xx-large;
+    text-align: center;
+    margin-bottom: 4%;
+    margin-top: 4%;
+}
+
+ul{
+  margin-top: 1%;
+}
+
+h3{
+  font-size: larger;
+  font-weight: 550;
+  text-align: center;
+}
+
+.details{
+  margin-top: 2%;
+}
+
+.favButton:hover{
+  /* color: white; */
+}
+
+.favButton{
+  background-color: white;
+  border: 1px solid black;
+}
+#artistInfo th{
+  width: 45%;
+}
+
+
+#venueInfo th{
+  width: 20%;
+}
+
+#eventInfo th{
+  width: 45%;
+}
+
+a:hover{
+  cursor:pointer;
+}
