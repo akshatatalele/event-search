@@ -7,10 +7,10 @@ const { Console } = require('console');
 
 const app = express();
 const eventRoute = express.Router();
-const APIKey_Ticketmaster = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
-const APIKEY_GoogleAPI = "AIzaSyAf8dVq0WH0Mz0h0ef7PAbaAlncbrsRWyc"
-const SPOTIFY_CLIENT_ID = "154eb0af6b3e423ca00362a9de3dc6a9"
-const SPOTIFY_SECRET_ID = "e71c518e098e4e65a52142c1c2ae6747"
+const APIKey_Ticketmaster = "<<TICKETMASTER_API_KEY>>"
+const APIKEY_GoogleAPI = "<<GOOGLE_API_KEY>>"
+const SPOTIFY_CLIENT_ID = "<<SPOTIFY_CLIENT_KEY>>"
+const SPOTIFY_SECRET_ID = "<<SPOTIFY_SECRET_KEY>>"
 var spotifyApi = new SpotifyWebApi({
   clientId: SPOTIFY_CLIENT_ID,
   clientSecret: SPOTIFY_SECRET_ID
