@@ -6,9 +6,9 @@ from geolib import geohash
 import requests
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'webtechnologieshomework'
-APIKEY_GoogleAPI = "AIzaSyCogQES6TBka55wgg2UkynCjP6SzbUXi0A"
-APIKEY_TicketMasterAPI = "xTIxkBBzgc0IRs4YXUJFWtW1FWduxVQ9"
+app.config['SECRET_KEY'] = <<SECRET_KEY>>
+APIKEY_GoogleAPI = "<<GOOGLE_API_KEY>>"
+APIKEY_TicketMasterAPI = "<<TICKETMASTER_API_KEY>>"
 category = {
     'Music':'KZFzniwnSyZfZ7v7nJ',
     'Sports':'KZFzniwnSyZfZ7v7nE',
